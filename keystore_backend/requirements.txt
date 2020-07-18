@@ -1,0 +1,10 @@
+SQLAlchemy
+alembic
+mysql-connector-python
+retry
+Flask
+Flask-Cors
+pytest-voluptuous
+voluptuous
+boto3
+Werkzeug
