@@ -1,2 +1,2 @@
-# decentalized-social-network
+# decentralized-social-network
 Decentralized social networking platform
