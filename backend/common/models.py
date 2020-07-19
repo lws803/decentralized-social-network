@@ -6,6 +6,7 @@ from sqlalchemy import (
     ForeignKey,
     Integer,
     String,
+    UniqueConstraint,
     func,
 )
 from sqlalchemy.dialects.mysql import JSON
@@ -26,7 +27,11 @@ Base = declarative_base(cls=MyBase)
 
 class User(Base):
     __tablename__ = 'users'
+    __table_args__ = (
+        UniqueConstraint('name', name='uix_name'),
+    )
     id = Column(BigInteger, primary_key=True)
+    name = Column(String(255), nullable=False)
     uid = Column(String(255), nullable=False)
     metadata_json = Column(JSON, nullable=True)
     created_at = Column(DateTime, nullable=False, default=func.now())
@@ -69,7 +74,11 @@ class Vote(Base):
 
 class SocialGroup(Base):
     __tablename__ = 'social_groups'
+    __table_args__ = (
+        UniqueConstraint('name', name='uix_name'),
+    )
     id = Column(BigInteger, primary_key=True)
+    name = Column(String(255), nullable=False)
     metadata_json = Column(JSON, nullable=True)
     created_at = Column(DateTime, nullable=False, server_default=func.now())
     updated_at = Column(DateTime, onupdate=func.now())
