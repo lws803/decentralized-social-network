@@ -41,8 +41,8 @@ class Post(Base):
     metadata_json = Column(JSON, nullable=True)
     created_at = Column(DateTime, nullable=False, server_default=func.now())
     updated_at = Column(DateTime, onupdate=func.now())
-    social_group_id = Column(ForeignKey('social_groups.id'), nullable=False)
-    owner_id = Column(ForeignKey('users.id'), nullable=False)
+    social_group_id = Column(ForeignKey('social_groups.id', ondelete='CASCADE'), nullable=False)
+    owner_id = Column(ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
     visibility = Column(Enum(VisibilityType), nullable=False)
     depth = Column(Integer, nullable=False, default=0)
 
@@ -53,8 +53,8 @@ class Post(Base):
 class PostChild(Base):
     __tablename__ = 'post_children'
     id = Column(BigInteger, primary_key=True)
-    parent_post_id = Column(ForeignKey('posts.id'), nullable=False)
-    child_post_id = Column(ForeignKey('posts.id'), nullable=False)
+    parent_post_id = Column(ForeignKey('posts.id', ondelete='CASCADE'), nullable=False)
+    child_post_id = Column(ForeignKey('posts.id', ondelete='CASCADE'), nullable=False)
 
 
 class Vote(Base):
@@ -63,8 +63,8 @@ class Vote(Base):
     vote_type = Column(Enum(VoteType), nullable=False)
     created_at = Column(DateTime, nullable=False, server_default=func.now())
     updated_at = Column(DateTime, onupdate=func.now())
-    owner_id = Column(ForeignKey('users.id'), nullable=False)
-    post_id = Column(ForeignKey('posts.id'), nullable=False)
+    owner_id = Column(ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    post_id = Column(ForeignKey('posts.id', ondelete='CASCADE'), nullable=False)
 
 
 class SocialGroup(Base):
@@ -83,9 +83,10 @@ class SocialGroup(Base):
 class Tag(Base):
     __tablename__ = 'tags'
     id = Column(BigInteger, primary_key=True)
+    name = Column(String(255), nullable=False)
     created_at = Column(DateTime, nullable=False, server_default=func.now())
     updated_at = Column(DateTime, onupdate=func.now())
-    post_id = Column(ForeignKey('posts.id'), nullable=False)
+    post_id = Column(ForeignKey('posts.id', ondelete='CASCADE'), nullable=False)
 
 
 class SocialGroupMember(Base):
@@ -93,8 +94,8 @@ class SocialGroupMember(Base):
     id = Column(BigInteger, primary_key=True)
     created_at = Column(DateTime, nullable=False, server_default=func.now())
     updated_at = Column(DateTime, onupdate=func.now())
-    user_id = Column(ForeignKey('users.id'), nullable=False)
-    social_group_id = Column(ForeignKey('social_groups.id'), nullable=False)
+    user_id = Column(ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    social_group_id = Column(ForeignKey('social_groups.id', ondelete='CASCADE'), nullable=False)
     role = Column(Enum(SocialGroupRole), nullable=False)
 
 

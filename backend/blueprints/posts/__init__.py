@@ -1,6 +1,6 @@
 from http import HTTPStatus
 
-from flask import Blueprint, current_app
+from flask import Blueprint, current_app, request
 from glom import glom
 
 from blueprints.posts.specs import NEW_POST_SCHEMA, POST_OUTPUT_SPEC, POSTS_OUTPUT_SPEC
@@ -10,9 +10,24 @@ from common.messages import Errors
 from common.models import Post, SocialGroupMember, Tag
 from common.parameters import get_request_json
 from common.validation import validate
+from common.constants import SocialGroupRole
 
 
 posts_blueprint = Blueprint('posts_blueprint', __name__)
+
+
+@authentication.require_login
+def check_admin_or_owner(db_session, post, user_id=None):
+    if user_id == post.owner_id:
+        return True
+    group_member = (
+        db_session.query(SocialGroupMember)
+        .filter_by(user_id=user_id)
+        .filter_by(social_group_id=post.social_group_id)
+    ).one_or_none()
+    if group_member and group_member.role == SocialGroupRole.MEMBER.name:
+        return True
+    raise InvalidUsage(Errors.INSUFFICIENT_PRIVILEGES)
 
 
 @posts_blueprint.route('/api/v1/post/new', methods=['POST'])
@@ -38,9 +53,12 @@ def new_post(user_id):
             **body
         )
         db_session.add(new_post)
+        db_session.commit()
+
         for tag in tags:
             db_session.add(Tag(
-                post_id=new_post.id
+                post_id=new_post.id,
+                name=tag
             ))
         db_session.commit()
         return glom(new_post, POST_OUTPUT_SPEC)
@@ -51,11 +69,22 @@ def new_post(user_id):
 def post_access(post_id):
     mysql_connector = current_app.config['mysql_connector']
     with mysql_connector.session() as db_session:
-        post = db_session.query(Post).filter_by(id=post_id).one_or_none()
-        if post:
-            return glom(post, POST_OUTPUT_SPEC)
+        if request.method == 'DELETE':
+            post = db_session.query(Post).filter_by(id=post_id).one_or_none()
+            if not post:
+                return '', HTTPStatus.NOT_FOUND
+
+            check_admin_or_owner(db_session, post)
+
+            db_session.query(Post).filter_by(id=post_id).delete()
+            db_session.commit()
+            return '', HTTPStatus.ACCEPTED
         else:
-            return '', HTTPStatus.NOT_FOUND
+            post = db_session.query(Post).filter_by(id=post_id).one_or_none()
+            if post:
+                return glom(post, POST_OUTPUT_SPEC)
+            else:
+                return '', HTTPStatus.NOT_FOUND
 
 
 @posts_blueprint.route('/api/v1/posts', methods=['GET'])

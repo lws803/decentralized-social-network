@@ -14,3 +14,5 @@ class Errors:
     INCORRECT_API_KEY = (
         'API Key supplied is incorrect. Please contact system administrator for help.'
     )
+
+    INSUFFICIENT_PRIVILEGES = 'User has insufficient privileges to perform this action.'
