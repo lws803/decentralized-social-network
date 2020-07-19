@@ -1,16 +1,15 @@
-from voluptuous import ALLOW_EXTRA, All, Any, Length, Required, Schema
-
-
-GROUP_METADATA_SCHEMA = Schema({
-    Required('data'): All(
-        Any(str, bytes), Length(max=2000)
-    )
-}, extra=ALLOW_EXTRA)
+from voluptuous import All, Length, Required, Schema
 
 
 NEW_GROUP_SCHEMA = Schema({
     Required('name'): All(str, Length(max=100)),
-    'metadata_json': GROUP_METADATA_SCHEMA,
+    'metadata_json': dict,
+})
+
+
+PARTIAL_GROUP_SCHEMA = Schema({
+    'name': All(str, Length(max=100)),
+    'metadata_json': dict,
 })
 
 
