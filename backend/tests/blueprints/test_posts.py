@@ -42,6 +42,18 @@ class TestPost(object):
         db_session.commit()
         yield new_group
 
+    @pytest.fixture
+    def create_existing_post(self, populate_db, db_session, context, init_group_and_membership):
+        social_group = init_group_and_membership
+        new_post = PostFactory.create(
+            social_group_id=social_group.id,
+            owner_id=context['user_id'],
+            visibility=VisibilityType.PUBLIC.name,
+        )
+        db_session.commit()
+        yield new_post
+
+
     @pytest.mark.parametrize(
         'body',
         [
@@ -89,3 +101,41 @@ class TestPost(object):
             'user_id': context['user_id'],
             'visibility': VisibilityType(body['visibility']).name
         })
+
+    def test_get_posts(self, db_session, context, create_existing_post, client):
+        response = client.get(
+            '/api/v1/posts',
+            headers={
+                'key': context['api_key'],
+                'Authorization': encode_auth_token(context['user_id']).decode()
+            },
+        )
+        assert response.status_code == HTTPStatus.OK
+        posts = db_session.query(Post).all()
+        assert response.json == Schema(
+            {
+                'posts': Unordered([
+                    {
+                        'created_at': str,
+                        'updated_at': None,
+                        'depth': 0,
+                        'id': int,
+                        'metadata_json': post.metadata_json,
+                        'social_group_id': post.social_group_id,
+                        'tags': Unordered([
+                            {
+                                'created_at': str,
+                                'updated_at': None,
+                                'name': tag.name,
+                                'id': int
+                            }
+                            for tag in post.tags
+                        ]),
+                        'user_id': context['user_id'],
+                        'visibility': post.visibility.name
+                    }
+                    for post in posts
+                ]),
+                'total_count': len(posts)
+            }
+        )
