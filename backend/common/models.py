@@ -23,10 +23,11 @@ class MyBase(object):
 Base = declarative_base(cls=MyBase)
 
 
-class User(object):
+class User(Base):
     __tablename__ = 'users'
     id = Column(BigInteger, primary_key=True)
     uid = Column(String(255), nullable=False)
+    metadata_json = Column(JSON, nullable=True)
     created_at = Column(DateTime, nullable=False, default=func.now())
     updated_at = Column(DateTime, onupdate=func.now())
 
@@ -34,10 +35,10 @@ class User(object):
     owned_groups = relationship('Group', backref='user', cascade='all, delete-orphan')
 
 
-class Post(object):
+class Post(Base):
     __tablename__ = 'posts'
     id = Column(BigInteger, primary_key=True)
-    metadata = Column(JSON, nullable=True)
+    metadata_json = Column(JSON, nullable=True)
     tags = Column(JSON, nullable=True)
     created_at = Column(DateTime, nullable=False, default=func.now())
     updated_at = Column(DateTime, onupdate=func.now())
@@ -46,10 +47,10 @@ class Post(object):
     visibility = Column(Enum(VisibilityType), nullable=False)
 
 
-class Group(object):
+class Group(Base):
     __tablename__ = 'groups'
     id = Column(BigInteger, primary_key=True)
-    metadata = Column(JSON, nullable=True)
+    metadata_json = Column(JSON, nullable=True)
     created_at = Column(DateTime, nullable=False, default=func.now())
     updated_at = Column(DateTime, onupdate=func.now())
     owner_id = Column(ForeignKey('users.id'), nullable=False)
