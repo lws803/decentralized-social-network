@@ -24,6 +24,6 @@ POST_OUTPUT_SPEC = {
     'tags': 'tags',
     'created_at': ('created_at', format_datetime),
     'updated_at': ('updated_at', format_datetime),
-    'group_id': 'group_id',
+    'group_id': 'social_group_id',
     'depth': 'depth',
 }

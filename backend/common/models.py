@@ -33,7 +33,7 @@ class User(Base):
     updated_at = Column(DateTime, onupdate=func.now())
 
     posts = relationship('Post', backref='user', cascade='all, delete-orphan')
-    owned_groups = relationship('Group', backref='user', cascade='all, delete-orphan')
+    owned_social_groups = relationship('SocialGroup', backref='user', cascade='all, delete-orphan')
 
 
 class Post(Base):
@@ -42,7 +42,7 @@ class Post(Base):
     metadata_json = Column(JSON, nullable=True)
     created_at = Column(DateTime, nullable=False, default=func.now())
     updated_at = Column(DateTime, onupdate=func.now())
-    group_id = Column(ForeignKey('groups.id'), nullable=False)
+    social_group_id = Column(ForeignKey('social_groups.id'), nullable=False)
     owner_id = Column(ForeignKey('users.id'), nullable=False)
     visibility = Column(Enum(VisibilityType), nullable=False)
     # FIXME: May raise a circular reference. Add constraints to ensure
@@ -69,16 +69,16 @@ class Vote(Base):
     post_id = Column(ForeignKey('posts.id'), nullable=False)
 
 
-class Group(Base):
-    __tablename__ = 'groups'
+class SocialGroup(Base):
+    __tablename__ = 'social_groups'
     id = Column(BigInteger, primary_key=True)
     metadata_json = Column(JSON, nullable=True)
     created_at = Column(DateTime, nullable=False, default=func.now())
     updated_at = Column(DateTime, onupdate=func.now())
     owner_id = Column(ForeignKey('users.id'), nullable=False)
-    admins = Column(JSON, nullable=True)
+    admins = Column(JSON, nullable=True)  # TODO: Move this to a separate table as well
 
-    posts = relationship('Post', backref='group', cascade='all, delete-orphan')
+    posts = relationship('Post', backref='social_group', cascade='all, delete-orphan')
 
 
 class Tag(Base):
@@ -89,19 +89,19 @@ class Tag(Base):
     post_id = Column(ForeignKey('posts.id'), nullable=False)
 
 
-class GroupMember(Base):
-    __tablename__ = 'group_members'
+class SocialGroupMember(Base):
+    __tablename__ = 'social_group_members'
     id = Column(BigInteger, primary_key=True)
     created_at = Column(DateTime, nullable=False, default=func.now())
     updated_at = Column(DateTime, onupdate=func.now())
     user_id = Column(ForeignKey('users.id'), nullable=False)
-    group_id = Column(ForeignKey('groups.id'), nullable=False)
+    social_group_id = Column(ForeignKey('social_groups.id'), nullable=False)
 
 
 users = User.__table__
 posts = Post.__table__
-groups = Group.__table__
+social_groups = SocialGroup.__table__
 votes = Vote.__table__
-group_members = GroupMember.__table__
+social_group_members = SocialGroupMember.__table__
 tags = Tag.__table__
 post_children = PostChild.__table__

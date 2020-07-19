@@ -7,7 +7,7 @@ from blueprints.posts.specs import NEW_POST_SCHEMA, POST_OUTPUT_SPEC
 from common import authentication
 from common.exceptions import InvalidUsage
 from common.messages import Errors
-from common.models import Post, GroupMember, Tag
+from common.models import Post, SocialGroupMember, Tag
 from common.parameters import get_request_json
 from common.validation import validate
 
@@ -27,9 +27,9 @@ def new_post(user_id):
     mysql_connector = current_app.config['mysql_connector']
     with mysql_connector.session() as db_session:
         group_member = (
-            db_session.query(GroupMember)
+            db_session.query(SocialGroupMember)
             .filter_by(user_id=user_id)
-            .filter_by(group_id=group_id)
+            .filter_by(social_group_id=group_id)
         ).one_or_none()
         if not group_member:
             raise InvalidUsage(Errors.USER_NOT_IN_GROUP)
