@@ -74,3 +74,4 @@ class Group(Base):
 users = User.__table__
 posts = Post.__table__
 groups = Group.__table__
+votes = Vote.__table__
