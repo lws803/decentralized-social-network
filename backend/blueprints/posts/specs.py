@@ -27,6 +27,13 @@ NEW_POST_SCHEMA = Schema({
 })
 
 
+PARTIAL_POST_SCHEMA = Schema({
+    'tags': NEW_TAGS_SCHEMA,
+    'metadata_json': POST_METADATA_SCHEMA,
+    'visibility': All(str, Coerce(VisibilityType)),
+})
+
+
 TAG_OUTPUT_SPEC = {
     'id': 'id',
     'name': 'name',
