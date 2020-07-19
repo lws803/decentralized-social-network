@@ -8,7 +8,7 @@ NEW_USER_SPEC = Schema({
     'metadata': dict
 })
 
-NEW_USER_OUTPUT_SPEC = {
+USER_OUTPUT_SPEC = {
     'id': 'uid',
     'metadata': 'metadata_json',
     'created_at': ('created_at', format_datetime),
