@@ -33,9 +33,9 @@ def is_admin_of_group(db_session, social_group_id, user_id=None):
     return True
 
 
-def ensure_name_does_not_exist(db_session, name):
+def ensure_name_does_not_exist(db_session, name, group_id):
     existing = db_session.query(SocialGroup).filter_by(name=name).one_or_none()
-    if existing:
+    if existing and existing.id != group_id:
         raise InvalidUsage(Errors.GROUP_EXISTS)
 
 
@@ -47,7 +47,7 @@ def new_group(user_id):
 
     mysql_connector = current_app.config['mysql_connector']
     with mysql_connector.session() as db_session:
-        ensure_name_does_not_exist(db_session, body['name'])
+        ensure_name_does_not_exist(db_session, body['name'], None)
 
         new_group = SocialGroup(**body)
         db_session.add(new_group)
@@ -104,7 +104,7 @@ def group_access(social_group_id):
             is_admin_of_group(db_session, existing_group.id)
 
             if 'name' in body:
-                ensure_name_does_not_exist(db_session, body['name'])
+                ensure_name_does_not_exist(db_session, body['name'], existing_group.id)
 
             for key, value in body.items():
                 setattr(existing_group, key, value)

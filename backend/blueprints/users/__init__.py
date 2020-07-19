@@ -21,9 +21,9 @@ from common.validation import validate
 users_blueprint = Blueprint('users_blueprint', __name__)
 
 
-def ensure_name_not_duplicate(db_session, name):
+def ensure_name_not_duplicate(db_session, name, user_id):
     existing_user = db_session.query(User).filter_by(name=name).one_or_none()
-    if existing_user:
+    if existing_user and existing_user.id != user_id:
         raise InvalidUsage(Errors.USER_NAME_EXISTS)
 
 
@@ -38,7 +38,7 @@ def new_user():
     with mysql_connector.session() as db_session:
         user = db_session.query(User).filter_by(uid=uid).one_or_none()
         if not user:
-            ensure_name_not_duplicate(db_session, body['name'])
+            ensure_name_not_duplicate(db_session, body['name'], None)
             user = User(
                 uid=uid,
                 **body
@@ -84,7 +84,7 @@ def user_access(user_id):
             if not user:
                 raise InvalidUsage(Errors.NO_USER_ID)
             if 'name' in body:
-                ensure_name_not_duplicate(db_session, body['name'])
+                ensure_name_not_duplicate(db_session, body['name'], user.id)
             for key, value in body.items():
                 setattr(user, key, value)
             db_session.commit()
