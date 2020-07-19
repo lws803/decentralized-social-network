@@ -75,7 +75,7 @@ def user_access(user_id):
             db_session.delete(user)
             db_session.commit()
 
-            return glom(user, USER_OUTPUT_SPEC), HTTPStatus.OK
+            return glom(user, USER_OUTPUT_SPEC), HTTPStatus.ACCEPTED
 
     elif request.method == 'PUT':
         body = validate(get_request_json(), 'partial_user_schema', PARTIAL_USER_SCHEMA)
@@ -88,7 +88,7 @@ def user_access(user_id):
             for key, value in body.items():
                 setattr(user, key, value)
             db_session.commit()
-            return glom(user, USER_OUTPUT_SPEC), HTTPStatus.OK
+            return glom(user, USER_OUTPUT_SPEC), HTTPStatus.ACCEPTED
 
 
 @users_blueprint.route('/api/v1/user/login', methods=['POST'])
