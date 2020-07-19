@@ -17,6 +17,7 @@ app.register_blueprint(posts_blueprint)
 app.register_blueprint(social_groups_blueprint)
 
 app.config['mysql_connector'] = MySQLConnector(os.environ.get('MYSQL_PROD'))
+app.config['api_key'] = os.environ.get('API_KEY')
 CORS(app)
 
 

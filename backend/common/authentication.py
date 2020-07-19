@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from functools import wraps
 
 import jwt
-from flask import request
+from flask import current_app, request
 
 from common.exceptions import Forbidden
 from common.messages import Errors
@@ -13,7 +13,10 @@ def require_appkey(view_function):
     @wraps(view_function)
     # the new, post-decoration function. Note *args and **kwargs here.
     def decorated_function(*args, **kwargs):
-        if request.headers.get('Key') and request.headers.get('Key') == os.environ.get('API_KEY'):
+        if all((
+            request.headers.get('Key'),
+            request.headers.get('Key') == current_app.config.get('api_key'))
+        ):
             return view_function(*args, **kwargs)
         else:
             raise Forbidden(Errors.INCORRECT_API_KEY)
