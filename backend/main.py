@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask
 from flask.json import jsonify
 from flask_cors import CORS
@@ -14,7 +16,7 @@ app.register_blueprint(users_blueprint)
 app.register_blueprint(posts_blueprint)
 app.register_blueprint(social_groups_blueprint)
 
-app.config['mysql_connector'] = MySQLConnector()
+app.config['mysql_connector'] = MySQLConnector(os.environ.get('MYSQL_PROD'))
 CORS(app)
 
 

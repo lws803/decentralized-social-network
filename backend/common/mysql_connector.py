@@ -9,15 +9,13 @@ from common.messages import Errors
 
 
 class MySQLConnector:
-    def __init__(self):
-        if not os.environ.get('MYSQL_PROD'):
+    def __init__(self, uri):
+        if not uri:
             raise Exception(Errors.MYSQL_SERVER_NOT_SET)
 
-        mysql_engine = create_engine(
-            os.environ.get('MYSQL_PROD')
-        )
+        self.engine = create_engine(uri)
         try:
-            self.Session = sessionmaker(bind=mysql_engine)
+            self.Session = sessionmaker(bind=self.engine)
         except Exception:
             logger.warning(str(Exception))
 

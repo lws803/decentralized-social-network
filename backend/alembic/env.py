@@ -32,6 +32,7 @@ target_metadata = Base.metadata
 # ... etc.
 
 config.set_main_option('sqlalchemy.url', os.environ.get('MYSQL_PROD'))
+config.set_section_option('test', 'sqlalchemy.url', os.environ.get('MYSQL_TEST'))
 
 
 def run_migrations_offline():
@@ -56,6 +57,18 @@ def run_migrations_offline():
 
     with context.begin_transaction():
         context.run_migrations()
+    # Test db
+    test_url = config.set_section_option('test', "sqlalchemy.url")
+    if test_url:
+        context.configure(
+            url=test_url,
+            target_metadata=target_metadata,
+            literal_binds=True,
+            dialect_opts={"paramstyle": "named"},
+        )
+
+        with context.begin_transaction():
+            context.run_migrations()
 
 
 def run_migrations_online():
@@ -78,6 +91,21 @@ def run_migrations_online():
 
         with context.begin_transaction():
             context.run_migrations()
+
+    connectable = engine_from_config(
+        config.get_section('test'),
+        prefix="sqlalchemy.",
+        poolclass=pool.NullPool,
+    )
+
+    with connectable.connect() as connection:
+        context.configure(
+            connection=connection, target_metadata=target_metadata
+        )
+
+        with context.begin_transaction():
+            context.run_migrations()
+
 
 
 if context.is_offline_mode():
