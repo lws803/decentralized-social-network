@@ -45,8 +45,10 @@ class Post(Base):
     group_id = Column(ForeignKey('groups.id'), nullable=False)
     owner_id = Column(ForeignKey('users.id'), nullable=False)
     visibility = Column(Enum(VisibilityType), nullable=False)
+    parent_post_id = Column(ForeignKey('posts.id'), nullable=True)
 
     votes = relationship('Vote', backref='post', cascade='all, delete-orphan')
+    children = relationship('Post', backref='post', cascade='all, delete-orphan')
 
 
 class Vote(Base):
