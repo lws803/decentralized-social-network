@@ -17,8 +17,11 @@ def populate_db(db_session, context):
         uid=context['uid'],
         name='test_name',
     )
+    UserFactory.create(
+        uid='another_uid',
+        name='test_name_2',
+    )
     db_session.commit()
-
     yield
     db_session.query(User).delete()
     db_session.commit()
@@ -157,3 +160,31 @@ class TestUserInvalid(object):
         )
         assert response.status_code == HTTPStatus.UNAUTHORIZED
         assert response.json['message'] == Errors.TOKEN_INVALID
+
+    def test_create_user_same_name(self, populate_db, db_session, client, context):
+        response = client.post(
+            '/api/v1/user/new',
+            headers={
+                'key': context['api_key'],
+                'user': 'new_uid'
+            },
+            json={
+                'name': 'test_name'
+            }
+        )
+        assert response.status_code == HTTPStatus.BAD_REQUEST
+        assert response.json['message'] == Errors.USER_NAME_EXISTS
+
+    def test_edit_user_same_name(self, populate_db, db_session, client, context):
+        response = client.put(
+            '/api/v1/user',
+            headers={
+                'key': context['api_key'],
+                'Authorization': encode_auth_token(context['user_id']).decode()
+            },
+            json={
+                'name': 'test_name_2'
+            }
+        )
+        assert response.status_code == HTTPStatus.BAD_REQUEST
+        assert response.json['message'] == Errors.USER_NAME_EXISTS
