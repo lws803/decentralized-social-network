@@ -16,8 +16,17 @@ from common.constants import SocialGroupRole
 social_groups_blueprint = Blueprint('social_groups_blueprint', __name__)
 
 
-def is_admin_of_group(user_id):
-    pass
+@authentication.require_login
+def is_admin_of_group(db_session, social_group_id, user_id=None):
+    existing_membership = (
+        db_session.query(SocialGroupMember)
+        .filter_by(social_group_id=social_group_id)
+        .filter_by(user_id=user_id)
+        .filter_by(role=SocialGroupRole.ADMIN.name)
+    ).one_or_none()
+    if not existing_membership:
+        raise InvalidUsage(Errors.INSUFFICIENT_PRIVILEGES)
+    return True
 
 
 @social_groups_blueprint.route('/api/v1/social_group/new', methods=['POST'])
@@ -46,10 +55,31 @@ def new_group(user_id):
         return glom(new_group, GROUP_OUTPUT_SPEC)
 
 
-@social_groups_blueprint.route('/api/v1/social_group/<group_id>', methods=['GET', 'DELETE'])
+@social_groups_blueprint.route('/api/v1/social_group/<social_group_id>', methods=['GET', 'DELETE'])
 @authentication.require_appkey
-def group_access(group_id):
-    pass
+def group_access(social_group_id):
+    mysql_connector = current_app.config['mysql_connector']
+    with mysql_connector.session() as db_session:
+        if request.method == 'DELETE':
+            existing_group = (
+                db_session.query(SocialGroup)
+                .filter_by(id=social_group_id)
+            ).one_or_none()
+            if not existing_group:
+                return '', HTTPStatus.NOT_FOUND
+            is_admin_of_group(db_session, existing_group.id)
+            db_session.query(SocialGroup).filter_by(id=social_group_id).delete()
+            db_session.commit()
+            return '', HTTPStatus.ACCEPTED
+        else:
+            existing_group = (
+                db_session.query(SocialGroup)
+                .filter_by(id=social_group_id)
+            ).one_or_none()
+            if existing_group:
+                return glom(existing_group, GROUP_OUTPUT_SPEC), HTTPStatus.OK
+            else:
+                return '', HTTPStatus.NOT_FOUND
 
 
 @social_groups_blueprint.route('/api/v1/social_group/members', methods=['POST'])
