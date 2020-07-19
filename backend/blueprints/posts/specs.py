@@ -50,6 +50,7 @@ POST_OUTPUT_SPEC = {
     'updated_at': ('updated_at', format_datetime),
     'social_group_id': 'social_group_id',
     'depth': 'depth',
+    'visibility': ('visibility', lambda visibility: visibility.name)
 }
 
 

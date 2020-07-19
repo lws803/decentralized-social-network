@@ -16,3 +16,21 @@ class UserFactory(BaseFactory):
     """User model factory."""
     class Meta:
         model = models.User
+
+
+class PostFactory(BaseFactory):
+    """Post model factory."""
+    class Meta:
+        model = models.Post
+
+
+class SocialGroupFactory(BaseFactory):
+    """SocialGroup model factory."""
+    class Meta:
+        model = models.SocialGroup
+
+
+class SocialGroupMemberFactory(BaseFactory):
+    """SocialGroupMember model factory."""
+    class Meta:
+        model = models.SocialGroupMember
