@@ -19,23 +19,23 @@ users_blueprint = Blueprint('users_blueprint', __name__)
 @users_blueprint.route('/api/v1/user/new', methods=['POST'])
 @authentication.require_appkey
 def new_user():
-    user_id = request.headers.get('User')
-    if not user_id:
+    uid = request.headers.get('User')
+    if not uid:
         raise InvalidUsage(Errors.NO_USER_ID)
     mysql_connector = current_app.config['mysql_connector']
     body = validate(get_request_json(optional=True), 'new_user_schema', NEW_USER_SPEC)
     with mysql_connector.session() as db_session:
-        user = db_session.query(User).filter_by(uid=user_id).one_or_none()
+        user = db_session.query(User).filter_by(uid=uid).one_or_none()
         if not user:
             user = User(
-                uid=user_id,
-                metadata_json=body.get('metadata')
+                uid=uid,
+                **body
             )
             db_session.add(user)
             db_session.commit()
         else:
             raise InvalidUsage(Errors.USER_EXISTS)
-        auth_token = encode_auth_token(user_id)
+        auth_token = encode_auth_token(user.id)
         return glom(
             user, LOGIN_OUTPUT_SPEC, scope={'token': auth_token.decode()}
         ), HTTPStatus.ACCEPTED
@@ -49,7 +49,7 @@ def user_access(user_id):
 
     if request.method == 'GET':
         with mysql_connector.session() as db_session:
-            user = db_session.query(User).filter_by(uid=user_id).one_or_none()
+            user = db_session.query(User).filter_by(id=user_id).one_or_none()
             if not user:
                 raise InvalidUsage(Errors.NO_USER_ID)
 
@@ -57,7 +57,7 @@ def user_access(user_id):
 
     elif request.method == 'DELETE':
         with mysql_connector.session() as db_session:
-            user = db_session.query(User).filter_by(uid=user_id).one_or_none()
+            user = db_session.query(User).filter_by(id=user_id).one_or_none()
             if not user:
                 raise InvalidUsage(Errors.NO_USER_ID)
             else:
@@ -70,15 +70,15 @@ def user_access(user_id):
 @users_blueprint.route('/api/v1/user/login', methods=['POST'])
 @authentication.require_appkey
 def user_login():
-    user_id = request.headers.get('User')
-    if not user_id:
+    uid = request.headers.get('User')
+    if not uid:
         raise InvalidUsage(Errors.NO_USER_ID)
     mysql_connector = current_app.config['mysql_connector']
     with mysql_connector.session() as db_session:
-        user = db_session.query(User).filter_by(uid=user_id).one_or_none()
+        user = db_session.query(User).filter_by(uid=uid).one_or_none()
         if not user:
             raise InvalidUsage(Errors.NO_USER_ID)
-        auth_token = encode_auth_token(user_id)
+        auth_token = encode_auth_token(user.id)
         return glom(
             user, LOGIN_OUTPUT_SPEC, scope={'token': auth_token.decode()}
         ), HTTPStatus.OK

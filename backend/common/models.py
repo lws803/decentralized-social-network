@@ -40,18 +40,23 @@ class Post(Base):
     __tablename__ = 'posts'
     id = Column(BigInteger, primary_key=True)
     metadata_json = Column(JSON, nullable=True)
-    tags = Column(JSON, nullable=True)
     created_at = Column(DateTime, nullable=False, default=func.now())
     updated_at = Column(DateTime, onupdate=func.now())
     group_id = Column(ForeignKey('groups.id'), nullable=False)
     owner_id = Column(ForeignKey('users.id'), nullable=False)
     visibility = Column(Enum(VisibilityType), nullable=False)
-    parent_post_id = Column(ForeignKey('posts.id'), nullable=True)
     # FIXME: May raise a circular reference. Add constraints to ensure
     depth = Column(Integer, nullable=False, default=0)
 
     votes = relationship('Vote', backref='post', cascade='all, delete-orphan')
-    children = relationship('Post', backref='post', cascade='all, delete-orphan')
+    tags = relationship('Tag', backref='post', cascade='all, delete-orphan')
+
+
+class PostChild(Base):
+    __tablename__ = 'post_children'
+    id = Column(BigInteger, primary_key=True)
+    parent_post_id = Column(ForeignKey('posts.id'), nullable=False)
+    child_post_id = Column(ForeignKey('posts.id'), nullable=False)
 
 
 class Vote(Base):
@@ -76,7 +81,27 @@ class Group(Base):
     posts = relationship('Post', backref='group', cascade='all, delete-orphan')
 
 
+class Tag(Base):
+    __tablename__ = 'tags'
+    id = Column(BigInteger, primary_key=True)
+    created_at = Column(DateTime, nullable=False, default=func.now())
+    updated_at = Column(DateTime, onupdate=func.now())
+    post_id = Column(ForeignKey('posts.id'), nullable=False)
+
+
+class GroupMember(Base):
+    __tablename__ = 'group_members'
+    id = Column(BigInteger, primary_key=True)
+    created_at = Column(DateTime, nullable=False, default=func.now())
+    updated_at = Column(DateTime, onupdate=func.now())
+    user_id = Column(ForeignKey('users.id'), nullable=False)
+    group_id = Column(ForeignKey('groups.id'), nullable=False)
+
+
 users = User.__table__
 posts = Post.__table__
 groups = Group.__table__
 votes = Vote.__table__
+group_members = GroupMember.__table__
+tags = Tag.__table__
+post_children = PostChild.__table__
