@@ -4,25 +4,27 @@ import pytest
 from pytest_voluptuous import S as Schema
 from voluptuous import Any
 
-from common.authentication import encode_auth_token, decode_auth_token
+from common.authentication import decode_auth_token, encode_auth_token
+from common.messages import Errors
 from common.models import User
 from common.testing.factories import UserFactory
 
 
+@pytest.fixture
+def populate_db(db_session, context):
+    UserFactory.create(
+        id=context['user_id'],
+        uid=context['uid'],
+        name='test_name',
+    )
+    db_session.commit()
+
+    yield
+    db_session.query(User).delete()
+    db_session.commit()
+
+
 class TestUser(object):
-
-    @pytest.fixture
-    def populate_db(self, db_session, context):
-        UserFactory.create(
-            id=context['user_id'],
-            uid=context['uid'],
-            name='test_name',
-        )
-        db_session.commit()
-
-        yield
-        db_session.query(User).delete()
-        db_session.commit()
 
     def test_get_user(self, populate_db, db_session, client, context):
         response = client.get(
@@ -120,3 +122,38 @@ class TestUser(object):
             },
         )
         assert response.status_code == HTTPStatus.ACCEPTED
+        assert db_session.query(User).filter_by(id=context['user_id']).one_or_none() is None
+
+
+class TestUserInvalid(object):
+    def test_login_user_invalid(self, populate_db, db_session, client, context):
+        response = client.post(
+            '/api/v1/user/login',
+            headers={
+                'key': context['api_key'],
+                'user': 'unknown_user'
+            }
+        )
+        assert response.status_code == HTTPStatus.BAD_REQUEST
+
+    def test_bad_api_key(self, populate_db, db_session, client, context):
+        response = client.post(
+            '/api/v1/user/login',
+            headers={
+                'key': 'unknown_key',
+                'user': context['uid']
+            }
+        )
+        assert response.status_code == HTTPStatus.UNAUTHORIZED
+        assert response.json['message'] == Errors.INCORRECT_API_KEY
+
+    def test_bad_auth(self, populate_db, db_session, client, context):
+        response = client.get(
+            '/api/v1/user',
+            headers={
+                'key': context['api_key'],
+                'Authorization': 'bad_key'
+            }
+        )
+        assert response.status_code == HTTPStatus.UNAUTHORIZED
+        assert response.json['message'] == Errors.TOKEN_INVALID
