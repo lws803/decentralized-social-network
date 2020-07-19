@@ -10,7 +10,7 @@ POST_METADATA_SCHEMA = Schema({
 
 
 NEW_POST_SCHEMA = Schema({
-    Required('group_id'): int,
+    Required('social_group_id'): int,
     'tags': list,
     Required('metadata_json'): POST_METADATA_SCHEMA,
     Required('visibility'): All(str, Coerce(VisibilityType)),
@@ -24,6 +24,6 @@ POST_OUTPUT_SPEC = {
     'tags': 'tags',
     'created_at': ('created_at', format_datetime),
     'updated_at': ('updated_at', format_datetime),
-    'group_id': 'social_group_id',
+    'social_group_id': 'social_group_id',
     'depth': 'depth',
 }

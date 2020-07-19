@@ -21,7 +21,7 @@ posts_blueprint = Blueprint('posts_blueprint', __name__)
 def new_post(user_id):
     body = validate(get_request_json(), 'new_post_schema', NEW_POST_SCHEMA)
 
-    group_id = body.get('group_id')
+    social_group_id = body.get('social_group_id')
     tags = body.pop('tags') if 'tags' in body else []
 
     mysql_connector = current_app.config['mysql_connector']
@@ -29,7 +29,7 @@ def new_post(user_id):
         group_member = (
             db_session.query(SocialGroupMember)
             .filter_by(user_id=user_id)
-            .filter_by(social_group_id=group_id)
+            .filter_by(social_group_id=social_group_id)
         ).one_or_none()
         if not group_member:
             raise InvalidUsage(Errors.USER_NOT_IN_GROUP)

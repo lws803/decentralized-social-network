@@ -12,7 +12,7 @@ from sqlalchemy.dialects.mysql import JSON
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
-from common.constants import VisibilityType, VoteType
+from common.constants import VisibilityType, VoteType, SocialGroupRole
 
 
 class MyBase(object):
@@ -33,14 +33,13 @@ class User(Base):
     updated_at = Column(DateTime, onupdate=func.now())
 
     posts = relationship('Post', backref='user', cascade='all, delete-orphan')
-    owned_social_groups = relationship('SocialGroup', backref='user', cascade='all, delete-orphan')
 
 
 class Post(Base):
     __tablename__ = 'posts'
     id = Column(BigInteger, primary_key=True)
     metadata_json = Column(JSON, nullable=True)
-    created_at = Column(DateTime, nullable=False, default=func.now())
+    created_at = Column(DateTime, nullable=False, server_default=func.now())
     updated_at = Column(DateTime, onupdate=func.now())
     social_group_id = Column(ForeignKey('social_groups.id'), nullable=False)
     owner_id = Column(ForeignKey('users.id'), nullable=False)
@@ -63,7 +62,7 @@ class Vote(Base):
     __tablename__ = 'votes'
     id = Column(BigInteger, primary_key=True)
     vote_type = Column(Enum(VoteType), nullable=False)
-    created_at = Column(DateTime, nullable=False, default=func.now())
+    created_at = Column(DateTime, nullable=False, server_default=func.now())
     updated_at = Column(DateTime, onupdate=func.now())
     owner_id = Column(ForeignKey('users.id'), nullable=False)
     post_id = Column(ForeignKey('posts.id'), nullable=False)
@@ -73,18 +72,19 @@ class SocialGroup(Base):
     __tablename__ = 'social_groups'
     id = Column(BigInteger, primary_key=True)
     metadata_json = Column(JSON, nullable=True)
-    created_at = Column(DateTime, nullable=False, default=func.now())
+    created_at = Column(DateTime, nullable=False, server_default=func.now())
     updated_at = Column(DateTime, onupdate=func.now())
-    owner_id = Column(ForeignKey('users.id'), nullable=False)
-    admins = Column(JSON, nullable=True)  # TODO: Move this to a separate table as well
 
     posts = relationship('Post', backref='social_group', cascade='all, delete-orphan')
+    members = relationship(
+        'SocialGroupMember', backref='social_group', cascade='all, delete-orphan'
+    )
 
 
 class Tag(Base):
     __tablename__ = 'tags'
     id = Column(BigInteger, primary_key=True)
-    created_at = Column(DateTime, nullable=False, default=func.now())
+    created_at = Column(DateTime, nullable=False, server_default=func.now())
     updated_at = Column(DateTime, onupdate=func.now())
     post_id = Column(ForeignKey('posts.id'), nullable=False)
 
@@ -92,10 +92,11 @@ class Tag(Base):
 class SocialGroupMember(Base):
     __tablename__ = 'social_group_members'
     id = Column(BigInteger, primary_key=True)
-    created_at = Column(DateTime, nullable=False, default=func.now())
+    created_at = Column(DateTime, nullable=False, server_default=func.now())
     updated_at = Column(DateTime, onupdate=func.now())
     user_id = Column(ForeignKey('users.id'), nullable=False)
     social_group_id = Column(ForeignKey('social_groups.id'), nullable=False)
+    role = Column(Enum(SocialGroupRole), nullable=False)
 
 
 users = User.__table__

@@ -9,3 +9,8 @@ class VisibilityType(Enum):
 class VoteType(Enum):
     DOWN = 'down'
     UP = 'up'
+
+
+class SocialGroupRole(Enum):
+    ADMIN = 'admin'
+    MEMBER = 'member'

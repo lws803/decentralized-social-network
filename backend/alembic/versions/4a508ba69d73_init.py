@@ -1,8 +1,8 @@
 """init
 
-Revision ID: acb0b31e887c
+Revision ID: 4a508ba69d73
 Revises: 
-Create Date: 2020-07-19 19:37:10.599033
+Create Date: 2020-07-19 19:57:26.884807
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import mysql
 
 # revision identifiers, used by Alembic.
-revision = 'acb0b31e887c'
+revision = '4a508ba69d73'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -29,7 +29,7 @@ def upgrade():
     op.create_table('social_groups',
     sa.Column('id', sa.BigInteger(), nullable=False),
     sa.Column('metadata_json', mysql.JSON(), nullable=True),
-    sa.Column('created_at', sa.DateTime(), nullable=False),
+    sa.Column('created_at', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
     sa.Column('updated_at', sa.DateTime(), nullable=True),
     sa.Column('owner_id', sa.BigInteger(), nullable=False),
     sa.Column('admins', mysql.JSON(), nullable=True),
@@ -39,7 +39,7 @@ def upgrade():
     op.create_table('posts',
     sa.Column('id', sa.BigInteger(), nullable=False),
     sa.Column('metadata_json', mysql.JSON(), nullable=True),
-    sa.Column('created_at', sa.DateTime(), nullable=False),
+    sa.Column('created_at', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
     sa.Column('updated_at', sa.DateTime(), nullable=True),
     sa.Column('social_group_id', sa.BigInteger(), nullable=False),
     sa.Column('owner_id', sa.BigInteger(), nullable=False),
@@ -51,7 +51,7 @@ def upgrade():
     )
     op.create_table('social_group_members',
     sa.Column('id', sa.BigInteger(), nullable=False),
-    sa.Column('created_at', sa.DateTime(), nullable=False),
+    sa.Column('created_at', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
     sa.Column('updated_at', sa.DateTime(), nullable=True),
     sa.Column('user_id', sa.BigInteger(), nullable=False),
     sa.Column('social_group_id', sa.BigInteger(), nullable=False),
@@ -69,7 +69,7 @@ def upgrade():
     )
     op.create_table('tags',
     sa.Column('id', sa.BigInteger(), nullable=False),
-    sa.Column('created_at', sa.DateTime(), nullable=False),
+    sa.Column('created_at', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
     sa.Column('updated_at', sa.DateTime(), nullable=True),
     sa.Column('post_id', sa.BigInteger(), nullable=False),
     sa.ForeignKeyConstraint(['post_id'], ['posts.id'], ),
@@ -78,7 +78,7 @@ def upgrade():
     op.create_table('votes',
     sa.Column('id', sa.BigInteger(), nullable=False),
     sa.Column('vote_type', sa.Enum('DOWN', 'UP', name='votetype'), nullable=False),
-    sa.Column('created_at', sa.DateTime(), nullable=False),
+    sa.Column('created_at', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
     sa.Column('updated_at', sa.DateTime(), nullable=True),
     sa.Column('owner_id', sa.BigInteger(), nullable=False),
     sa.Column('post_id', sa.BigInteger(), nullable=False),
