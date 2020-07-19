@@ -4,15 +4,15 @@ from sqlalchemy import (
     DateTime,
     Enum,
     ForeignKey,
+    Integer,
     String,
     func,
-    Integer,
 )
 from sqlalchemy.dialects.mysql import JSON
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
-from common.constants import VisibilityType, VoteType, SocialGroupRole
+from common.constants import SocialGroupRole, VisibilityType, VoteType
 
 
 class MyBase(object):
