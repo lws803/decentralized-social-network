@@ -44,7 +44,6 @@ class Post(Base):
     social_group_id = Column(ForeignKey('social_groups.id'), nullable=False)
     owner_id = Column(ForeignKey('users.id'), nullable=False)
     visibility = Column(Enum(VisibilityType), nullable=False)
-    # FIXME: May raise a circular reference. Add constraints to ensure
     depth = Column(Integer, nullable=False, default=0)
 
     votes = relationship('Vote', backref='post', cascade='all, delete-orphan')
