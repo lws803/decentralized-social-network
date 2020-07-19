@@ -9,6 +9,13 @@ NEW_USER_SPEC = Schema({
     Required('name'): All(str, Length(max=100))
 })
 
+
+PARTIAL_USER_SCHEMA = Schema({
+    'metadata_json': dict,
+    'name': All(str, Length(max=100))
+})
+
+
 USER_OUTPUT_SPEC = {
     'id': 'id',
     'name': 'name',
