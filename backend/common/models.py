@@ -6,6 +6,7 @@ from sqlalchemy import (
     ForeignKey,
     String,
     func,
+    Integer,
 )
 from sqlalchemy.dialects.mysql import JSON
 from sqlalchemy.ext.declarative import declarative_base
@@ -46,6 +47,8 @@ class Post(Base):
     owner_id = Column(ForeignKey('users.id'), nullable=False)
     visibility = Column(Enum(VisibilityType), nullable=False)
     parent_post_id = Column(ForeignKey('posts.id'), nullable=True)
+    # FIXME: May raise a circular reference. Add constraints to ensure
+    depth = Column(Integer, nullable=False, default=0)
 
     votes = relationship('Vote', backref='post', cascade='all, delete-orphan')
     children = relationship('Post', backref='post', cascade='all, delete-orphan')

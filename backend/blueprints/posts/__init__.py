@@ -17,7 +17,7 @@ posts_blueprint = Blueprint('posts_blueprint', __name__)
 @posts_blueprint.route('/api/v1/post/new', methods=['POST'])
 @authentication.require_appkey
 @authentication.require_login
-def new_post():
+def new_post(user_id):
     return
 
 
