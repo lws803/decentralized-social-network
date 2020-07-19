@@ -1,6 +1,6 @@
 from http import HTTPStatus
 
-from flask import Blueprint, current_app, request
+from flask import Blueprint, current_app
 from glom import glom
 
 from blueprints.posts.specs import NEW_POST_SCHEMA, POST_OUTPUT_SPEC, POSTS_OUTPUT_SPEC
