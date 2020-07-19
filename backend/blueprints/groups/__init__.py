@@ -3,7 +3,7 @@ from http import HTTPStatus
 from flask import Blueprint, current_app, request
 from glom import glom
 
-from blueprints.groups.specs import NEW_GROUP_SCHEMA
+from blueprints.groups.specs import NEW_GROUP_SCHEMA, GROUP_OUTPUT_SPEC
 from common import authentication
 from common.exceptions import InvalidUsage
 from common.messages import Errors
@@ -28,7 +28,22 @@ def new_group(user_id):
 
     mysql_connector = current_app.config['mysql_connector']
     with mysql_connector.session() as db_session:
-        pass
+        existing_group = db_session.query(SocialGroup).filter_by(name=body['name']).one_or_none()
+        if existing_group:
+            raise InvalidUsage(Errors.GROUP_EXISTS)
+
+        new_group = SocialGroup(**body)
+        db_session.add(new_group)
+        db_session.commit()
+
+        db_session.add(SocialGroupMember(
+            user_id=user_id,
+            social_group_id=new_group.id,
+            role=SocialGroupRole.ADMIN
+        ))
+        db_session.commit()
+
+        return glom(new_group, GROUP_OUTPUT_SPEC)
 
 
 @social_groups_blueprint.route('/api/v1/social_group/<group_id>', methods=['GET', 'DELETE'])

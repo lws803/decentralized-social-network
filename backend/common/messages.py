@@ -16,3 +16,5 @@ class Errors:
     )
 
     INSUFFICIENT_PRIVILEGES = 'User has insufficient privileges to perform this action.'
+
+    GROUP_EXISTS = 'Group name already exists, please choose a different name.'

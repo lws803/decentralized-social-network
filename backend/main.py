@@ -2,6 +2,7 @@ from flask import Flask
 from flask.json import jsonify
 from flask_cors import CORS
 
+from blueprints.groups import social_groups_blueprint
 from blueprints.posts import posts_blueprint
 from blueprints.users import users_blueprint
 from common.exceptions import Forbidden, InvalidUsage
@@ -11,6 +12,7 @@ from common.mysql_connector import MySQLConnector
 app = Flask(__name__)
 app.register_blueprint(users_blueprint)
 app.register_blueprint(posts_blueprint)
+app.register_blueprint(social_groups_blueprint)
 
 app.config['mysql_connector'] = MySQLConnector()
 CORS(app)
