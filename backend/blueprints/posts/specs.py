@@ -1,3 +1,4 @@
+from glom import S as Scope
 from voluptuous import ALLOW_EXTRA, All, Any, Coerce, Required, Schema
 
 from common.constants import VisibilityType
@@ -26,4 +27,10 @@ POST_OUTPUT_SPEC = {
     'updated_at': ('updated_at', format_datetime),
     'social_group_id': 'social_group_id',
     'depth': 'depth',
+}
+
+
+POSTS_OUTPUT_SPEC = {
+    'posts': [POST_OUTPUT_SPEC],
+    'total_count': Scope['total_count']
 }

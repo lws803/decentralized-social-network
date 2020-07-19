@@ -3,7 +3,7 @@ from http import HTTPStatus
 from flask import Blueprint, current_app, request
 from glom import glom
 
-from blueprints.posts.specs import NEW_POST_SCHEMA, POST_OUTPUT_SPEC
+from blueprints.posts.specs import NEW_POST_SCHEMA, POST_OUTPUT_SPEC, POSTS_OUTPUT_SPEC
 from common import authentication
 from common.exceptions import InvalidUsage
 from common.messages import Errors
@@ -48,13 +48,21 @@ def new_post(user_id):
 
 @posts_blueprint.route('/api/v1/post/<post_id>', methods=['GET', 'DELETE'])
 @authentication.require_appkey
-@authentication.require_login
 def post_access(post_id):
-    return
+    mysql_connector = current_app.config['mysql_connector']
+    with mysql_connector.session() as db_session:
+        post = db_session.query(Post).filter_by(id=post_id).one_or_none()
+        if post:
+            return glom(post, POST_OUTPUT_SPEC)
+        else:
+            return '', HTTPStatus.NOT_FOUND
 
 
 @posts_blueprint.route('/api/v1/posts', methods=['GET'])
 @authentication.require_appkey
-@authentication.require_login
 def list_posts():
-    return
+    # TODO: Should be paginated
+    mysql_connector = current_app.config['mysql_connector']
+    with mysql_connector.session() as db_session:
+        posts = db_session.query(Post).all()
+        return glom(posts, POSTS_OUTPUT_SPEC, scope={'total_count': len(posts)})
