@@ -55,7 +55,7 @@ def new_post(user_id):
         db_session.add(new_post)
         db_session.commit()
 
-        for tag in tags:
+        for tag in set(tags):
             db_session.add(Tag(
                 post_id=new_post.id,
                 name=tag

@@ -1,21 +1,27 @@
 from glom import S as Scope, glom
-from voluptuous import ALLOW_EXTRA, All, Any, Coerce, Required, Schema
+from voluptuous import ALLOW_EXTRA, All, Any, Coerce, Required, Schema, Length
 
 from common.constants import VisibilityType
 from common.validation import format_datetime
 
 
 POST_METADATA_SCHEMA = Schema({
-    Required('data'): Any(str, bytes)  # TODO: Add a max length
+    Required('data'): All(
+        Any(str, bytes), Length(max=2000)
+    )
 }, extra=ALLOW_EXTRA)
 
 
-NEW_TAGS_SCHEMA = Schema([str])
+NEW_TAGS_SCHEMA = Schema(
+    All([
+        All(str, Length(max=10))
+    ], Length(max=10))
+)
 
 
 NEW_POST_SCHEMA = Schema({
     Required('social_group_id'): int,
-    'tags': NEW_TAGS_SCHEMA,  # TODO: Add max number of tags possible too
+    'tags': NEW_TAGS_SCHEMA,
     Required('metadata_json'): POST_METADATA_SCHEMA,
     Required('visibility'): All(str, Coerce(VisibilityType)),
 })
