@@ -11,3 +11,4 @@ Werkzeug
 pycryptodome
 rsa
 glom
+pyjwt
