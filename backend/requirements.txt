@@ -8,3 +8,5 @@ pytest-voluptuous
 voluptuous
 boto3
 Werkzeug
+pycryptodome
+rsa
