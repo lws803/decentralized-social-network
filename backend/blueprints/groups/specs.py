@@ -16,5 +16,6 @@ NEW_GROUP_SCHEMA = Schema({
 
 GROUP_OUTPUT_SPEC = {
     'id': 'id',
+    'name': 'name',
     'metadata_json': 'metadata_json',
 }
