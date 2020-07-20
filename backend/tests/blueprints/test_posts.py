@@ -66,7 +66,7 @@ class TestPost(object):
             },
         ]
     )
-    def test_new_post(self, db_session, context, init_group_and_membership, client, body):
+    def test_new_post(self, context, init_group_and_membership, client, body):
         new_group = init_group_and_membership
         response = client.post(
             '/api/v1/post/new',
@@ -79,7 +79,7 @@ class TestPost(object):
                 **body
             }
         )
-        assert response.status_code == HTTPStatus.OK
+        assert response.status_code == HTTPStatus.ACCEPTED
         assert response.json == Schema({
             'created_at': str,
             'depth': 0,
@@ -139,3 +139,91 @@ class TestPost(object):
                 'total_count': len(posts)
             }
         )
+
+    def test_get_post(self, context, create_existing_post, client):
+        post = create_existing_post
+        response = client.get(
+            f'/api/v1/post/{post.id}',
+            headers={
+                'key': context['api_key'],
+                'Authorization': encode_auth_token(context['user_id']).decode()
+            },
+        )
+        assert response.status_code == HTTPStatus.OK
+        assert response.json == Schema({
+            'created_at': str,
+            'updated_at': None,
+            'depth': 0,
+            'id': int,
+            'metadata_json': post.metadata_json,
+            'social_group_id': post.social_group_id,
+            'tags': Unordered([
+                {
+                    'created_at': str,
+                    'updated_at': None,
+                    'name': tag.name,
+                    'id': int
+                }
+                for tag in post.tags
+            ]),
+            'user_id': context['user_id'],
+            'visibility': post.visibility.name
+        })
+
+    def test_delete_post(self, db_session, context, create_existing_post, client):
+        post = create_existing_post
+        response = client.delete(
+            f'/api/v1/post/{post.id}',
+            headers={
+                'key': context['api_key'],
+                'Authorization': encode_auth_token(context['user_id']).decode()
+            },
+        )
+        assert response.status_code == HTTPStatus.ACCEPTED
+        assert not db_session.query(Post).filter_by(id=post.id).one_or_none()
+
+    @pytest.mark.parametrize(
+        'body',
+        [
+            {'visibility': 'private'},
+            {'metadata_json': {'data': 'test_data'}},
+            {
+                'visibility': 'private',
+                'metadata_json': {'data': 'test_data'},
+                'tags': ['awesome', 'beans'],
+            },
+        ]
+    )
+    def test_edit_post(self, context, create_existing_post, client, body):
+        post = create_existing_post
+        response = client.put(
+            f'/api/v1/post/{post.id}',
+            headers={
+                'key': context['api_key'],
+                'Authorization': encode_auth_token(context['user_id']).decode()
+            },
+            json=body
+        )
+        assert response.status_code == HTTPStatus.ACCEPTED
+        assert response.json == Schema({
+            'created_at': str,
+            'updated_at': str,
+            'depth': 0,
+            'id': int,
+            'metadata_json': body.get('metadata_json') or post.metadata_json,
+            'social_group_id': post.social_group_id,
+            'tags': Unordered([
+                {
+                    'created_at': str,
+                    'updated_at': None,
+                    'name': tag.name if not isinstance(tag, str) else tag,
+                    'id': int
+                }
+                for tag in body.get('tags') or post.tags
+            ]),
+            'user_id': context['user_id'],
+            'visibility': (
+                VisibilityType(body.get('visibility')).name
+                if body.get('visibility') else post.visibility.name
+            )
+        })

@@ -66,7 +66,7 @@ def new_post(user_id):
                 name=tag
             ))
         db_session.commit()
-        return glom(new_post, POST_OUTPUT_SPEC)
+        return glom(new_post, POST_OUTPUT_SPEC), HTTPStatus.ACCEPTED
 
 
 @posts_blueprint.route('/api/v1/post/<post_id>', methods=['GET', 'DELETE', 'PUT'])
@@ -106,7 +106,7 @@ def post_access(post_id):
                 db_session.query(Tag).filter_by(post_id=post.id).delete()
                 for tag in set(tags):
                     db_session.add(Tag(
-                        post_id=new_post.id,
+                        post_id=post.id,
                         name=tag
                     ))
             db_session.commit()
