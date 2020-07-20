@@ -1,4 +1,6 @@
-from voluptuous import All, Length, Required, Schema, Coerce
+from glom import S as Scope
+from voluptuous import All, Coerce, Length, Required, Schema
+
 from common.constants import SocialGroupRole
 
 
@@ -38,4 +40,10 @@ MEMBER_OUTPUT_SPEC = {
     'role': ('role', lambda role: role.name),
     'user_id': 'user_id',
     'social_group_id': 'social_group_id',
+}
+
+
+MEMBERS_OUTPUT_SPEC = {
+    'members': [MEMBER_OUTPUT_SPEC],
+    'total_count': Scope['total_count']
 }

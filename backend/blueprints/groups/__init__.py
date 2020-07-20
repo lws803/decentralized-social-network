@@ -6,6 +6,7 @@ from glom import glom
 from blueprints.groups.specs import (
     GROUP_OUTPUT_SPEC,
     MEMBER_OUTPUT_SPEC,
+    MEMBERS_OUTPUT_SPEC,
     NEW_GROUP_SCHEMA,
     NEW_MEMBER_SCHEMA,
     PARTIAL_GROUP_SCHEMA,
@@ -211,14 +212,21 @@ def member_access(user_id, member_user_id):
 
             return glom(existing_membership, MEMBER_OUTPUT_SPEC), HTTPStatus.ACCEPTED
 
+
 @social_groups_blueprint.route('/api/v1/social_group/members', methods=['GET'])
 @authentication.require_appkey
 @authentication.require_login
 def list_members(user_id):
-    body = validate(get_request_json(), 'new_member_schema', NEW_MEMBER_SCHEMA)
+    body = validate(get_request_json(), 'new_member_schema', PARTIAL_MEMBER_SCHEMA)
     mysql_connector = current_app.config['mysql_connector']
     with mysql_connector.session() as db_session:
         social_group_id = body['social_group_id']
 
+        all_members = (
+            db_session.query(SocialGroupMember)
+            .filter_by(social_group_id=social_group_id)
+        ).all()
 
-        return glom(None, MEMBER_OUTPUT_SPEC), HTTPStatus.ACCEPTED
+        return glom(
+            all_members, MEMBERS_OUTPUT_SPEC, scope={'total_count': len(all_members)}
+        ), HTTPStatus.OK

@@ -1,12 +1,12 @@
 from http import HTTPStatus
 
 import pytest
-from pytest_voluptuous import S as Schema
+from pytest_voluptuous import S as Schema, Unordered
 
 from common.authentication import encode_auth_token
 from common.constants import SocialGroupRole
 from common.messages import Errors
-from common.models import SocialGroup
+from common.models import SocialGroup, SocialGroupMember
 from common.testing.factories import (
     SocialGroupFactory,
     SocialGroupMemberFactory,
@@ -16,7 +16,8 @@ from common.testing.factories import (
 @pytest.fixture
 def db_cleanup(db_session):
     yield
-    db_session.query(SocialGroup).delete()
+    for model in (SocialGroup, SocialGroupMember):
+        db_session.query(model).delete()
     db_session.commit()
 
 
@@ -329,6 +330,41 @@ class TestGroupMembership(object):
             'role': SocialGroupRole.ADMIN.name,
             'social_group_id': existing_group.id,
         })
+
+    def test_list_members(
+        self, db_cleanup, client, context, existing_group, existing_membership, db_session
+    ):
+        response = client.get(
+            '/api/v1/social_group/members',
+            headers={
+                'key': context['api_key'],
+                'Authorization': encode_auth_token(context['user_id']).decode()
+            },
+            json={
+                'social_group_id': existing_group.id,
+            }
+        )
+        existing_members = (
+            db_session.query(SocialGroupMember)
+            .filter_by(social_group_id=existing_group.id)
+        ).all()
+
+        assert response.status_code == HTTPStatus.OK
+        assert response.json == Schema(
+            {
+                'members': Unordered(
+                    [
+                        {
+                            'user_id': existing_member.user_id,
+                            'role': existing_member.role.name,
+                            'social_group_id': existing_group.id,
+                        }
+                        for existing_member in existing_members
+                    ]
+                ),
+                'total_count': len(existing_members)
+            }
+        )
 
 
 class TestGroupMembershipInvalid(object):
