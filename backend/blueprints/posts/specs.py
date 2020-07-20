@@ -1,7 +1,8 @@
 from glom import S as Scope, glom
-from voluptuous import ALLOW_EXTRA, All, Any, Coerce, Required, Schema, Length
+from voluptuous import ALLOW_EXTRA, All, Any, Coerce, Length, Required, Schema
 
 from common.constants import VisibilityType
+from common.specs import get_pagination_schema
 from common.validation import format_datetime
 
 
@@ -58,3 +59,10 @@ POSTS_OUTPUT_SPEC = {
     'posts': [POST_OUTPUT_SPEC],
     'total_count': Scope['total_count']
 }
+
+
+POST_ARGS_SCHEMA = Schema({
+    Required('social_group_id'): All(str, Coerce(int)),
+}).extend(
+    get_pagination_schema().schema
+)

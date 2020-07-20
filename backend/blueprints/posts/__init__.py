@@ -6,6 +6,7 @@ from glom import glom
 from blueprints.posts.specs import (
     NEW_POST_SCHEMA,
     PARTIAL_POST_SCHEMA,
+    POST_ARGS_SCHEMA,
     POST_OUTPUT_SPEC,
     POSTS_OUTPUT_SPEC,
 )
@@ -119,7 +120,7 @@ def post_access(post_id):
 @authentication.require_appkey
 def list_posts():
     request_args = validate(
-        DictArgParser.parse(request.args), 'pagination_schema', get_pagination_schema()
+        DictArgParser.parse(request.args), 'post_args_schema', POST_ARGS_SCHEMA
     )
 
     page = request_args['page']
@@ -128,7 +129,7 @@ def list_posts():
 
     mysql_connector = current_app.config['mysql_connector']
     with mysql_connector.session() as db_session:
-        query = db_session.query(Post)
+        query = db_session.query(Post).filter_by(social_group_id=request_args['social_group_id'])
 
         posts = query.order_by(Post.id).offset(offset).limit(num_results_per_page).all()
         count = query.count()

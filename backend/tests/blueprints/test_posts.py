@@ -123,9 +123,15 @@ class TestPost(object):
             'visibility': VisibilityType(body['visibility']).name
         })
 
-    def test_get_posts(self, db_session, context, create_existing_post, client):
+    def test_get_posts(
+        self, db_session, context, create_existing_post, client, init_group_and_membership
+    ):
+        group_id = init_group_and_membership.id
         response = client.get(
-            '/api/v1/posts?num_results_per_page=10&page=1',
+            (
+                '/api/v1/posts?num_results_per_page=10&page=1'
+                f'&social_group_id={group_id}'
+            ),
             headers={
                 'key': context['api_key'],
                 'Authorization': encode_auth_token(context['user_id']).decode()
@@ -162,10 +168,11 @@ class TestPost(object):
         )
 
     def test_get_posts_with_pagination(
-        self, db_session, context, create_multiple_existing_post, client
+        self, db_session, context, create_multiple_existing_post, client, init_group_and_membership
     ):
+        group_id = init_group_and_membership.id
         response = client.get(
-            '/api/v1/posts?num_results_per_page=20&page=1',
+            f'/api/v1/posts?num_results_per_page=20&page=1&social_group_id={group_id}',
             headers={
                 'key': context['api_key'],
                 'Authorization': encode_auth_token(context['user_id']).decode()

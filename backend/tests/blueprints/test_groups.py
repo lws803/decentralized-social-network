@@ -260,14 +260,14 @@ class TestGroupMembership(object):
     ):
         secondary_user_id = secondary_context['user_id']
         response = client.get(
-            f'/api/v1/social_group/members/{secondary_user_id}',
+            (
+                f'/api/v1/social_group/members/{secondary_user_id}'
+                f'?social_group_id={existing_group.id}'
+            ),
             headers={
                 'key': context['api_key'],
                 'Authorization': encode_auth_token(context['user_id']).decode()
             },
-            json={
-                'social_group_id': existing_group.id,
-            }
         )
         assert response.status_code == HTTPStatus.OK
         assert response.json == Schema({
@@ -282,14 +282,11 @@ class TestGroupMembership(object):
     ):
         secondary_user_id = secondary_context['user_id']
         response = client.delete(
-            f'/api/v1/social_group/members/{secondary_user_id}',
+            f'/api/v1/social_group/members/{secondary_user_id}?social_group_id={existing_group.id}',
             headers={
                 'key': context['api_key'],
                 'Authorization': encode_auth_token(context['user_id']).decode()
             },
-            json={
-                'social_group_id': existing_group.id,
-            }
         )
         assert response.status_code == HTTPStatus.ACCEPTED
 
@@ -298,13 +295,10 @@ class TestGroupMembership(object):
     ):
         secondary_user_id = secondary_context['user_id']
         response = client.delete(
-            f'/api/v1/social_group/members/{secondary_user_id}',
+            f'/api/v1/social_group/members/{secondary_user_id}?social_group_id={existing_group.id}',
             headers={
                 'key': context['api_key'],
                 'Authorization': encode_auth_token(secondary_user_id).decode()
-            },
-            json={
-                'social_group_id': existing_group.id,
             }
         )
         assert response.status_code == HTTPStatus.ACCEPTED
@@ -314,13 +308,12 @@ class TestGroupMembership(object):
     ):
         secondary_user_id = secondary_context['user_id']
         response = client.put(
-            f'/api/v1/social_group/members/{secondary_user_id}',
+            f'/api/v1/social_group/members/{secondary_user_id}?social_group_id={existing_group.id}',
             headers={
                 'key': context['api_key'],
                 'Authorization': encode_auth_token(context['user_id']).decode()
             },
             json={
-                'social_group_id': existing_group.id,
                 'role': 'admin'
             }
         )
@@ -335,14 +328,11 @@ class TestGroupMembership(object):
         self, db_cleanup, client, context, existing_group, existing_membership, db_session
     ):
         response = client.get(
-            '/api/v1/social_group/members',
+            f'/api/v1/social_group/members?social_group_id={existing_group.id}',
             headers={
                 'key': context['api_key'],
                 'Authorization': encode_auth_token(context['user_id']).decode()
             },
-            json={
-                'social_group_id': existing_group.id,
-            }
         )
         existing_members = (
             db_session.query(SocialGroupMember)
@@ -370,14 +360,14 @@ class TestGroupMembership(object):
         self, db_cleanup, client, context, existing_group, existing_membership, db_session
     ):
         response = client.get(
-            '/api/v1/social_group/members?num_results_per_page=1&page=1',
+            (
+                f'/api/v1/social_group/members?num_results_per_page=1'
+                f'&page=1&social_group_id={existing_group.id}'
+            ),
             headers={
                 'key': context['api_key'],
                 'Authorization': encode_auth_token(context['user_id']).decode()
             },
-            json={
-                'social_group_id': existing_group.id,
-            }
         )
         existing_members = (
             db_session.query(SocialGroupMember)
@@ -411,14 +401,11 @@ class TestGroupMembershipInvalid(object):
     ):
         secondary_user_id = secondary_context['user_id']
         response = client.get(
-            f'/api/v1/social_group/members/{secondary_user_id}',
+            f'/api/v1/social_group/members/{secondary_user_id}?social_group_id={existing_group.id}',
             headers={
                 'key': context['api_key'],
                 'Authorization': encode_auth_token(context['user_id']).decode()
             },
-            json={
-                'social_group_id': existing_group.id,
-            }
         )
         assert response.status_code == HTTPStatus.NOT_FOUND
 
@@ -427,14 +414,11 @@ class TestGroupMembershipInvalid(object):
     ):
         secondary_user_id = secondary_context['user_id']
         response = client.delete(
-            f'/api/v1/social_group/members/{secondary_user_id}',
+            f'/api/v1/social_group/members/{secondary_user_id}?social_group_id={existing_group.id}',
             headers={
                 'key': context['api_key'],
                 'Authorization': encode_auth_token(context['user_id']).decode()
             },
-            json={
-                'social_group_id': existing_group.id,
-            }
         )
         assert response.status_code == HTTPStatus.NOT_FOUND
 
@@ -443,14 +427,11 @@ class TestGroupMembershipInvalid(object):
     ):
         user_id = context['user_id']
         response = client.delete(
-            f'/api/v1/social_group/members/{user_id}',
+            f'/api/v1/social_group/members/{user_id}?social_group_id={existing_group.id}',
             headers={
                 'key': secondary_context['api_key'],
                 'Authorization': encode_auth_token(secondary_context['user_id']).decode()
             },
-            json={
-                'social_group_id': existing_group.id,
-            }
         )
         assert response.status_code == HTTPStatus.BAD_REQUEST
         assert response.json['message'] == Errors.INSUFFICIENT_PRIVILEGES
@@ -460,13 +441,12 @@ class TestGroupMembershipInvalid(object):
     ):
         user_id = context['user_id']
         response = client.delete(
-            f'/api/v1/social_group/members/{user_id}',
+            f'/api/v1/social_group/members/{user_id}?social_group_id={existing_group.id}',
             headers={
                 'key': secondary_context['api_key'],
                 'Authorization': encode_auth_token(secondary_context['user_id']).decode()
             },
             json={
-                'social_group_id': existing_group.id,
                 'role': 'member',
             }
         )
