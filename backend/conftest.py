@@ -2,11 +2,17 @@ import os
 
 import pytest
 
+from common.models import Base
 from common.mysql_connector import MySQLConnector
-from common.testing.constants import TEST_API_KEY, TEST_UID, TEST_USER_ID
+from common.testing.constants import (
+    TEST_API_KEY,
+    TEST_UID,
+    TEST_UID_2,
+    TEST_USER_ID,
+    TEST_USER_ID_2,
+)
 from common.testing.utils import _db_session
 from main import app
-from common.models import Base
 
 
 def pytest_sessionstart(session):
@@ -54,4 +60,13 @@ def context():
         'api_key': TEST_API_KEY,
         'uid': TEST_UID,
         'user_id': TEST_USER_ID,
+    }
+
+
+@pytest.fixture(scope='session')
+def secondary_context():
+    yield {
+        'api_key': TEST_API_KEY,
+        'uid': TEST_UID_2,
+        'user_id': TEST_USER_ID_2,
     }

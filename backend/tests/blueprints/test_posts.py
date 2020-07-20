@@ -16,11 +16,16 @@ from common.testing.factories import (
 
 
 @pytest.fixture
-def populate_db(db_session, context):
+def populate_db(db_session, context, secondary_context):
     UserFactory.create(
         id=context['user_id'],
         uid=context['uid'],
         name='test_name',
+    )
+    UserFactory.create(
+        id=secondary_context['user_id'],
+        uid=secondary_context['uid'],
+        name='test_name_2',
     )
     db_session.commit()
     yield
@@ -39,6 +44,18 @@ def init_group_and_membership(populate_db, db_session, context):
     )
     db_session.commit()
     yield new_group
+
+
+@pytest.fixture
+def init_second_membership(init_group_and_membership, db_session, secondary_context):
+    group = init_group_and_membership
+    SocialGroupMemberFactory.create(
+        user_id=secondary_context['user_id'],
+        social_group_id=group.id,
+        role=SocialGroupRole.MEMBER
+    )
+    db_session.commit()
+    yield group
 
 
 @pytest.fixture
@@ -302,3 +319,31 @@ class TestPostInvalid(object):
         )
         assert response.status_code == HTTPStatus.BAD_REQUEST
         assert response.json['message'] == error_message
+
+    def test_delete_edit_unauthorized_post(
+        self, context, init_second_membership, client,
+        secondary_context, create_existing_post
+    ):
+        post = create_existing_post
+        delete_response = client.delete(
+            f'/api/v1/post/{post.id}',
+            headers={
+                'key': context['api_key'],
+                'Authorization': encode_auth_token(secondary_context['user_id']).decode()
+            }
+        )
+        assert delete_response.status_code == HTTPStatus.BAD_REQUEST
+        assert delete_response.json['message'] == Errors.INSUFFICIENT_PRIVILEGES
+
+        put_response = client.put(
+            f'/api/v1/post/{post.id}',
+            headers={
+                'key': context['api_key'],
+                'Authorization': encode_auth_token(secondary_context['user_id']).decode()
+            },
+            json={
+                'visibility': 'private', 'metadata_json': {'data': 'test_data'}
+            }
+        )
+        assert put_response.status_code == HTTPStatus.BAD_REQUEST
+        assert put_response.json['message'] == Errors.INSUFFICIENT_PRIVILEGES
