@@ -138,6 +138,23 @@ class TestGroupInvalid(object):
         assert group
         assert response.json['message'] == Errors.INSUFFICIENT_PRIVILEGES
 
+    def test_delete_group_no_auth(
+        self, db_cleanup, client, secondary_context, existing_group, db_session
+    ):
+        response = client.delete(
+            f'/api/v1/social_group/{existing_group.id}',
+            headers={
+                'key': secondary_context['api_key'],
+                'Authorization': 'fake'
+            },
+        )
+        group = db_session.query(SocialGroup).filter_by(id=existing_group.id).one_or_none()
+
+        assert response.status_code == HTTPStatus.UNAUTHORIZED
+        assert group
+        assert response.json['message'] == Errors.TOKEN_INVALID
+
+
     def test_edit_group_bad_auth(
         self, db_cleanup, client, secondary_context, existing_group, db_session
     ):
@@ -153,6 +170,22 @@ class TestGroupInvalid(object):
         )
         assert response.status_code == HTTPStatus.BAD_REQUEST
         assert response.json['message'] == Errors.INSUFFICIENT_PRIVILEGES
+
+    def test_edit_group_no_auth(
+        self, db_cleanup, client, secondary_context, existing_group, db_session
+    ):
+        response = client.put(
+            f'/api/v1/social_group/{existing_group.id}',
+            headers={
+                'key': secondary_context['api_key'],
+                'Authorization': 'fake'
+            },
+            json={
+                'name': 'very_cool', 'metadata_json': {'description': 'awesome'}
+            }
+        )
+        assert response.status_code == HTTPStatus.UNAUTHORIZED
+        assert response.json['message'] == Errors.TOKEN_INVALID
 
     def test_edit_group_duplicate_name(
         self, db_cleanup, client, context, existing_group, db_session,
