@@ -115,6 +115,12 @@ class TestGroup(object):
 
 
 class TestGroupInvalid(object):
+    @pytest.fixture
+    def another_existing_group(self, db_session, db_cleanup):
+        SocialGroupFactory.create(
+            name='another_group'
+        )
+        db_session.commit()
 
     def test_delete_group_bad_auth(
         self, db_cleanup, client, secondary_context, existing_group, db_session
@@ -130,3 +136,53 @@ class TestGroupInvalid(object):
 
         assert response.status_code == HTTPStatus.BAD_REQUEST
         assert group
+        assert response.json['message'] == Errors.INSUFFICIENT_PRIVILEGES
+
+    def test_edit_group_bad_auth(
+        self, db_cleanup, client, secondary_context, existing_group, db_session
+    ):
+        response = client.put(
+            f'/api/v1/social_group/{existing_group.id}',
+            headers={
+                'key': secondary_context['api_key'],
+                'Authorization': encode_auth_token(secondary_context['user_id']).decode()
+            },
+            json={
+                'name': 'very_cool', 'metadata_json': {'description': 'awesome'}
+            }
+        )
+        assert response.status_code == HTTPStatus.BAD_REQUEST
+        assert response.json['message'] == Errors.INSUFFICIENT_PRIVILEGES
+
+    def test_edit_group_duplicate_name(
+        self, db_cleanup, client, context, existing_group, db_session,
+        another_existing_group
+    ):
+        response = client.put(
+            f'/api/v1/social_group/{existing_group.id}',
+            headers={
+                'key': context['api_key'],
+                'Authorization': encode_auth_token(context['user_id']).decode()
+            },
+            json={
+                'name': 'another_group'
+            }
+        )
+        assert response.status_code == HTTPStatus.BAD_REQUEST
+        assert response.json['message'] == Errors.GROUP_EXISTS
+
+    def test_create_group_duplicate_name(
+        self, db_cleanup, client, context, db_session, another_existing_group
+    ):
+        response = client.post(
+            '/api/v1/social_group/new',
+            headers={
+                'key': context['api_key'],
+                'Authorization': encode_auth_token(context['user_id']).decode()
+            },
+            json={
+                'name': 'another_group'
+            }
+        )
+        assert response.status_code == HTTPStatus.BAD_REQUEST
+        assert response.json['message'] == Errors.GROUP_EXISTS
