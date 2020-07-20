@@ -18,6 +18,8 @@ from common.exceptions import InvalidUsage
 from common.messages import Errors
 from common.models import SocialGroup, SocialGroupMember
 from common.parameters import get_request_json
+from common.specs import get_pagination_schema
+from common.utils import DictArgParser, get_offset
 from common.validation import validate
 
 
@@ -217,16 +219,32 @@ def member_access(user_id, member_user_id):
 @authentication.require_appkey
 @authentication.require_login
 def list_members(user_id):
+    request_args = validate(
+        DictArgParser.parse(request.args), 'pagination_schema', get_pagination_schema()
+    )
+
+    page = request_args['page']
+    num_results_per_page = request_args['num_results_per_page']
+    offset = get_offset(page, num_results_per_page)[0]
+
     body = validate(get_request_json(), 'new_member_schema', PARTIAL_MEMBER_SCHEMA)
     mysql_connector = current_app.config['mysql_connector']
     with mysql_connector.session() as db_session:
         social_group_id = body['social_group_id']
 
-        all_members = (
+        all_members_query = (
             db_session.query(SocialGroupMember)
             .filter_by(social_group_id=social_group_id)
+        )
+
+        count = all_members_query.count()
+        all_members = (
+            all_members_query
+            .order_by(SocialGroupMember.id)
+            .offset(offset)
+            .limit(num_results_per_page)
         ).all()
 
         return glom(
-            all_members, MEMBERS_OUTPUT_SPEC, scope={'total_count': len(all_members)}
+            all_members, MEMBERS_OUTPUT_SPEC, scope={'total_count': count}
         ), HTTPStatus.OK
