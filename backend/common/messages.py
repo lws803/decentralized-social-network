@@ -18,3 +18,5 @@ class Errors:
     GROUP_EXISTS = 'Group name already taken, please choose a different name.'
 
     USER_NAME_EXISTS = 'Username already taken, please choose a different name.'
+
+    MEMBER_EXISTS = 'Please use PUT if you wish to change member\'s role.'
