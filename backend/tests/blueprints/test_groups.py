@@ -4,10 +4,13 @@ import pytest
 from pytest_voluptuous import S as Schema
 
 from common.authentication import encode_auth_token
+from common.constants import SocialGroupRole
 from common.messages import Errors
 from common.models import SocialGroup
-from common.constants import SocialGroupRole
-from common.testing.factories import SocialGroupFactory, SocialGroupMemberFactory
+from common.testing.factories import (
+    SocialGroupFactory,
+    SocialGroupMemberFactory,
+)
 
 
 @pytest.fixture
