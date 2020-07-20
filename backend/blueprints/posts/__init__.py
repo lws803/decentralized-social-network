@@ -15,6 +15,8 @@ from common.exceptions import InvalidUsage
 from common.messages import Errors
 from common.models import Post, SocialGroupMember, Tag
 from common.parameters import get_request_json
+from common.specs import get_pagination_schema
+from common.utils import DictArgParser, get_offset
 from common.validation import validate
 
 
@@ -116,8 +118,18 @@ def post_access(post_id):
 @posts_blueprint.route('/api/v1/posts', methods=['GET'])
 @authentication.require_appkey
 def list_posts():
-    # TODO: Should be paginated
+    request_args = validate(
+        DictArgParser.parse(request.args), 'pagination_schema', get_pagination_schema()
+    )
+
+    page = request_args['page']
+    num_results_per_page = request_args['num_results_per_page']
+    offset = get_offset(page, num_results_per_page)[0]
+
     mysql_connector = current_app.config['mysql_connector']
     with mysql_connector.session() as db_session:
-        posts = db_session.query(Post).all()
-        return glom(posts, POSTS_OUTPUT_SPEC, scope={'total_count': len(posts)})
+        query = db_session.query(Post)
+
+        posts = query.order_by(Post.id).offset(offset).limit(num_results_per_page).all()
+        count = query.count()
+        return glom(posts, POSTS_OUTPUT_SPEC, scope={'total_count': count})
