@@ -2,7 +2,7 @@ import os
 
 import pytest
 
-from common.models import Base
+from common.models import Base, User
 from common.mysql_connector import MySQLConnector
 from common.testing.constants import (
     TEST_API_KEY,
@@ -11,6 +11,7 @@ from common.testing.constants import (
     TEST_USER_ID,
     TEST_USER_ID_2,
 )
+from common.testing.factories import UserFactory
 from common.testing.utils import _db_session
 from main import app
 
@@ -54,19 +55,33 @@ def client(db_session):
         yield client
 
 
-@pytest.fixture(scope='session')
-def context():
+@pytest.fixture(scope='function')
+def context(db_session):
+    UserFactory.create(
+        id=TEST_USER_ID,
+        uid=TEST_UID,
+        name='test_name',
+    )
     yield {
         'api_key': TEST_API_KEY,
         'uid': TEST_UID,
         'user_id': TEST_USER_ID,
     }
+    db_session.query(User).delete()
+    db_session.commit()
 
 
-@pytest.fixture(scope='session')
-def secondary_context():
+@pytest.fixture(scope='function')
+def secondary_context(db_session):
+    UserFactory.create(
+        id=TEST_USER_ID_2,
+        uid=TEST_UID_2,
+        name='test_name_2',
+    )
     yield {
         'api_key': TEST_API_KEY,
         'uid': TEST_UID_2,
         'user_id': TEST_USER_ID_2,
     }
+    db_session.query(User).delete()
+    db_session.commit()

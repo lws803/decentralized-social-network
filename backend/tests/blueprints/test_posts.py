@@ -6,30 +6,18 @@ from pytest_voluptuous import S as Schema, Unordered
 from common.authentication import encode_auth_token
 from common.constants import SocialGroupRole, VisibilityType
 from common.messages import Errors
-from common.models import Post, SocialGroup, SocialGroupMember, Tag, User
+from common.models import Post, SocialGroup, SocialGroupMember, Tag
 from common.testing.factories import (
     PostFactory,
     SocialGroupFactory,
     SocialGroupMemberFactory,
-    UserFactory,
 )
 
 
 @pytest.fixture
 def populate_db(db_session, context, secondary_context):
-    UserFactory.create(
-        id=context['user_id'],
-        uid=context['uid'],
-        name='test_name',
-    )
-    UserFactory.create(
-        id=secondary_context['user_id'],
-        uid=secondary_context['uid'],
-        name='test_name_2',
-    )
-    db_session.commit()
     yield
-    for model in (User, Post, SocialGroup, SocialGroupMember, Tag):
+    for model in (Post, SocialGroup, SocialGroupMember, Tag):
         db_session.query(model).delete()
     db_session.commit()
 
