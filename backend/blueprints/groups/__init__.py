@@ -4,6 +4,7 @@ from flask import Blueprint, current_app, request
 from glom import glom
 
 from blueprints.groups.specs import (
+    GROUP_ARGS_SCHEMA,
     GROUP_OUTPUT_SPEC,
     MEMBER_OUTPUT_SPEC,
     MEMBERS_OUTPUT_SPEC,
@@ -167,8 +168,10 @@ def add_member(user_id):
 @authentication.require_login
 def member_access(user_id, member_user_id):
     mysql_connector = current_app.config['mysql_connector']
-    body = validate(get_request_json(), 'partial_member_schema', PARTIAL_MEMBER_SCHEMA)
-    social_group_id = body['social_group_id']
+    request_args = validate(
+        DictArgParser.parse(request.args), 'group_args_schema', GROUP_ARGS_SCHEMA
+    )
+    social_group_id = request_args['social_group_id']
 
     with mysql_connector.session() as db_session:
         if request.method == 'GET':
@@ -198,6 +201,7 @@ def member_access(user_id, member_user_id):
             return '', HTTPStatus.ACCEPTED
 
         elif request.method == 'PUT':
+            body = validate(get_request_json(), 'partial_member_schema', PARTIAL_MEMBER_SCHEMA)
             existing_membership = (
                 db_session.query(SocialGroupMember)
                 .filter_by(social_group_id=social_group_id)
@@ -220,17 +224,18 @@ def member_access(user_id, member_user_id):
 @authentication.require_login
 def list_members(user_id):
     request_args = validate(
-        DictArgParser.parse(request.args), 'pagination_schema', get_pagination_schema()
+        DictArgParser.parse(request.args),
+        'group_args_schema_with_pagination',
+        GROUP_ARGS_SCHEMA.extend(get_pagination_schema().schema)
     )
 
     page = request_args['page']
     num_results_per_page = request_args['num_results_per_page']
     offset = get_offset(page, num_results_per_page)[0]
 
-    body = validate(get_request_json(), 'new_member_schema', PARTIAL_MEMBER_SCHEMA)
     mysql_connector = current_app.config['mysql_connector']
     with mysql_connector.session() as db_session:
-        social_group_id = body['social_group_id']
+        social_group_id = request_args['social_group_id']
 
         all_members_query = (
             db_session.query(SocialGroupMember)

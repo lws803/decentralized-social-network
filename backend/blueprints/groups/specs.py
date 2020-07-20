@@ -31,7 +31,6 @@ NEW_MEMBER_SCHEMA = Schema({
 
 
 PARTIAL_MEMBER_SCHEMA = Schema({
-    Required('social_group_id'): int,
     'role': All(str, Coerce(SocialGroupRole)),
 })
 
@@ -47,3 +46,10 @@ MEMBERS_OUTPUT_SPEC = {
     'members': [MEMBER_OUTPUT_SPEC],
     'total_count': Scope['total_count']
 }
+
+
+GROUP_ARGS_SCHEMA = Schema(
+    {
+        Required('social_group_id'): All(str, Coerce(int)),
+    }
+)
