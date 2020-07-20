@@ -109,7 +109,7 @@ def group_access(social_group_id):
             for key, value in body.items():
                 setattr(existing_group, key, value)
             db_session.commit()
-            return glom(existing_group, GROUP_OUTPUT_SPEC), HTTPStatus.OK
+            return glom(existing_group, GROUP_OUTPUT_SPEC), HTTPStatus.ACCEPTED
 
 
 @social_groups_blueprint.route('/api/v1/social_group/members', methods=['POST'])
