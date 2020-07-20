@@ -225,6 +225,14 @@ class TestGroupInvalid(object):
 
 
 class TestGroupMembership(object):
+    @pytest.fixture
+    def existing_membership(db_session, secondary_context, existing_group, db_cleanup):
+        SocialGroupMemberFactory.create(
+            user_id=secondary_context['user_id'],
+            social_group_id=existing_group.id,
+            role=SocialGroupRole.MEMBER
+        )
+
     def test_member_creation(self, db_cleanup, client, context, existing_group, secondary_context):
         response = client.post(
             '/api/v1/social_group/members/new',
@@ -244,3 +252,165 @@ class TestGroupMembership(object):
             'role': SocialGroupRole.MEMBER.name,
             'social_group_id': existing_group.id,
         })
+
+
+    def test_get_member(
+        self, db_cleanup, client, context, existing_group, secondary_context, existing_membership
+    ):
+        secondary_user_id = secondary_context['user_id']
+        response = client.get(
+            f'/api/v1/social_group/members/{secondary_user_id}',
+            headers={
+                'key': context['api_key'],
+                'Authorization': encode_auth_token(context['user_id']).decode()
+            },
+            json={
+                'social_group_id': existing_group.id,
+            }
+        )
+        assert response.status_code == HTTPStatus.OK
+        assert response.json == Schema({
+            'user_id': secondary_context['user_id'],
+            'role': SocialGroupRole.MEMBER.name,
+            'social_group_id': existing_group.id,
+        })
+
+
+    def test_delete_member(
+        self, db_cleanup, client, context, existing_group, secondary_context, existing_membership
+    ):
+        secondary_user_id = secondary_context['user_id']
+        response = client.delete(
+            f'/api/v1/social_group/members/{secondary_user_id}',
+            headers={
+                'key': context['api_key'],
+                'Authorization': encode_auth_token(context['user_id']).decode()
+            },
+            json={
+                'social_group_id': existing_group.id,
+            }
+        )
+        assert response.status_code == HTTPStatus.ACCEPTED
+
+    def test_delete_ownself(
+        self, db_cleanup, client, context, existing_group, secondary_context, existing_membership
+    ):
+        secondary_user_id = secondary_context['user_id']
+        response = client.delete(
+            f'/api/v1/social_group/members/{secondary_user_id}',
+            headers={
+                'key': context['api_key'],
+                'Authorization': encode_auth_token(secondary_user_id).decode()
+            },
+            json={
+                'social_group_id': existing_group.id,
+            }
+        )
+        assert response.status_code == HTTPStatus.ACCEPTED
+
+    def test_edit_member(
+        self, db_cleanup, client, context, existing_group, secondary_context, existing_membership
+    ):
+        secondary_user_id = secondary_context['user_id']
+        response = client.put(
+            f'/api/v1/social_group/members/{secondary_user_id}',
+            headers={
+                'key': context['api_key'],
+                'Authorization': encode_auth_token(context['user_id']).decode()
+            },
+            json={
+                'social_group_id': existing_group.id,
+                'role': 'admin'
+            }
+        )
+        assert response.status_code == HTTPStatus.ACCEPTED
+        assert response.json == Schema({
+            'user_id': secondary_context['user_id'],
+            'role': SocialGroupRole.ADMIN.name,
+            'social_group_id': existing_group.id,
+        })
+
+
+class TestGroupMembershipInvalid(object):
+    def test_existing_member_creation(self, db_cleanup, client, context, existing_group):
+        response = client.post(
+            '/api/v1/social_group/members/new',
+            headers={
+                'key': context['api_key'],
+                'Authorization': encode_auth_token(context['user_id']).decode()
+            },
+            json={
+                'social_group_id': existing_group.id,
+                'user_id': context['user_id'],
+                'role': 'member'
+            }
+        )
+        assert response.status_code == HTTPStatus.BAD_REQUEST
+        assert response.json['message'] == Errors.MEMBER_EXISTS
+
+    def test_get_non_existent_member(
+        self, db_cleanup, client, context, existing_group, secondary_context
+    ):
+        secondary_user_id = secondary_context['user_id']
+        response = client.get(
+            f'/api/v1/social_group/members/{secondary_user_id}',
+            headers={
+                'key': context['api_key'],
+                'Authorization': encode_auth_token(context['user_id']).decode()
+            },
+            json={
+                'social_group_id': existing_group.id,
+            }
+        )
+        assert response.status_code == HTTPStatus.NOT_FOUND
+
+    def test_delete_non_existent_member(
+        self, db_cleanup, client, context, existing_group, secondary_context
+    ):
+        secondary_user_id = secondary_context['user_id']
+        response = client.delete(
+            f'/api/v1/social_group/members/{secondary_user_id}',
+            headers={
+                'key': context['api_key'],
+                'Authorization': encode_auth_token(context['user_id']).decode()
+            },
+            json={
+                'social_group_id': existing_group.id,
+            }
+        )
+        assert response.status_code == HTTPStatus.NOT_FOUND
+
+    def test_delete_member_without_perms(
+        self, db_cleanup, client, context, existing_group, secondary_context
+    ):
+        user_id = context['user_id']
+        response = client.delete(
+            f'/api/v1/social_group/members/{user_id}',
+            headers={
+                'key': secondary_context['api_key'],
+                'Authorization': encode_auth_token(secondary_context['user_id']).decode()
+            },
+            json={
+                'social_group_id': existing_group.id,
+            }
+        )
+        assert response.status_code == HTTPStatus.BAD_REQUEST
+        assert response.json['message'] == Errors.INSUFFICIENT_PRIVILEGES
+
+    def test_edit_member_without_perms(
+        self, db_cleanup, client, context, existing_group, secondary_context
+    ):
+        user_id = context['user_id']
+        response = client.delete(
+            f'/api/v1/social_group/members/{user_id}',
+            headers={
+                'key': secondary_context['api_key'],
+                'Authorization': encode_auth_token(secondary_context['user_id']).decode()
+            },
+            json={
+                'social_group_id': existing_group.id,
+                'role': 'member',
+            }
+        )
+        assert response.status_code == HTTPStatus.BAD_REQUEST
+        assert response.json['message'] == Errors.INSUFFICIENT_PRIVILEGES

@@ -28,6 +28,12 @@ NEW_MEMBER_SCHEMA = Schema({
 })
 
 
+PARTIAL_MEMBER_SCHEMA = Schema({
+    Required('social_group_id'): int,
+    'role': All(str, Coerce(SocialGroupRole)),
+})
+
+
 MEMBER_OUTPUT_SPEC = {
     'role': ('role', lambda role: role.name),
     'user_id': 'user_id',
