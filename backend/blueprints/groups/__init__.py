@@ -60,7 +60,7 @@ def new_group(user_id):
         ))
         db_session.commit()
 
-        return glom(new_group, GROUP_OUTPUT_SPEC)
+        return glom(new_group, GROUP_OUTPUT_SPEC), HTTPStatus.ACCEPTED
 
 
 @social_groups_blueprint.route(
