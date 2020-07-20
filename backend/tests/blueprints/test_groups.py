@@ -222,3 +222,25 @@ class TestGroupInvalid(object):
         )
         assert response.status_code == HTTPStatus.BAD_REQUEST
         assert response.json['message'] == Errors.GROUP_EXISTS
+
+
+class TestGroupMembership(object):
+    def test_member_creation(self, db_cleanup, client, context, existing_group, secondary_context):
+        response = client.post(
+            '/api/v1/social_group/members/new',
+            headers={
+                'key': context['api_key'],
+                'Authorization': encode_auth_token(context['user_id']).decode()
+            },
+            json={
+                'social_group_id': existing_group.id,
+                'user_id': secondary_context['user_id'],
+                'role': 'member'
+            }
+        )
+        assert response.status_code == HTTPStatus.ACCEPTED
+        assert response.json == Schema({
+            'user_id': secondary_context['user_id'],
+            'role': SocialGroupRole.MEMBER.name,
+            'social_group_id': existing_group.id,
+        })

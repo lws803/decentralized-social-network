@@ -6,7 +6,9 @@ from glom import glom
 from blueprints.groups.specs import (
     GROUP_OUTPUT_SPEC,
     NEW_GROUP_SCHEMA,
+    NEW_MEMBER_SCHEMA,
     PARTIAL_GROUP_SCHEMA,
+    MEMBER_OUTPUT_SPEC
 )
 from common import authentication
 from common.constants import SocialGroupRole
@@ -38,6 +40,15 @@ def ensure_name_does_not_exist(db_session, name, group_id):
     if existing and existing.id != group_id:
         raise InvalidUsage(Errors.GROUP_EXISTS)
 
+
+def ensure_member_role_does_not_exist(db_session, user_id, social_group_id):
+    existing_role = (
+        db_session.query(SocialGroupMember)
+        .filter_by(user_id=user_id)
+        .filter_by(social_group_id=social_group_id)
+    ).all()
+    if existing_role:
+        raise InvalidUsage(Errors.MEMBER_EXISTS)
 
 @social_groups_blueprint.route('/api/v1/social_group/new', methods=['POST'])
 @authentication.require_appkey
@@ -112,17 +123,33 @@ def group_access(social_group_id):
             return glom(existing_group, GROUP_OUTPUT_SPEC), HTTPStatus.ACCEPTED
 
 
-@social_groups_blueprint.route('/api/v1/social_group/members', methods=['POST'])
+@social_groups_blueprint.route('/api/v1/social_group/members/new', methods=['POST'])
 @authentication.require_appkey
 @authentication.require_login
 def add_member(user_id):
-    raise NotImplementedError
+    body = validate(get_request_json(), 'new_member_schema', NEW_MEMBER_SCHEMA)
+    mysql_connector = current_app.config['mysql_connector']
+    with mysql_connector.session() as db_session:
+        social_group_id = body['social_group_id']
+
+        is_admin_of_group(db_session, social_group_id)
+        ensure_member_role_does_not_exist(db_session, body['user_id'], social_group_id)
+
+        new_member = SocialGroupMember(
+            user_id=body['user_id'],
+            social_group_id=social_group_id,
+            role=body['role']
+        )
+        db_session.add(new_member)
+        db_session.commit()
+
+        return glom(new_member, MEMBER_OUTPUT_SPEC), HTTPStatus.ACCEPTED
 
 
 @social_groups_blueprint.route(
-    '/api/v1/social_group/members/<member_id>', methods=['GET', 'DELETE']
+    '/api/v1/social_group/members/<member_user_id>', methods=['GET', 'DELETE', 'PUT']
 )
 @authentication.require_appkey
 @authentication.require_login
-def member_access(user_id, member_id):
+def member_access(user_id, member_user_id):
     raise NotImplementedError
