@@ -2,12 +2,11 @@ from http import HTTPStatus
 
 import pytest
 from pytest_voluptuous import S as Schema, Unordered
-from voluptuous import Any, Coerce
 
 from common.authentication import encode_auth_token
 from common.constants import SocialGroupRole, VisibilityType
 from common.messages import Errors
-from common.models import Post, SocialGroup, SocialGroupMember, User, Tag
+from common.models import Post, SocialGroup, SocialGroupMember, Tag, User
 from common.testing.factories import (
     PostFactory,
     SocialGroupFactory,
@@ -30,30 +29,31 @@ def populate_db(db_session, context):
     db_session.commit()
 
 
+@pytest.fixture
+def init_group_and_membership(populate_db, db_session, context):
+    new_group = SocialGroupFactory.create(name='test_group')
+    SocialGroupMemberFactory.create(
+        user_id=context['user_id'],
+        social_group_id=new_group.id,
+        role=SocialGroupRole.ADMIN
+    )
+    db_session.commit()
+    yield new_group
+
+
+@pytest.fixture
+def create_existing_post(populate_db, db_session, context, init_group_and_membership):
+    social_group = init_group_and_membership
+    new_post = PostFactory.create(
+        social_group_id=social_group.id,
+        owner_id=context['user_id'],
+        visibility=VisibilityType.PUBLIC.name,
+    )
+    db_session.commit()
+    yield new_post
+
+
 class TestPost(object):
-    @pytest.fixture
-    def init_group_and_membership(self, populate_db, db_session, context):
-        new_group = SocialGroupFactory.create(name='test_group')
-        SocialGroupMemberFactory.create(
-            user_id=context['user_id'],
-            social_group_id=new_group.id,
-            role=SocialGroupRole.ADMIN
-        )
-        db_session.commit()
-        yield new_group
-
-    @pytest.fixture
-    def create_existing_post(self, populate_db, db_session, context, init_group_and_membership):
-        social_group = init_group_and_membership
-        new_post = PostFactory.create(
-            social_group_id=social_group.id,
-            owner_id=context['user_id'],
-            visibility=VisibilityType.PUBLIC.name,
-        )
-        db_session.commit()
-        yield new_post
-
-
     @pytest.mark.parametrize(
         'body',
         [
@@ -227,3 +227,78 @@ class TestPost(object):
                 if body.get('visibility') else post.visibility.name
             )
         })
+
+
+class TestPostInvalid(object):
+    def test_unauthorize_post_creation(self, context, init_group_and_membership, client):
+        new_group = init_group_and_membership
+        response = client.post(
+            '/api/v1/post/new',
+            headers={
+                'key': context['api_key'],
+                'Authorization': 'fake_auth'
+            },
+            json={
+                'social_group_id': new_group.id,
+                'visibility': 'private', 'metadata_json': {'data': 'test_data'}
+            }
+        )
+        assert response.status_code == HTTPStatus.UNAUTHORIZED
+        assert response.json['message'] == Errors.TOKEN_INVALID
+
+
+    def test_post_creation_from_outside_group(self, context, init_group_and_membership, client):
+        new_group = init_group_and_membership
+        response = client.post(
+            '/api/v1/post/new',
+            headers={
+                'key': context['api_key'],
+                'Authorization': encode_auth_token(context['user_id']).decode()
+            },
+            json={
+                'social_group_id': new_group.id + 10,
+                'visibility': 'private', 'metadata_json': {'data': 'test_data'}
+            }
+        )
+        assert response.status_code == HTTPStatus.BAD_REQUEST
+        assert response.json['message'] == Errors.INSUFFICIENT_PRIVILEGES
+
+
+    @pytest.mark.parametrize(
+        'body, error_message',
+        [
+            (
+                {'visibility': 'private', 'metadata_json': {'test': 'cool'}},
+                "required key not provided @ data['metadata_json']['data']",
+            ),
+            (
+                {'visibility': 'hello', 'metadata_json': {'data': 'test_data'}},
+                "expected VisibilityType for dictionary value @ data['visibility']"
+            ),
+            (
+                {
+                    'visibility': 'private',
+                    'metadata_json': {'data': 'test_data'},
+                    'tags': [{'cool': 'test'}, 'beans'],
+                },
+                "expected str @ data['tags'][0]"
+            ),
+        ]
+    )
+    def test_bad_post_creation(
+        self, context, init_group_and_membership, client, body, error_message
+    ):
+        new_group = init_group_and_membership
+        response = client.post(
+            '/api/v1/post/new',
+            headers={
+                'key': context['api_key'],
+                'Authorization': encode_auth_token(context['user_id']).decode()
+            },
+            json={
+                'social_group_id': new_group.id,
+                **body
+            }
+        )
+        assert response.status_code == HTTPStatus.BAD_REQUEST
+        assert response.json['message'] == error_message

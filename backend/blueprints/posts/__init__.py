@@ -52,7 +52,7 @@ def new_post(user_id):
             .filter_by(social_group_id=social_group_id)
         ).one_or_none()
         if not group_member:
-            raise InvalidUsage(Errors.USER_NOT_IN_GROUP)
+            raise InvalidUsage(Errors.INSUFFICIENT_PRIVILEGES)
         new_post = Post(
             owner_id=user_id,
             **body
