@@ -27,6 +27,13 @@ NEW_POST_SCHEMA = Schema({
 })
 
 
+PARTIAL_POST_SCHEMA = Schema({
+    'tags': NEW_TAGS_SCHEMA,
+    'metadata_json': POST_METADATA_SCHEMA,
+    'visibility': All(str, Coerce(VisibilityType)),
+})
+
+
 TAG_OUTPUT_SPEC = {
     'id': 'id',
     'name': 'name',
@@ -43,6 +50,7 @@ POST_OUTPUT_SPEC = {
     'updated_at': ('updated_at', format_datetime),
     'social_group_id': 'social_group_id',
     'depth': 'depth',
+    'visibility': ('visibility', lambda visibility: visibility.name)
 }
 
 

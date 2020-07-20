@@ -6,6 +6,7 @@
 
 ```
 mysql> CREATE DATABASE social_network CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
+mysql> CREATE DATABASE social_network_test CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
 ```
 
 
@@ -18,13 +19,17 @@ Grant the user access privileges
 
 ```
 mysql> GRANT ALL ON social_network.* TO 'bob'@'localhost';
+mysql> GRANT ALL ON social_network_test.* TO 'bob'@'localhost';
 ```
 
 
 ### Setup environment
 
 ```bash
+# In the backend folder
+export PYTHONPATH=$PYTHONPATH:$(pwd)
 export MYSQL_PROD=...
+export MYSQL_TEST=...
 export API_KEY=...
 export SECRET_KEY=...
 ```

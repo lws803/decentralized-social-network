@@ -12,3 +12,5 @@ pycryptodome
 rsa
 glom
 pyjwt
+factory-boy
+pytest-voluptuous

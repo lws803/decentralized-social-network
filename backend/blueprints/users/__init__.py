@@ -3,9 +3,14 @@ from http import HTTPStatus
 from flask import Blueprint, current_app, request
 from glom import glom
 
-from blueprints.users.specs import NEW_USER_SPEC, USER_OUTPUT_SPEC, LOGIN_OUTPUT_SPEC
-from common.authentication import encode_auth_token
+from blueprints.users.specs import (
+    LOGIN_OUTPUT_SPEC,
+    NEW_USER_SPEC,
+    PARTIAL_USER_SCHEMA,
+    USER_OUTPUT_SPEC,
+)
 from common import authentication
+from common.authentication import encode_auth_token
 from common.exceptions import InvalidUsage
 from common.messages import Errors
 from common.models import User
@@ -14,6 +19,12 @@ from common.validation import validate
 
 
 users_blueprint = Blueprint('users_blueprint', __name__)
+
+
+def ensure_name_not_duplicate(db_session, name, user_id):
+    existing_user = db_session.query(User).filter_by(name=name).one_or_none()
+    if existing_user and existing_user.id != user_id:
+        raise InvalidUsage(Errors.USER_NAME_EXISTS)
 
 
 @users_blueprint.route('/api/v1/user/new', methods=['POST'])
@@ -27,6 +38,7 @@ def new_user():
     with mysql_connector.session() as db_session:
         user = db_session.query(User).filter_by(uid=uid).one_or_none()
         if not user:
+            ensure_name_not_duplicate(db_session, body['name'], None)
             user = User(
                 uid=uid,
                 **body
@@ -41,7 +53,7 @@ def new_user():
         ), HTTPStatus.ACCEPTED
 
 
-@users_blueprint.route('/api/v1/user', methods=['GET', 'DELETE'])
+@users_blueprint.route('/api/v1/user', methods=['GET', 'DELETE', 'PUT'])
 @authentication.require_appkey
 @authentication.require_login
 def user_access(user_id):
@@ -60,11 +72,23 @@ def user_access(user_id):
             user = db_session.query(User).filter_by(id=user_id).one_or_none()
             if not user:
                 raise InvalidUsage(Errors.NO_USER_ID)
-            else:
-                db_session.delete(user)
-                db_session.commit()
+            db_session.delete(user)
+            db_session.commit()
 
-            return glom(user, USER_OUTPUT_SPEC), HTTPStatus.OK
+            return glom(user, USER_OUTPUT_SPEC), HTTPStatus.ACCEPTED
+
+    elif request.method == 'PUT':
+        body = validate(get_request_json(), 'partial_user_schema', PARTIAL_USER_SCHEMA)
+        with mysql_connector.session() as db_session:
+            user = db_session.query(User).filter_by(id=user_id).one_or_none()
+            if not user:
+                raise InvalidUsage(Errors.NO_USER_ID)
+            if 'name' in body:
+                ensure_name_not_duplicate(db_session, body['name'], user.id)
+            for key, value in body.items():
+                setattr(user, key, value)
+            db_session.commit()
+            return glom(user, USER_OUTPUT_SPEC), HTTPStatus.ACCEPTED
 
 
 @users_blueprint.route('/api/v1/user/login', methods=['POST'])

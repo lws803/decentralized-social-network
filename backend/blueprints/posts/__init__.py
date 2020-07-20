@@ -3,14 +3,19 @@ from http import HTTPStatus
 from flask import Blueprint, current_app, request
 from glom import glom
 
-from blueprints.posts.specs import NEW_POST_SCHEMA, POST_OUTPUT_SPEC, POSTS_OUTPUT_SPEC
+from blueprints.posts.specs import (
+    NEW_POST_SCHEMA,
+    PARTIAL_POST_SCHEMA,
+    POST_OUTPUT_SPEC,
+    POSTS_OUTPUT_SPEC,
+)
 from common import authentication
+from common.constants import SocialGroupRole
 from common.exceptions import InvalidUsage
 from common.messages import Errors
 from common.models import Post, SocialGroupMember, Tag
 from common.parameters import get_request_json
 from common.validation import validate
-from common.constants import SocialGroupRole
 
 
 posts_blueprint = Blueprint('posts_blueprint', __name__)
@@ -47,7 +52,7 @@ def new_post(user_id):
             .filter_by(social_group_id=social_group_id)
         ).one_or_none()
         if not group_member:
-            raise InvalidUsage(Errors.USER_NOT_IN_GROUP)
+            raise InvalidUsage(Errors.INSUFFICIENT_PRIVILEGES)
         new_post = Post(
             owner_id=user_id,
             **body
@@ -61,10 +66,10 @@ def new_post(user_id):
                 name=tag
             ))
         db_session.commit()
-        return glom(new_post, POST_OUTPUT_SPEC)
+        return glom(new_post, POST_OUTPUT_SPEC), HTTPStatus.ACCEPTED
 
 
-@posts_blueprint.route('/api/v1/post/<post_id>', methods=['GET', 'DELETE'])
+@posts_blueprint.route('/api/v1/post/<post_id>', methods=['GET', 'DELETE', 'PUT'])
 @authentication.require_appkey
 def post_access(post_id):
     mysql_connector = current_app.config['mysql_connector']
@@ -79,12 +84,33 @@ def post_access(post_id):
             db_session.query(Post).filter_by(id=post_id).delete()
             db_session.commit()
             return '', HTTPStatus.ACCEPTED
-        else:
+        elif request.method == 'GET':
             post = db_session.query(Post).filter_by(id=post_id).one_or_none()
             if post:
                 return glom(post, POST_OUTPUT_SPEC)
             else:
                 return '', HTTPStatus.NOT_FOUND
+        elif request.method == 'PUT':
+            body = validate(get_request_json(), 'partial_post_schema', PARTIAL_POST_SCHEMA)
+            tags = body.pop('tags') if 'tags' in body else []
+
+            post = db_session.query(Post).filter_by(id=post_id).one_or_none()
+            if not post:
+                return '', HTTPStatus.NOT_FOUND
+            check_admin_or_owner(db_session, post)
+
+            for key, value in body.items():
+                setattr(post, key, value)
+
+            if tags:
+                db_session.query(Tag).filter_by(post_id=post.id).delete()
+                for tag in set(tags):
+                    db_session.add(Tag(
+                        post_id=post.id,
+                        name=tag
+                    ))
+            db_session.commit()
+            return glom(post, POST_OUTPUT_SPEC), HTTPStatus.ACCEPTED
 
 
 @posts_blueprint.route('/api/v1/posts', methods=['GET'])
