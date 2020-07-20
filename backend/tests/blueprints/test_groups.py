@@ -366,6 +366,28 @@ class TestGroupMembership(object):
             }
         )
 
+    def test_list_members_pagination(
+        self, db_cleanup, client, context, existing_group, existing_membership, db_session
+    ):
+        response = client.get(
+            '/api/v1/social_group/members?num_results_per_page=1&page=1',
+            headers={
+                'key': context['api_key'],
+                'Authorization': encode_auth_token(context['user_id']).decode()
+            },
+            json={
+                'social_group_id': existing_group.id,
+            }
+        )
+        existing_members = (
+            db_session.query(SocialGroupMember)
+            .filter_by(social_group_id=existing_group.id)
+        ).all()
+
+        assert response.status_code == HTTPStatus.OK
+        assert response.json['total_count'] == len(existing_members)
+        assert len(response.json['members']) == 1
+
 
 class TestGroupMembershipInvalid(object):
     def test_existing_member_creation(self, db_cleanup, client, context, existing_group):

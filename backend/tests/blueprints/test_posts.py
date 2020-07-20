@@ -58,6 +58,22 @@ def create_existing_post(populate_db, db_session, context, init_group_and_member
     yield new_post
 
 
+@pytest.fixture
+def create_multiple_existing_post(populate_db, db_session, context, init_group_and_membership):
+    social_group = init_group_and_membership
+    new_posts = []
+    for i in range(100):
+        new_posts.append(
+            PostFactory.create(
+                social_group_id=social_group.id,
+                owner_id=context['user_id'],
+                visibility=VisibilityType.PUBLIC.name,
+            )
+        )
+    db_session.commit()
+    yield new_posts
+
+
 class TestPost(object):
     @pytest.mark.parametrize(
         'body',
@@ -109,7 +125,7 @@ class TestPost(object):
 
     def test_get_posts(self, db_session, context, create_existing_post, client):
         response = client.get(
-            '/api/v1/posts',
+            '/api/v1/posts?num_results_per_page=10&page=1',
             headers={
                 'key': context['api_key'],
                 'Authorization': encode_auth_token(context['user_id']).decode()
@@ -144,6 +160,22 @@ class TestPost(object):
                 'total_count': len(posts)
             }
         )
+
+    def test_get_posts_with_pagination(
+        self, db_session, context, create_multiple_existing_post, client
+    ):
+        response = client.get(
+            '/api/v1/posts?num_results_per_page=20&page=1',
+            headers={
+                'key': context['api_key'],
+                'Authorization': encode_auth_token(context['user_id']).decode()
+            },
+        )
+        assert response.status_code == HTTPStatus.OK
+        post_count = db_session.query(Post).count()
+
+        assert len(response.json['posts']) == 20
+        assert response.json['total_count'] == post_count
 
     def test_get_post(self, context, create_existing_post, client):
         post = create_existing_post

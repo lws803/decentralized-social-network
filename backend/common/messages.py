@@ -20,3 +20,7 @@ class Errors:
     USER_NAME_EXISTS = 'Username already taken, please choose a different name.'
 
     MEMBER_EXISTS = 'Please use PUT if you wish to change member\'s role.'
+
+    PARAM_DICTIONARY_CHECK = (
+        "Both dictionary and non dictionary value is supplied for %s key."
+    )
