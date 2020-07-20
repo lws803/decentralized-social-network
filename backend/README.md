@@ -35,7 +35,7 @@ export SECRET_KEY=...
 
 ### Build image
 ```bash
-# From game_service directory
+# From backend folder
 docker build -t backend:latest ./
 ```
 
