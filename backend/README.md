@@ -33,6 +33,20 @@ export API_KEY=...
 export SECRET_KEY=...
 ```
 
+### Run alembic
+
+```bash
+# In the backend folder
+alembic upgrade head
+```
+
+## Testing
+
+```bash
+# From backend folder
+pytest -vv
+```
+
 ### Build image
 ```bash
 # From backend folder
@@ -42,12 +56,4 @@ docker build -t backend:latest ./
 ### Run image
 ```bash
 docker run -d -p 80:80 backend:latest
-```
-
-
-## Testing
-
-```bash
-# From backend folder
-pytest -vv
 ```
