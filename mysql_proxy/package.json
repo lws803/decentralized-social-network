@@ -1,0 +1,11 @@
+{
+  "name": "mysql_proxy",
+  "version": "1.0.0",
+  "description": "MySQL proxy to facilitate information sharing between application, other nodes and local MySQL db",
+  "main": "proxy_server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "lws803",
+  "license": "ISC"
+}
