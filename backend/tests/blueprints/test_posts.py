@@ -104,7 +104,7 @@ class TestPost(object):
         assert response.json == Schema({
             'created_at': str,
             'depth': 0,
-            'id': int,
+            'id': str,
             'metadata_json': body['metadata_json'],
             'social_group_id': new_group.id,
             'tags': Unordered(
@@ -113,7 +113,7 @@ class TestPost(object):
                         'created_at': str,
                         'updated_at': None,
                         'name': tag,
-                        'id': int
+                        'id': str
                     }
                     for tag in body.get('tags', [])
                 ]
@@ -146,7 +146,7 @@ class TestPost(object):
                         'created_at': str,
                         'updated_at': None,
                         'depth': 0,
-                        'id': int,
+                        'id': str,
                         'metadata_json': post.metadata_json,
                         'social_group_id': post.social_group_id,
                         'tags': Unordered([
@@ -154,7 +154,7 @@ class TestPost(object):
                                 'created_at': str,
                                 'updated_at': None,
                                 'name': tag.name,
-                                'id': int
+                                'id': str
                             }
                             for tag in post.tags
                         ]),
@@ -198,7 +198,7 @@ class TestPost(object):
             'created_at': str,
             'updated_at': None,
             'depth': 0,
-            'id': int,
+            'id': str,
             'metadata_json': post.metadata_json,
             'social_group_id': post.social_group_id,
             'tags': Unordered([
@@ -206,7 +206,7 @@ class TestPost(object):
                     'created_at': str,
                     'updated_at': None,
                     'name': tag.name,
-                    'id': int
+                    'id': str
                 }
                 for tag in post.tags
             ]),
@@ -253,7 +253,7 @@ class TestPost(object):
             'created_at': str,
             'updated_at': str,
             'depth': 0,
-            'id': int,
+            'id': str,
             'metadata_json': body.get('metadata_json') or post.metadata_json,
             'social_group_id': post.social_group_id,
             'tags': Unordered([
@@ -261,7 +261,7 @@ class TestPost(object):
                     'created_at': str,
                     'updated_at': None,
                     'name': tag.name if not isinstance(tag, str) else tag,
-                    'id': int
+                    'id': str
                 }
                 for tag in body.get('tags') or post.tags
             ]),
@@ -300,7 +300,7 @@ class TestPostInvalid(object):
                 'Authorization': encode_auth_token(context['user_id']).decode()
             },
             json={
-                'social_group_id': new_group.id + 10,
+                'social_group_id': new_group.id + '10',
                 'visibility': 'private', 'metadata_json': {'data': 'test_data'}
             }
         )

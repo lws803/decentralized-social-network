@@ -57,7 +57,7 @@ class TestGroup(object):
         )
         assert response.status_code == HTTPStatus.ACCEPTED
         assert response.json == Schema({
-            'id': int,
+            'id': str,
             'metadata_json': body.get('metadata_json'),
             'name': body['name'],
         })

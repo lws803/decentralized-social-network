@@ -1,3 +1,5 @@
+import uuid
+
 from sqlalchemy import (
     BigInteger,
     Column,
@@ -12,8 +14,12 @@ from sqlalchemy import (
 from sqlalchemy.dialects.mysql import JSON
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
+from sqlalchemy.types import TypeDecorator
 
 from common.constants import SocialGroupRole, VisibilityType, VoteType
+
+
+Base = declarative_base()
 
 
 class MyBase(object):
@@ -25,12 +31,28 @@ class MyBase(object):
 Base = declarative_base(cls=MyBase)
 
 
+class GUID(TypeDecorator):
+    impl = String(32)
+
+    def process_bind_param(self, value, dialect):
+        if value is not None:
+            if isinstance(value, uuid.UUID):
+                return "%.32x" % int(value)
+            else:
+                return value
+        else:
+            return None
+
+    def process_result_value(self, value, dialect):
+        return value
+
+
 class User(Base):
     __tablename__ = 'users'
     __table_args__ = (
         UniqueConstraint('name', name='uix_name'),
     )
-    id = Column(BigInteger, primary_key=True)
+    id = Column(GUID(), primary_key=True, default=uuid.uuid4)
     name = Column(String(255), nullable=False)
     uid = Column(String(255), nullable=False)
     metadata_json = Column(JSON, nullable=True)
@@ -42,7 +64,7 @@ class User(Base):
 
 class Post(Base):
     __tablename__ = 'posts'
-    id = Column(BigInteger, primary_key=True)
+    id = Column(GUID(), primary_key=True, default=uuid.uuid4)
     metadata_json = Column(JSON, nullable=True)
     created_at = Column(DateTime, nullable=False, server_default=func.now())
     updated_at = Column(DateTime, onupdate=func.now())
@@ -64,7 +86,7 @@ class PostChild(Base):
 
 class Vote(Base):
     __tablename__ = 'votes'
-    id = Column(BigInteger, primary_key=True)
+    id = Column(GUID(), primary_key=True, default=uuid.uuid4)
     vote_type = Column(Enum(VoteType), nullable=False)
     created_at = Column(DateTime, nullable=False, server_default=func.now())
     updated_at = Column(DateTime, onupdate=func.now())
@@ -77,7 +99,7 @@ class SocialGroup(Base):
     __table_args__ = (
         UniqueConstraint('name', name='uix_name'),
     )
-    id = Column(BigInteger, primary_key=True)
+    id = Column(GUID, primary_key=True, default=uuid.uuid4)
     name = Column(String(255), nullable=False)
     metadata_json = Column(JSON, nullable=True)
     created_at = Column(DateTime, nullable=False, server_default=func.now())
@@ -91,7 +113,7 @@ class SocialGroup(Base):
 
 class Tag(Base):
     __tablename__ = 'tags'
-    id = Column(BigInteger, primary_key=True)
+    id = Column(GUID, primary_key=True, default=uuid.uuid4)
     name = Column(String(255), nullable=False)
     created_at = Column(DateTime, nullable=False, server_default=func.now())
     updated_at = Column(DateTime, onupdate=func.now())

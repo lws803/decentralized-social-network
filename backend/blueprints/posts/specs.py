@@ -21,7 +21,7 @@ NEW_TAGS_SCHEMA = Schema(
 
 
 NEW_POST_SCHEMA = Schema({
-    Required('social_group_id'): int,
+    Required('social_group_id'): str,
     'tags': NEW_TAGS_SCHEMA,
     Required('metadata_json'): POST_METADATA_SCHEMA,
     Required('visibility'): All(str, Coerce(VisibilityType)),
@@ -62,7 +62,7 @@ POSTS_OUTPUT_SPEC = {
 
 
 POST_ARGS_SCHEMA = Schema({
-    Required('social_group_id'): All(str, Coerce(int)),
+    Required('social_group_id'): str,
 }).extend(
     get_pagination_schema().schema
 )

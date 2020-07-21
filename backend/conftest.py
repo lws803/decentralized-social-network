@@ -8,8 +8,6 @@ from common.testing.constants import (
     TEST_API_KEY,
     TEST_UID,
     TEST_UID_2,
-    TEST_USER_ID,
-    TEST_USER_ID_2,
 )
 from common.testing.factories import UserFactory
 from common.testing.utils import _db_session
@@ -57,15 +55,15 @@ def client(db_session):
 
 @pytest.fixture(scope='function')
 def context(db_session):
-    UserFactory.create(
-        id=TEST_USER_ID,
+    user1 = UserFactory.create(
         uid=TEST_UID,
         name='test_name',
     )
+    db_session.commit()
     yield {
         'api_key': TEST_API_KEY,
         'uid': TEST_UID,
-        'user_id': TEST_USER_ID,
+        'user_id': user1.id,
     }
     db_session.query(User).delete()
     db_session.commit()
@@ -73,15 +71,15 @@ def context(db_session):
 
 @pytest.fixture(scope='function')
 def secondary_context(db_session):
-    UserFactory.create(
-        id=TEST_USER_ID_2,
+    user2 = UserFactory.create(
         uid=TEST_UID_2,
         name='test_name_2',
     )
+    db_session.commit()
     yield {
         'api_key': TEST_API_KEY,
         'uid': TEST_UID_2,
-        'user_id': TEST_USER_ID_2,
+        'user_id': user2.id,
     }
     db_session.query(User).delete()
     db_session.commit()
