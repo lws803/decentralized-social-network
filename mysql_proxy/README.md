@@ -4,7 +4,7 @@
 
 Start the proxy server
 ```bash
-node proxy_server.js 3307 127.0.0.1 3306
+node ProxyServer.js 3307 127.0.0.1 3306
 ```
 
 Test by accessing the db as such
