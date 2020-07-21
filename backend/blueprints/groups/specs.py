@@ -24,8 +24,8 @@ GROUP_OUTPUT_SPEC = {
 
 
 NEW_MEMBER_SCHEMA = Schema({
-    Required('social_group_id'): int,
-    Required('user_id'): int,
+    Required('social_group_id'): str,
+    Required('user_id'): str,
     Required('role'): All(str, Coerce(SocialGroupRole))
 })
 
@@ -50,6 +50,6 @@ MEMBERS_OUTPUT_SPEC = {
 
 GROUP_ARGS_SCHEMA = Schema(
     {
-        Required('social_group_id'): All(str, Coerce(int)),
+        Required('social_group_id'): str,
     }
 )
