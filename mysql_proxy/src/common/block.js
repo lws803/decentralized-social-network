@@ -2,50 +2,76 @@ require("dotenv").config();
 const SHA256 = require("crypto-js/sha256");
 const mysql = require("mysql");
 
-function computeHash(precedingHash, data) {
-  return SHA256(precedingHash + JSON.stringify(data)).toString();
+function computeHash(precedingHash, stringData) {
+  return SHA256(precedingHash + stringData).toString();
 }
 
 class Blockchain {
-  static startGenesisBlock(dbSession) {
+  static startGenesisBlock(dbSession, callback) {
+    let precedingHash = "genesis";
     let data = { data: "SELECT 1" };
-    let hash = computeHash("0", data);
+    let hash = computeHash(precedingHash, JSON.stringify(data));
     let query =
       `INSERT INTO blockchain (hash, preceding_hash, sql_statement) ` +
-      `values ('${hash}', '${"0"}', '${JSON.stringify(data)}')`;
+      `values ('${hash}', '${precedingHash}', '${JSON.stringify(data)}')`;
 
-    dbSession.query(query, (error, results, fields) => {
+    dbSession.query(query, (error, results) => {
       if (error) throw error;
-      console.log(results);
+      return callback(results);
     });
   }
 
-  static obtainLatestBlock(dbSession) {
-    // TODO: Use sql queries to get the latest block
-    dbSession.query(query, (error, results, fields) => {
+  static obtainLatestBlock(dbSession, callback) {
+    let query = "SELECT * FROM blockchain ORDER BY id DESC LIMIT 1";
+    dbSession.query(query, (error, results) => {
       if (error) throw error;
-      console.log(results);
-    });
-    return;
-  }
-  static addNewBlock(newBlock, dbSession) {
-    newBlock.precedingHash = this.obtainLatestBlock().hash;
-    // TODO: Use sql query to push this new block to mysql
-    this.blockchain.push(newBlock);
-  }
-
-  static checkChainValidity(dbSession) {
-    // TODO: Iterate through mysql to check the chain validity
-    for (let i = 1; i < this.blockchain.length; i++) {
-      const currentBlock = this.blockchain[i];
-      const precedingBlock = this.blockchain[i - 1];
-
-      if (currentBlock.hash !== currentBlock.computeHash()) {
-        return false;
+      if (results) {
+        return callback(results[0]);
+      } else {
+        return callback(undefined);
       }
-      if (currentBlock.precedingHash !== precedingBlock.hash) return false;
-    }
-    return true;
+    });
+  }
+
+  static addNewBlock(data, dbSession, callback) {
+    this.obtainLatestBlock(dbSession, result => {
+      let precedingHash = result.hash;
+      let hash = computeHash(precedingHash, JSON.stringify(data));
+      let query =
+        `INSERT INTO blockchain (hash, preceding_hash, sql_statement) ` +
+        `values ('${hash}', '${precedingHash}', '${JSON.stringify(data)}')`;
+
+      dbSession.query(query, (error, results) => {
+        if (error) throw error;
+        return callback(results);
+      });
+    });
+  }
+
+  static checkChainValidity(dbSession, callback) {
+    let query = "SELECT * FROM blockchain ORDER BY id";
+    dbSession.query(query, (error, results) => {
+      if (error) throw error;
+      if (results.length > 1) {
+        for (let i = 1; i < results.length; i++) {
+          let currentBlock = results[i];
+          let precedingBlock = results[i - 1];
+          if (
+            currentBlock.hash !==
+            computeHash(
+              precedingBlock.hash,
+              JSON.stringify(JSON.parse(currentBlock.sql_statement))
+            )
+          ) {
+            return callback(false);
+          }
+          if (currentBlock.preceding_hash !== precedingBlock.hash) {
+            return callback(false);
+          }
+        }
+      }
+      return callback(true);
+    });
   }
 }
 
@@ -65,5 +91,10 @@ dbSession.connect(function (err) {
   }
 
   console.log("connected as id " + dbSession.threadId);
-  Blockchain.startGenesisBlock(dbSession);
+  // Blockchain.startGenesisBlock(dbSession, () => {});
+  // Blockchain.obtainLatestBlock(dbSession);
+  // Blockchain.addNewBlock({ data: "SELECT 2" }, dbSession, () => {});
+  Blockchain.checkChainValidity(dbSession, isValid => {
+    console.log(isValid);
+  });
 });
