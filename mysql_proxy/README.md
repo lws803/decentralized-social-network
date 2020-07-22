@@ -4,7 +4,7 @@
 
 > Make sure that the database has been migrated beforehand
 
-Start the proxy server
+Start the proxy server locally wihthout docker
 ```bash
 node src/proxyServer.js
 ```
@@ -27,3 +27,14 @@ AES_SQL_NONCE=...
 ```
 
 > Make sure to turn SSL off for MySQL ssl=0
+
+
+## Build
+
+```bash
+docker-compose up
+
+# or
+
+docker-compose up -d # To run in detached mode
+```
