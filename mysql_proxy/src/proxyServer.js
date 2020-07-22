@@ -40,7 +40,7 @@ dbSession.connect(function (err) {
   var server = net.createServer(function (localsocket) {
     var remotesocket = new net.Socket();
 
-    remotesocket.connect(remoteport, process.env.DB_HOST);
+    remotesocket.connect(remoteport, remotehost);
 
     localsocket.on("connect", function (data) {
       console.log(
@@ -119,7 +119,7 @@ dbSession.connect(function (err) {
     });
   });
 
-  server.listen(localport, process.env.DB_HOST);
+  server.listen(localport, process.env.HOST);
 });
 
 console.log(

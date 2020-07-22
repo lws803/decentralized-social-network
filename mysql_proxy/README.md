@@ -9,3 +9,8 @@ Start the proxy server
 node src/proxyServer.js
 ```
 <!-- TODO: Talk about the env file as well -->
+
+
+## Setup
+
+1. Turn SSL off for MySQL
