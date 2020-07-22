@@ -1,18 +1,18 @@
-version: "1"
+version: "3.7"
 services:
   proxy:
     build: ./
-    links:
-      - db
     ports:
       - "3307:3307"
-
+    depends_on:
+      - "db"
+    restart: always
   db:
     image: mysql:5.7
     ports:
       - "32000:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root
-
     volumes:
-      - ./db:/docker-entrypoint-initdb.d/:ro
+      - ./db:/docker-entrypoint-initdb.d
+      - ./mysqlconf:/etc/mysql/conf.d

@@ -1,3 +1,11 @@
+CREATE DATABASE social_network CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
+
+CREATE USER 'bob'@'%' IDENTIFIED BY 'banana';
+
+GRANT ALL ON social_network.* TO 'bob'@'%';
+
+USE social_network;
+
 CREATE TABLE alembic_version (
     version_num VARCHAR(32) NOT NULL, 
     CONSTRAINT alembic_version_pkc PRIMARY KEY (version_num)

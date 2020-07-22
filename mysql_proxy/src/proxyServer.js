@@ -123,7 +123,8 @@ dbSession.connect(function (err) {
 });
 
 console.log(
-  "redirecting connections from 127.0.0.1:%d to %s:%d",
+  "redirecting connections from %s:%d to %s:%d",
+  process.env.HOST,
   localport,
   remotehost,
   remoteport
