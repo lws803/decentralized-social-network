@@ -16,9 +16,9 @@ process.on("uncaughtException", function (error) {
   console.error(error);
 });
 
-var localport = process.env.DB_PORT;
+var localport = process.env.DB_PORT_FORWARDED;
 var remotehost = process.env.DB_HOST;
-var remoteport = process.env.DB_PORT_FORWARDED;
+var remoteport = process.env.DB_PORT;
 
 dbSession.connect(function (err) {
   if (err) {
