@@ -2,6 +2,7 @@ const net = require("net");
 const io = require("socket.io-client");
 const mysql = require("mysql");
 const Blockchain = require("./common/block");
+const { write } = require("fs");
 
 var dbSession = mysql.createConnection({
   host: process.env.DB_HOST,
@@ -59,15 +60,20 @@ dbSession.connect(function (err) {
     });
 
     localsocket.on("data", function (data) {
+      const writeData = data => {
+        var flushed = remotesocket.write(data);
+        if (!flushed) {
+          console.log("  remote not flushed; pausing local");
+          localsocket.pause();
+        }
+      };
       var command = data.toString("utf8").substr(5);
       if (command.includes("INSERT INTO") || command.includes("DELETE FROM")) {
-        console.log(command);
-        Blockchain.addNewBlock(command, dbSession, () => {});
-      }
-      var flushed = remotesocket.write(data);
-      if (!flushed) {
-        console.log("  remote not flushed; pausing local");
-        localsocket.pause();
+        Blockchain.addNewBlock(command, dbSession, () => {
+          writeData(data);
+        });
+      } else {
+        writeData(data);
       }
     });
 
