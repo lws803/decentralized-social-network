@@ -13,4 +13,19 @@ node src/proxyServer.js
 
 ## Setup
 
-1. Turn SSL off for MySQL
+Turn SSL off for MySQL
+
+### Environment variables using a .env file
+
+```
+HOST=0.0.0.0
+DB_HOST=db (or use localhost)
+DB_USER=bob
+DB_PASS=banana
+DB_NAME=social_network
+DB_PORT=3306
+DB_PORT_FORWARDED=3307
+SECRET_KEY=...
+AES_SQL_KEY=...
+AES_SQL_NONCE=...
+```
