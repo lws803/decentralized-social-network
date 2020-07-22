@@ -16,17 +16,9 @@ process.on("uncaughtException", function (error) {
   console.error(error);
 });
 
-if (process.argv.length != 5) {
-  console.log(
-    "usage: %s <localport> <remotehost> <remoteport>",
-    process.argv[1]
-  );
-  process.exit();
-}
-
-var localport = process.argv[2];
-var remotehost = process.argv[3];
-var remoteport = process.argv[4];
+var localport = process.env.DB_PORT;
+var remotehost = process.env.DB_HOST;
+var remoteport = process.env.DB_PORT_FORWARDED;
 
 dbSession.connect(function (err) {
   if (err) {
