@@ -69,9 +69,9 @@ dbSession.connect(function (err) {
       };
       var command = data.toString("utf8").substr(5);
       if (
-        command.includes("INSERT INTO") ||
-        command.includes("DELETE FROM") ||
-        command.includes("UPDATE")
+        command.startsWith("INSERT INTO") ||
+        command.startsWith("DELETE FROM") ||
+        command.startsWith("UPDATE")
       ) {
         // TODO: Look for consensus first
         Blockchain.addNewBlock(command, dbSession, () => {
