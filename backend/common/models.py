@@ -150,11 +150,6 @@ class Tracker(Base):
     status = Column(Enum(TrackerStatus), nullable=False)
 
 
-class BlockchainVersion(Base):
-    __tablename__ = 'blockchain_version'
-    version = Column(String(512), primary_key=True)
-
-
 class SocialNetworkVersion(Base):
     __tablename__ = 'socialnetwork_version'
     version = Column(String(512), primary_key=True)
@@ -168,6 +163,5 @@ social_group_members = SocialGroupMember.__table__
 tags = Tag.__table__
 post_children = PostChild.__table__
 blockchain = Blockchain.__table__
-blockchain_version = BlockchainVersion.__table__
 trackers = Tracker.__table__
 socialnetwork_version = SocialNetworkVersion.__table__
