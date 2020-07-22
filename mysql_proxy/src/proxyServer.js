@@ -63,7 +63,10 @@ dbSession.connect(function (err) {
       if (
         command.startsWith("INSERT INTO") ||
         command.startsWith("DELETE FROM") ||
-        command.startsWith("UPDATE")
+        command.startsWith("UPDATE ") ||
+        command.startsWith("insert into") ||
+        command.startsWith("delete from") ||
+        command.startsWith("update ")
       ) {
         // TODO: Look for consensus first
         Blockchain.addNewBlock(command, dbSession, () => {
