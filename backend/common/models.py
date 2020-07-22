@@ -16,7 +16,12 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy.types import TypeDecorator
 
-from common.constants import SocialGroupRole, VisibilityType, VoteType
+from common.constants import (
+    SocialGroupRole,
+    TrackerStatus,
+    VisibilityType,
+    VoteType,
+)
 
 
 Base = declarative_base()
@@ -130,6 +135,25 @@ class SocialGroupMember(Base):
     role = Column(Enum(SocialGroupRole), nullable=False)
 
 
+class Blockchain(Base):
+    __tablename__ = 'blockchain'
+    hash = Column(String(512), primary_key=True)
+    preceding_hash = Column(String(512), nullable=False)
+    sql_statement = Column(JSON, nullable=False)
+
+
+class BlockchainVersion(Base):
+    __tablename__ = 'blockchain_version'
+    version = Column(String(512), primary_key=True)
+
+
+class Tracker(Base):
+    __tablename__ = 'trackers'
+    id = Column(BigInteger, primary_key=True)
+    url = Column(String(255), nullable=False)
+    status = Column(Enum(TrackerStatus), nullable=False)
+
+
 users = User.__table__
 posts = Post.__table__
 social_groups = SocialGroup.__table__
@@ -137,3 +161,6 @@ votes = Vote.__table__
 social_group_members = SocialGroupMember.__table__
 tags = Tag.__table__
 post_children = PostChild.__table__
+blockchain = Blockchain.__table__
+blockchain_version = BlockchainVersion.__table__
+trackers = Tracker.__table__

@@ -14,3 +14,8 @@ class VoteType(Enum):
 class SocialGroupRole(Enum):
     ADMIN = 'admin'
     MEMBER = 'member'
+
+
+class TrackerStatus(Enum):
+    STALE = 'stale'
+    ACTIVE = 'active'

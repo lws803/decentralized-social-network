@@ -31,7 +31,10 @@ var server = net.createServer(function (localsocket) {
   });
 
   localsocket.on("data", function (data) {
-    console.log(data.toString("utf8").substr(1));
+    var command = data.toString("utf8").substr(1)
+    if (command.includes('INSERT INTO') || command.includes('DELETE FROM')) {
+      console.log(command);
+    }
     var flushed = remotesocket.write(data);
     if (!flushed) {
       console.log("  remote not flushed; pausing local");
