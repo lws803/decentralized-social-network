@@ -8,3 +8,4 @@ Start the proxy server
 ```bash
 node src/proxyServer.js
 ```
+<!-- TODO: Talk about the env file as well -->
