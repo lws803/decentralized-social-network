@@ -1,10 +1,18 @@
-CREATE DATABASE social_network CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
-
+ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'root';
 CREATE USER 'bob'@'%' IDENTIFIED BY 'banana';
+ALTER USER 'bob'@'%' IDENTIFIED WITH mysql_native_password BY 'banana';
+
+flush privileges;
+
+CREATE DATABASE social_network CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
+CREATE DATABASE social_network_test CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
 
 GRANT ALL ON social_network.* TO 'bob'@'%';
+GRANT ALL ON social_network_test.* TO 'bob'@'%';
 
 USE social_network;
+
+-- end of setup --
 
 CREATE TABLE alembic_version (
     version_num VARCHAR(32) NOT NULL, 
