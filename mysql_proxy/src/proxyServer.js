@@ -1,4 +1,6 @@
-var net = require("net");
+const net = require("net");
+const io = require("socket.io-client");
+const SHA256 = require('crypto-js/sha256');
 
 process.on("uncaughtException", function (error) {
   console.error(error);
@@ -31,8 +33,8 @@ var server = net.createServer(function (localsocket) {
   });
 
   localsocket.on("data", function (data) {
-    var command = data.toString("utf8").substr(1)
-    if (command.includes('INSERT INTO') || command.includes('DELETE FROM')) {
+    var command = data.toString("utf8").substr(1);
+    if (command.includes("INSERT INTO") || command.includes("DELETE FROM")) {
       console.log(command);
     }
     var flushed = remotesocket.write(data);
