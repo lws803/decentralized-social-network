@@ -1,6 +1,22 @@
 require("dotenv").config();
 const SHA256 = require("crypto-js/sha256");
-const mysql = require("mysql");
+var crypto = require("crypto"),
+  algorithm = "aes-256-ctr",
+  password = process.env.AES_SQL_STATEMENT;
+
+function encrypt(text) {
+  var cipher = crypto.createCipher(algorithm, password);
+  var crypted = cipher.update(text, "utf8", "hex");
+  crypted += cipher.final("hex");
+  return crypted;
+}
+
+function decrypt(text) {
+  var decipher = crypto.createDecipher(algorithm, password);
+  var dec = decipher.update(text, "hex", "utf8");
+  dec += decipher.final("utf8");
+  return dec;
+}
 
 function computeHash(precedingHash, stringData) {
   return SHA256(precedingHash + stringData).toString();
@@ -10,10 +26,13 @@ class Blockchain {
   static startGenesisBlock(dbSession, callback) {
     let precedingHash = "genesis";
     let data = { data: "SELECT 1" };
+    let encryptedData = { data: encrypt("SELECT 1") };
     let hash = computeHash(precedingHash, JSON.stringify(data));
     let query =
       `INSERT INTO blockchain (hash, preceding_hash, sql_statement) ` +
-      `values ('${hash}', '${precedingHash}', '${JSON.stringify(data)}')`;
+      `values ('${hash}', '${precedingHash}', '${JSON.stringify(
+        encryptedData
+      )}')`;
 
     dbSession.query(query, (error, results) => {
       if (error) throw error;
@@ -33,13 +52,16 @@ class Blockchain {
     });
   }
 
-  static addNewBlock(data, dbSession, callback) {
+  static addNewBlock(command, dbSession, callback) {
+    let encryptedData = JSON.stringify({ data: encrypt(command) });
+    let packagedData = JSON.stringify({ data: command });
+
     this.obtainLatestBlock(dbSession, result => {
       let precedingHash = result.hash;
-      let hash = computeHash(precedingHash, JSON.stringify(data));
+      let hash = computeHash(precedingHash, packagedData);
       let query =
         `INSERT INTO blockchain (hash, preceding_hash, sql_statement) ` +
-        `values ('${hash}', '${precedingHash}', '${JSON.stringify(data)}')`;
+        `values ('${hash}', '${precedingHash}', '${encryptedData}')`;
 
       dbSession.query(query, (error, results) => {
         if (error) throw error;
@@ -56,45 +78,39 @@ class Blockchain {
         for (let i = 1; i < results.length; i++) {
           let currentBlock = results[i];
           let precedingBlock = results[i - 1];
+          let currentEncryptedStatement = JSON.parse(
+            currentBlock.sql_statement
+          )["data"];
+          let decryptedDataString = JSON.stringify({
+            data: decrypt(currentEncryptedStatement),
+          });
+
           if (
             currentBlock.hash !==
-            computeHash(
-              precedingBlock.hash,
-              JSON.stringify(JSON.parse(currentBlock.sql_statement))
-            )
+            computeHash(precedingBlock.hash, decryptedDataString)
           ) {
-            return callback(false);
+            return callback({
+              isValid: false,
+              currentBlock: currentBlock,
+              precedingBlock: precedingBlock,
+            });
           }
           if (currentBlock.preceding_hash !== precedingBlock.hash) {
-            return callback(false);
+            return callback({
+              isValid: false,
+              currentBlock: currentBlock,
+              precedingBlock: precedingBlock,
+            });
           }
         }
       }
-      return callback(true);
+      return callback({
+        isValid: true,
+        currentBlock: undefined,
+        precedingBlock: undefined,
+      });
     });
   }
 }
 
-// FIXME: Move this away to the main script when done testing
-var dbSession = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  database: process.env.DB_NAME,
-  port: process.env.DB_PORT,
-});
-
-dbSession.connect(function (err) {
-  if (err) {
-    console.error("error connecting: " + err.stack);
-    return;
-  }
-
-  console.log("connected as id " + dbSession.threadId);
-  // Blockchain.startGenesisBlock(dbSession, () => {});
-  // Blockchain.obtainLatestBlock(dbSession);
-  // Blockchain.addNewBlock({ data: "SELECT 2" }, dbSession, () => {});
-  Blockchain.checkChainValidity(dbSession, isValid => {
-    console.log(isValid);
-  });
-});
+module.exports = Blockchain;
