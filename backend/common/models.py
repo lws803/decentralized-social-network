@@ -137,7 +137,8 @@ class SocialGroupMember(Base):
 
 class Blockchain(Base):
     __tablename__ = 'blockchain'
-    hash = Column(String(512), primary_key=True)
+    id = Column(BigInteger, primary_key=True)
+    hash = Column(String(512), nullable=False)
     preceding_hash = Column(String(512), nullable=False)
     sql_statement = Column(JSON, nullable=False)
 

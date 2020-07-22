@@ -8,7 +8,7 @@ function computeHash(precedingHash, data) {
 
 class Blockchain {
   static startGenesisBlock(dbSession) {
-    let data = { sqlStatement: "SELECT 1" };
+    let data = { data: "SELECT 1" };
     let hash = computeHash("0", data);
     let query =
       `INSERT INTO blockchain (hash, preceding_hash, sql_statement) ` +
@@ -22,7 +22,11 @@ class Blockchain {
 
   static obtainLatestBlock(dbSession) {
     // TODO: Use sql queries to get the latest block
-    return this.blockchain[this.blockchain.length - 1];
+    dbSession.query(query, (error, results, fields) => {
+      if (error) throw error;
+      console.log(results);
+    });
+    return;
   }
   static addNewBlock(newBlock, dbSession) {
     newBlock.precedingHash = this.obtainLatestBlock().hash;
