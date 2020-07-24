@@ -18,7 +18,7 @@ var localport = process.env.DB_PORT_FORWARDED;
 var remotehost = process.env.DB_HOST;
 var remoteport = process.env.DB_PORT;
 
-dbSession.connect(function (err) {
+dbSession.connect(err => {
   if (err) {
     console.error("error connecting: " + err.stack);
     return;
