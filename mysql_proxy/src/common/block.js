@@ -1,35 +1,16 @@
 require("dotenv").config();
+const Encryption = require("./encryption");
 const SHA256 = require("crypto-js/sha256");
-var crypto = require("crypto"),
-  algorithm = "aes-256-cbc",
-  password = process.env.AES_SQL_KEY,
-  nonce = process.env.AES_SQL_NONCE;
 
 class Blockchain {
-
   static computeHash(precedingHash, stringData) {
     return SHA256(precedingHash + stringData).toString();
   }
-  
-  static encrypt(text) {
-    var cipher = crypto.createCipheriv(algorithm, password, nonce);
-    var crypted = cipher.update(text, "utf8", "hex");
-    crypted += cipher.final("hex");
-    return crypted;
-  }
-  
-  static decrypt(text) {
-    var decipher = crypto.createDecipheriv(algorithm, password, nonce);
-    var dec = decipher.update(text, "hex", "utf8");
-    dec += decipher.final("utf8");
-    return dec;
-  }
-  
+
   static startGenesisBlock(dbSession, callback) {
     let precedingHash = "genesis";
-    let data = { data: "SELECT 1" };
-    let encryptedData = { data: this.encrypt("SELECT 1") };
-    let hash = this.computeHash(precedingHash, JSON.stringify(data));
+    let encryptedData = { data: Encryption.encrypt("SELECT 1") };
+    let hash = this.computeHash(precedingHash, JSON.stringify(encryptedData));
     let query =
       `INSERT INTO blockchain (hash, preceding_hash, sql_statement) ` +
       `values ('${hash}', '${precedingHash}', '${JSON.stringify(
@@ -54,16 +35,13 @@ class Blockchain {
     });
   }
 
-  static addNewBlock(command, dbSession, callback) {
-    let encryptedData = JSON.stringify({ data: this.encrypt(command) });
-    let packagedData = JSON.stringify({ data: command });
-
+  static addNewBlock(encryptedPayload, dbSession, callback) {
     this.obtainLatestBlock(dbSession, result => {
       let precedingHash = result.hash;
-      let hash = this.computeHash(precedingHash, packagedData);
+      let hash = this.computeHash(precedingHash, encryptedPayload);
       let query =
         `INSERT INTO blockchain (hash, preceding_hash, sql_statement) ` +
-        `values ('${hash}', '${precedingHash}', '${encryptedData}')`;
+        `values ('${hash}', '${precedingHash}', '${encryptedPayload}')`;
 
       dbSession.query(query, (error, results) => {
         if (error) throw error;
@@ -80,16 +58,12 @@ class Blockchain {
         for (let i = 1; i < results.length; i++) {
           let currentBlock = results[i];
           let precedingBlock = results[i - 1];
-          let currentEncryptedStatement = JSON.parse(
-            currentBlock.sql_statement
-          )["data"];
-          let decryptedDataString = JSON.stringify({
-            data: this.decrypt(currentEncryptedStatement),
-          });
-
           if (
             currentBlock.hash !==
-            this.computeHash(precedingBlock.hash, decryptedDataString)
+            this.computeHash(
+              precedingBlock.hash,
+              JSON.stringify(JSON.parse(currentBlock.sql_statement))
+            )
           ) {
             return callback({
               isValid: false,

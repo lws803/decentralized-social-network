@@ -1,6 +1,7 @@
 const net = require("net");
 const mysql = require("mysql");
 const Blockchain = require("./common/block");
+const Encryption = require("./common/encryption");
 
 var dbSession = mysql.createConnection({
   host: process.env.DB_HOST,
@@ -66,8 +67,12 @@ dbSession.connect(err => {
         command.startsWith("delete from") ||
         command.startsWith("update ")
       ) {
+        let encryptedPayload = JSON.stringify({
+          data: Encryption.encrypt(command),
+        });
+
         // TODO: Look for consensus first
-        Blockchain.addNewBlock(command, dbSession, () => {
+        Blockchain.addNewBlock(encryptedPayload, dbSession, () => {
           writeData(data);
         });
       } else {

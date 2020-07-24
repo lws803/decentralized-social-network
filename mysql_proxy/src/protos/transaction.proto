@@ -10,7 +10,7 @@ service Transaction {
 
 message Block {
   string precedingHash = 1;
-  string sqlStatement = 2;
+  string encryptedPayload = 2;
 }
 
 message Acknowledgement {
