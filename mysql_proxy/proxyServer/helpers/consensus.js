@@ -1,4 +1,4 @@
-var PROTO_PATH = __dirname + "/protos/transaction.proto";
+var PROTO_PATH = __dirname + "/transaction.proto";
 
 var grpc = require("grpc");
 var protoLoader = require("@grpc/proto-loader");
@@ -51,7 +51,7 @@ class ConsensusClient {
   }
 
   static sendTransactionToAll(payload, dbSession, callback) {
-    var acceptedCount = 0;
+    var acceptedCount = 1;
     this.findLatestHash(dbSession, latestHash => {
       this.findTrackers(dbSession, trackers => {
         for (let i = 1; i < trackers.length; i++) {
@@ -62,7 +62,7 @@ class ConsensusClient {
           });
         }
         // At least 51% consent
-        if (acceptedCount / trackers.length > 0.51) {
+        if (acceptedCount / trackers.length + 1 > 0.51) {
           callback(true);
         } else {
           callback(false);

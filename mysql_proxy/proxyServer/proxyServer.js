@@ -2,6 +2,7 @@ const net = require("net");
 const mysql = require("mysql");
 const Blockchain = require("../common/block");
 const Encryption = require("../common/encryption");
+const ConsensusClient = require("./helpers/consensus");
 
 var dbSession = mysql.createConnection({
   host: process.env.DB_HOST,
@@ -70,11 +71,21 @@ dbSession.connect(err => {
         let encryptedPayload = JSON.stringify({
           data: Encryption.encrypt(command),
         });
-
-        // TODO: Look for consensus first
-        Blockchain.addNewBlock(encryptedPayload, dbSession, () => {
-          writeData(data);
-        });
+        ConsensusClient.sendTransactionToAll(
+          encryptedPayload,
+          dbSession,
+          accepted => {
+            if (accepted) {
+              Blockchain.addNewBlock(encryptedPayload, dbSession, () => {
+                writeData(data);
+              });
+            }
+          }
+        );
+        // TODO: Bypass consensus
+        // Blockchain.addNewBlock(encryptedPayload, dbSession, () => {
+        //   writeData(data);
+        // });
       } else {
         writeData(data);
       }

@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+option objc_class_prefix = "HLW";
+
+package transaction;
+
+service Transaction {
+  rpc sendBlock(Block) returns (Acknowledgement) {}
+}
+
+message Block {
+  string precedingHash = 1;
+  string encryptedPayload = 2;
+}
+
+message Acknowledgement {
+  bool acknowledgement = 1;
+}
