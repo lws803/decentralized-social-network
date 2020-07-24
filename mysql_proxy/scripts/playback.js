@@ -1,4 +1,5 @@
 const Blockchain = require("../common/block");
+const Encryption = require("../common/encryption");
 const mysql = require("mysql");
 
 var dbSession = mysql.createConnection({
@@ -14,27 +15,26 @@ dbSession.connect(err => {
   dbSession.query(query, (error, results) => {
     if (error) throw error;
     if (results.length > 1) {
-      for (let i = 1; i < results.length; i++) {
+      for (var i = 1; i < results.length; i++) {
         let currentBlock = results[i];
         let precedingBlock = results[i - 1];
         let currentEncryptedStatement = JSON.parse(currentBlock.sql_statement)[
           "data"
         ];
-        let decryptedDataString = JSON.stringify({
-          data: Blockchain.decrypt(currentEncryptedStatement),
-        });
-
         if (
           currentBlock.hash !==
-          Blockchain.computeHash(precedingBlock.hash, decryptedDataString)
+          Blockchain.computeHash(
+            precedingBlock.hash,
+            JSON.stringify(JSON.parse(currentBlock.sql_statement))
+          )
         ) {
           return;
         }
         if (currentBlock.preceding_hash !== precedingBlock.hash) {
           return;
         }
-        let decryptedStatement = Blockchain.decrypt(currentEncryptedStatement);
-        console.log(Blockchain.decrypt(currentEncryptedStatement));
+        let decryptedStatement = Encryption.decrypt(currentEncryptedStatement);
+        console.log(decryptedStatement);
         dbSession.query(
           decryptedStatement,
           (error, results) => {

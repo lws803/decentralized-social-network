@@ -2,7 +2,7 @@ var PROTO_PATH = __dirname + "/src/protos/transaction.proto";
 
 var grpc = require("grpc");
 const mysql = require("mysql");
-const Blockchain = require("./src/common/block");
+const Blockchain = require("./common/block");
 var protoLoader = require("@grpc/proto-loader");
 var packageDefinition = protoLoader.loadSync(PROTO_PATH, {
   keepCase: true,

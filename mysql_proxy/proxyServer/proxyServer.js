@@ -1,7 +1,7 @@
 const net = require("net");
 const mysql = require("mysql");
-const Blockchain = require("./common/block");
-const Encryption = require("./common/encryption");
+const Blockchain = require("../common/block");
+const Encryption = require("../common/encryption");
 
 var dbSession = mysql.createConnection({
   host: process.env.DB_HOST,
