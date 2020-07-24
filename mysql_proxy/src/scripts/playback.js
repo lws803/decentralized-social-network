@@ -1,4 +1,4 @@
-const Blockchain = require("./common/block");
+const Blockchain = require("../common/block");
 const mysql = require("mysql");
 
 var dbSession = mysql.createConnection({

@@ -1,8 +1,6 @@
 const net = require("net");
-const io = require("socket.io-client");
 const mysql = require("mysql");
 const Blockchain = require("./common/block");
-const { write } = require("fs");
 
 var dbSession = mysql.createConnection({
   host: process.env.DB_HOST,
