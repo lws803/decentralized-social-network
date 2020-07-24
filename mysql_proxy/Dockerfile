@@ -6,4 +6,4 @@ RUN npm install
 
 EXPOSE 3307
 
-CMD node src/proxyServer.js
+CMD node proxyServer/proxyServer.js
