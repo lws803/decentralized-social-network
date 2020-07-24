@@ -21,7 +21,7 @@ function main() {
     {
       precedingHash:
         "e08553aa88dbe892d892bedc48517e8ef5caa16fc314469d6c21fc2f6cfc0bfe",
-      sqlStatement: "SELECT 1",
+      sqlStatement: "SELECT 1",  // TODO: Send this encrypted instead
     },
     (err, response) => {
       console.log(response.acknowledgement);

@@ -54,7 +54,7 @@ function sendBlock(call, callback) {
       if (call.request.precedingHash === prevHash) {
         testAndExecute(
           dbSession,
-          call.request.sqlStatement,
+          call.request.sqlStatement,  // TODO: Decrypt this first
           (error, results) => {
             if (error) callback(null, { acknowledgement: false });
             callback(null, { acknowledgement: true });
