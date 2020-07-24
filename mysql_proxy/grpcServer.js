@@ -33,16 +33,14 @@ function startTransaction(callback) {
   dbSession.query("START TRANSACTION", callback);
 }
 
-function commit(callback) {
-  dbSession.query("COMMIT", callback);
-}
-
 function testAndExecute(dbSession, statement, callback) {
   startTransaction((error, results) => {
     if (error) callback(error, results);
     dbSession.query(statement, (error, results) => {
       if (error) callback(error, results);
-      commit((error, results), callback);
+      dbSession.query("COMMIT", (error, results) => {
+        callback(error, results);
+      });
     });
   });
 }
@@ -58,11 +56,8 @@ function sendBlock(call, callback) {
           dbSession,
           call.request.sqlStatement,
           (error, results) => {
-            if (error) {
-              callback(null, { acknowledgement: false });
-            } else {
-              callback(null, { acknowledgement: true });
-            }
+            if (error) callback(null, { acknowledgement: false });
+            callback(null, { acknowledgement: true });
           }
         );
       }
