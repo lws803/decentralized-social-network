@@ -1,17 +1,8 @@
-var PROTO_PATH = __dirname + "/protos/transaction.proto";
-
-var grpc = require("grpc");
+const grpc = require("grpc");
 const mysql = require("mysql");
-const Blockchain = require("./common/block");
-const Encryption = require("./common/encryption");
-var protoLoader = require("@grpc/proto-loader");
-var packageDefinition = protoLoader.loadSync(PROTO_PATH, {
-  keepCase: true,
-  longs: String,
-  enums: String,
-  defaults: true,
-  oneofs: true,
-});
+const Blockchain = require("../common/block");
+const Encryption = require("../common/encryption");
+const packageDefinition = require("../protos/packageDefinition");
 
 var dbSession = mysql.createConnection({
   host: process.env.DB_HOST,
@@ -52,28 +43,26 @@ function testAndExecute(dbSession, statement, callback) {
 function sendBlock(call, callback) {
   getPrevHash(dbSession, prevHash => {
     if (call.request.precedingHash === prevHash) {
-      let sqlStatement = Encryption.decrypt(
-        JSON.parse(call.request.encryptedPayload)["data"]
-      );
-      testAndExecute(
-        dbSession,
-        sqlStatement,
-        (error, results) => {
+      try {
+        let sqlStatement = Encryption.decrypt(
+          JSON.parse(call.request.encryptedPayload)["data"]
+        );
+        console.log(sqlStatement);
+        testAndExecute(dbSession, sqlStatement, (error, results) => {
           if (error) return callback(null, { acknowledgement: false });
           return callback(null, { acknowledgement: true });
-        }
-      );
+        });
+      } catch (error) {
+        // Cannot decrypt
+        return callback(null, { acknowledgement: false });
+      }
     }
   });
 }
 
-function main() {
-  var server = new grpc.Server();
-  server.addService(transactionProto.Transaction.service, {
-    sendBlock: sendBlock,
-  });
-  server.bind("0.0.0.0:50051", grpc.ServerCredentials.createInsecure());
-  server.start();
-}
-
-main();
+var server = new grpc.Server();
+server.addService(transactionProto.Transaction.service, {
+  sendBlock: sendBlock,
+});
+server.bind("0.0.0.0:50051", grpc.ServerCredentials.createInsecure());
+server.start();
