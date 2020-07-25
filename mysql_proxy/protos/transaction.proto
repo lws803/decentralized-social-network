@@ -8,11 +8,21 @@ service Transaction {
   rpc sendBlock(Block) returns (Acknowledgement) {}
 }
 
+message VisitedNodes {
+  string url = 1;
+}
+
 message Block {
   string precedingHash = 1;
   string encryptedPayload = 2;
+  repeated VisitedNodes visitedNodes = 3;
 }
 
 message Acknowledgement {
-  bool acknowledgement = 1;
+  enum Type {
+    WE_ARE_OUT_OF_DATE = 0;
+    THEY_ARE_OUT_OF_DATE = 1;
+    WE_ARE_IN_SYNC = 2;
+  }
+  Type type = 1;
 }

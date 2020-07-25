@@ -64,25 +64,10 @@ var server = net.createServer(function (localsocket) {
       let encryptedPayload = JSON.stringify({
         data: Encryption.encrypt(command),
       });
-      ConsensusClient.sendTransactionToAll(
-        encryptedPayload,
-        dbSession,
-        accepted => {
-          if (accepted) {
-            Blockchain.addNewBlock(
-              encryptedPayload,
-              dbSession,
-              (error, results) => {
-                if (!error) writeData(data);
-                else localsocket.write(Buffer("some random string"))
-              }
-            );
-          } else localsocket.write(Buffer("some random string"))
-        }
-      );
-
-    } else {
-      writeData(data);
+      ConsensusClient.sendTransactionRandom(encryptedPayload, dbSession, (error, results) => {
+        if (!error) writeData(data);
+        else localsocket.write(Buffer("Error random string"));
+      })
     }
   });
 

@@ -8,11 +8,12 @@
   "author": "lws803",
   "license": "ISC",
   "dependencies": {
+    "@grpc/proto-loader": "^0.1.0",
     "crypto-js": "^4.0.0",
     "dotenv": "^8.2.0",
-    "mysql": "^2.18.1",
+    "externalip": "^1.0.2",
     "google-protobuf": "^3.0.0",
     "grpc": "^1.11.0",
-    "@grpc/proto-loader": "^0.1.0"
+    "mysql": "^2.18.1"
   }
 }

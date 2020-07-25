@@ -1,5 +1,7 @@
 const grpc = require("grpc");
 const packageDefinition = require("../../protos/packageDefinition");
+const Blockchain = require("../../common/block");
+const externalip = require("externalip");
 
 var transactionProto = grpc.loadPackageDefinition(packageDefinition)
   .transaction;
@@ -40,6 +42,23 @@ class ConsensusClient {
     );
   }
 
+  static propagateTransaction(latestHash, payload, url, callback) {
+    var client = new transactionProto.Transaction(
+      `${url}:50051`,
+      grpc.credentials.createInsecure()
+    );
+    externalip(function (err, ip) {
+      client.sendBlock(
+        {
+          precedingHash: latestHash,
+          encryptedPayload: payload,
+          visitedNodes: [{ url: ip }],
+        },
+        callback
+      );
+    });
+  }
+
   static sendTransactionToAll(payload, dbSession, callback) {
     var acceptedCount = 1;
     this.findLatestHash(dbSession, latestHash => {
@@ -53,7 +72,6 @@ class ConsensusClient {
             if (err && err.code == 14) availableTrackers -= 1;
             if (!err && results.acknowledgement) acceptedCount += 1;
             if (i === trackers.length - 1) {
-              // At least 51% consent
               console.log;
               if (acceptedCount / availableTrackers > 0.51) {
                 return callback(true);
@@ -62,6 +80,25 @@ class ConsensusClient {
               }
             }
           });
+        }
+      });
+    });
+  }
+
+  static sendTransactionRandom(payload, dbSession, callback) {
+    this.findLatestHash(dbSession, latestHash => {
+      this.findTrackers(dbSession, trackers => {
+        var foundCandidate = false;
+        while (!foundCandidate) {
+          selectedTracker = trackers[Math.floor(Math.random() * arr.length)];
+          this.propagateTransaction(
+            latestHash,
+            payload,
+            selectedTracker.url,
+            (error, result) => {
+              if (!error) foundCandidate = false;
+            }
+          );
         }
       });
     });
