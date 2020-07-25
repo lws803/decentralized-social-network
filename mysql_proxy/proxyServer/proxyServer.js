@@ -76,12 +76,13 @@ var server = net.createServer(function (localsocket) {
               dbSession,
               (error, results) => {
                 if (!error) writeData(data);
+                else localsocket.write(Buffer("Random gibberish error"))
               }
             );
-          }
-          // FIXME: Return an error if not so application will not get stuck
+          } else localsocket.write(Buffer("Random gibberish error"))
         }
       );
+
       // TODO: Bypass consensus
       // Blockchain.addNewBlock(encryptedPayload, dbSession, () => {
       //   writeData(data);
