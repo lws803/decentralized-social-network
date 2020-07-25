@@ -131,6 +131,9 @@ var server = net.createServer(function (localsocket) {
   });
 });
 
+// TODO: Request for a download of new chain when it first starts up and it is lagging behind
+// do a sanity check -> compare latest hash
+
 server.listen(localport, process.env.HOST);
 
 console.log(
