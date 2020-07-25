@@ -26,7 +26,7 @@ var transactionProto = grpc.loadPackageDefinition(packageDefinition)
 
 function getPrevHash(dbSession, callback) {
   Blockchain.obtainLatestBlock(dbSession, result => {
-    callback(result.hash);
+    return callback(result.hash);
   });
 }
 
@@ -37,11 +37,11 @@ function startTransaction(callback) {
 function testAndExecute(dbSession, statement, callback) {
   // TODO: Add better checks here
   startTransaction((error, results) => {
-    if (error) callback(error, results);
+    if (error) return callback(error, results);
     dbSession.query(statement, (error, results) => {
-      if (error) callback(error, results);
+      if (error) return callback(error, results);
       dbSession.query("COMMIT", (error, results) => {
-        callback(error, results);
+        return callback(error, results);
       });
     });
   });
@@ -54,7 +54,7 @@ function sendBlock(call, callback) {
         JSON.parse(call.request.encryptedPayload)["data"]
       );
       console.log(sqlStatement);
-      callback(null, { acknowledgement: true });
+      return callback(null, { acknowledgement: true });
       // callback(null, { acknowledgement: true });
       // testAndExecute(
       //   dbSession,

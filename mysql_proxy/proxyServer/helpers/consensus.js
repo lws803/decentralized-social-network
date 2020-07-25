@@ -15,17 +15,17 @@ var transactionProto = grpc.loadPackageDefinition(packageDefinition)
 class ConsensusClient {
   static findTrackers(dbSession, callback) {
     dbSession.query("SELECT * from trackers", (error, results) => {
-      if (error) callback(undefined);
-      else callback(results);
+      if (error) return callback(undefined);
+      else return callback(results);
     });
   }
 
   static findLatestHash(dbSession, callback) {
     let query = "SELECT * FROM blockchain ORDER BY id DESC LIMIT 1";
     dbSession.query(query, (error, results) => {
-      if (error) callback(undefined);
-      else if (!results) callback(undefined);
-      else callback(results[0].hash);
+      if (error) return callback(undefined);
+      else if (!results) return callback(undefined);
+      else return callback(results[0].hash);
     });
   }
 
