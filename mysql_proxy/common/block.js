@@ -17,7 +17,7 @@ class Blockchain {
         encryptedData
       )}')`;
 
-    dbSession.query(query, (error, results), callback);
+    dbSession.query(query, callback);
   }
 
   static obtainLatestBlock(dbSession, callback) {
