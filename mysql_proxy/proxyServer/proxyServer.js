@@ -64,10 +64,15 @@ var server = net.createServer(function (localsocket) {
       let encryptedPayload = JSON.stringify({
         data: Encryption.encrypt(command),
       });
-      ConsensusClient.sendTransactionRandom(encryptedPayload, dbSession, (error, results) => {
-        if (!error) writeData(data);
-        else localsocket.write(Buffer("Error random string"));
-      })
+      ConsensusClient.sendTransactionRandom(
+        encryptedPayload,
+        dbSession,
+        (error, result) => {
+          if (!error && result.acknowledgement && result.acknowledgement === 1)
+            writeData(data);
+          else localsocket.write(Buffer("Error random string"));
+        }
+      );
     }
   });
 

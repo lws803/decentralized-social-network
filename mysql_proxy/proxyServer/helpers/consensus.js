@@ -97,6 +97,7 @@ class ConsensusClient {
             selectedTracker.url,
             (error, result) => {
               if (!error) foundCandidate = false;
+              else return callback(error, result);
             }
           );
         }

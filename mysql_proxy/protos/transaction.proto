@@ -18,11 +18,15 @@ message Block {
   repeated VisitedNodes visitedNodes = 3;
 }
 
-message Acknowledgement {
+message Update {
   enum Type {
     WE_ARE_OUT_OF_DATE = 0;
     THEY_ARE_OUT_OF_DATE = 1;
     WE_ARE_IN_SYNC = 2;
   }
   Type type = 1;
+}
+
+message Acknowledgement {
+  string acknowledgement = 1;
 }
