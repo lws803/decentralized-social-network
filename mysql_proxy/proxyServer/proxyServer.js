@@ -24,12 +24,10 @@ console.log("connected as id " + dbSession.threadId);
 dbSession.query("SELECT COUNT(*) from blockchain", (error, results) => {
   if (error) throw error;
   if (!results[0]["COUNT(*)"]) {
-    Blockchain.startGenesisBlock(dbSession, (error, results) => {});
+    Blockchain.startGenesisBlock(dbSession, (error, results) => {
+      if (error) throw error;
+    });
   }
-});
-
-Blockchain.checkChainValidity(dbSession, (error, { isValid }) => {
-  console.log(isValid);
 });
 
 var server = net.createServer(function (localsocket) {
