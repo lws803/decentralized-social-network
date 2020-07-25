@@ -24,11 +24,11 @@ console.log("connected as id " + dbSession.threadId);
 dbSession.query("SELECT COUNT(*) from blockchain", (error, results) => {
   if (error) throw error;
   if (!results[0]["COUNT(*)"]) {
-    Blockchain.startGenesisBlock(dbSession, () => {});
+    Blockchain.startGenesisBlock(dbSession, (error, results) => {});
   }
 });
 
-Blockchain.checkChainValidity(dbSession, ({ isValid }) => {
+Blockchain.checkChainValidity(dbSession, (error, { isValid }) => {
   console.log(isValid);
 });
 
@@ -71,9 +71,13 @@ var server = net.createServer(function (localsocket) {
         dbSession,
         accepted => {
           if (accepted) {
-            Blockchain.addNewBlock(encryptedPayload, dbSession, () => {
-              writeData(data);
-            });
+            Blockchain.addNewBlock(
+              encryptedPayload,
+              dbSession,
+              (error, results) => {
+                if (!error) writeData(data);
+              }
+            );
           }
           // FIXME: Return an error if not so application will not get stuck
         }

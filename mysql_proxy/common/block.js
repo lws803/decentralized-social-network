@@ -17,26 +17,23 @@ class Blockchain {
         encryptedData
       )}')`;
 
-    dbSession.query(query, (error, results) => {
-      if (error) throw error;
-      return callback(results);
-    });
+    dbSession.query(query, (error, results), callback);
   }
 
   static obtainLatestBlock(dbSession, callback) {
     let query = "SELECT * FROM blockchain ORDER BY id DESC LIMIT 1";
     dbSession.query(query, (error, results) => {
-      if (error) throw error;
+      if (error) return callback(error, undefined);
       if (results) {
-        return callback(results[0]);
+        return callback(error, results[0]);
       } else {
-        return callback(undefined);
+        return callback(error, undefined);
       }
     });
   }
 
   static addNewBlock(encryptedPayload, dbSession, callback) {
-    this.obtainLatestBlock(dbSession, result => {
+    this.obtainLatestBlock(dbSession, (error, result) => {
       let precedingHash = result.hash;
       let hash = this.computeHash(precedingHash, encryptedPayload);
       let query =
@@ -44,8 +41,7 @@ class Blockchain {
         `values ('${hash}', '${precedingHash}', '${encryptedPayload}')`;
 
       dbSession.query(query, (error, results) => {
-        if (error) throw error;
-        return callback(results);
+        return callback(error, results);
       });
     });
   }
@@ -53,7 +49,7 @@ class Blockchain {
   static checkChainValidity(dbSession, callback) {
     let query = "SELECT * FROM blockchain ORDER BY id";
     dbSession.query(query, (error, results) => {
-      if (error) throw error;
+      if (error) callback(error, undefined);
       if (results.length > 1) {
         for (let i = 1; i < results.length; i++) {
           let currentBlock = results[i];
@@ -65,14 +61,14 @@ class Blockchain {
               JSON.stringify(JSON.parse(currentBlock.sql_statement))
             )
           ) {
-            return callback({
+            return callback(error, {
               isValid: false,
               currentBlock: currentBlock,
               precedingBlock: precedingBlock,
             });
           }
           if (currentBlock.preceding_hash !== precedingBlock.hash) {
-            return callback({
+            return callback(error, {
               isValid: false,
               currentBlock: currentBlock,
               precedingBlock: precedingBlock,
@@ -80,7 +76,7 @@ class Blockchain {
           }
         }
       }
-      return callback({
+      return callback(error, {
         isValid: true,
         currentBlock: undefined,
         precedingBlock: undefined,

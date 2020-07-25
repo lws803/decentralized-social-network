@@ -15,7 +15,7 @@ var transactionProto = grpc.loadPackageDefinition(packageDefinition)
 class ConsensusClient {
   static findTrackers(dbSession, callback) {
     dbSession.query("SELECT * from trackers", (error, results) => {
-      if (error) return callback(undefined);
+      if (error) return callback([]);
       else return callback(results);
     });
   }

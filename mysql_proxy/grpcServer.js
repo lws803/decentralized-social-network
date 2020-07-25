@@ -25,7 +25,9 @@ var transactionProto = grpc.loadPackageDefinition(packageDefinition)
   .transaction;
 
 function getPrevHash(dbSession, callback) {
-  Blockchain.obtainLatestBlock(dbSession, result => {
+  Blockchain.obtainLatestBlock(dbSession, (error, result) => {
+    if (error) return callback(undefined);
+    if (!result) return undefined;
     return callback(result.hash);
   });
 }

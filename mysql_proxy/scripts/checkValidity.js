@@ -11,10 +11,13 @@ var dbSession = mysql.createConnection({
 
 Blockchain.checkChainValidity(
   dbSession,
-  ({ isValid, currentBlock, precedingBlock }) => {
-    console.log(isValid);
+  (error, { isValid, currentBlock, precedingBlock }) => {
+    if (error) {
+      console.log(error);
+    }
     if (!isValid) {
       console.log(currentBlock, precedingBlock);
     }
+    console.log(isValid);
   }
 );
