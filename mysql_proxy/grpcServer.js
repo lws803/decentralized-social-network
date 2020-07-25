@@ -55,17 +55,14 @@ function sendBlock(call, callback) {
       let sqlStatement = Encryption.decrypt(
         JSON.parse(call.request.encryptedPayload)["data"]
       );
-      console.log(sqlStatement);
-      return callback(null, { acknowledgement: true });
-      // callback(null, { acknowledgement: true });
-      // testAndExecute(
-      //   dbSession,
-      //   sqlStatement,
-      //   (error, results) => {
-      //     if (error) callback(null, { acknowledgement: false });
-      //     callback(null, { acknowledgement: true });
-      //   }
-      // );
+      testAndExecute(
+        dbSession,
+        sqlStatement,
+        (error, results) => {
+          if (error) return callback(null, { acknowledgement: false });
+          return callback(null, { acknowledgement: true });
+        }
+      );
     }
   });
 }
