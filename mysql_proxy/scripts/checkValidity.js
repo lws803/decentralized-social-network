@@ -9,14 +9,12 @@ var dbSession = mysql.createConnection({
   port: process.env.DB_PORT,
 });
 
-dbSession.connect(err => {
-  Blockchain.checkChainValidity(
-    dbSession,
-    ({ isValid, currentBlock, precedingBlock }) => {
-      console.log(isValid);
-      if (!isValid) {
-        console.log(currentBlock, precedingBlock);
-      }
+Blockchain.checkChainValidity(
+  dbSession,
+  ({ isValid, currentBlock, precedingBlock }) => {
+    console.log(isValid);
+    if (!isValid) {
+      console.log(currentBlock, precedingBlock);
     }
-  );
-});
+  }
+);

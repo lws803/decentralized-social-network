@@ -16,7 +16,7 @@ class ConsensusClient {
   static findTrackers(dbSession, callback) {
     dbSession.query("SELECT * from trackers", (error, results) => {
       if (error) callback(undefined);
-      callback(results);
+      else callback(results);
     });
   }
 
@@ -24,11 +24,8 @@ class ConsensusClient {
     let query = "SELECT * FROM blockchain ORDER BY id DESC LIMIT 1";
     dbSession.query(query, (error, results) => {
       if (error) callback(undefined);
-      if (results) {
-        return callback(results[0].hash);
-      } else {
-        return callback(undefined);
-      }
+      else if (!results) callback(undefined);
+      else callback(results[0].hash);
     });
   }
 
@@ -43,9 +40,9 @@ class ConsensusClient {
         encryptedPayload: payload,
       },
       (err, response) => {
-        if (err) callback(false);
-        // TODO: We need to handle what happens when response does not exist
-        callback(response.acknowledgement);
+        if (err) return callback(false);
+        if (!response) return callback(false);
+        return callback(response.acknowledgement);
       }
     );
   }
@@ -54,18 +51,20 @@ class ConsensusClient {
     var acceptedCount = 1;
     this.findLatestHash(dbSession, latestHash => {
       this.findTrackers(dbSession, trackers => {
-        for (let i = 1; i < trackers.length; i++) {
+        for (let i = 0; i < trackers.length; i++) {
           let url = trackers[i].url;
           // TODO: Consider the active status of the tracker in future
           this.sendTransaction(latestHash, payload, url, acknowledgement => {
             if (acknowledgement) acceptedCount += 1;
+            if (i === trackers.length - 1) {
+              // At least 51% consent
+              if (acceptedCount / (trackers.length + 1) > 0.51) {
+                return callback(true);
+              } else {
+                return callback(false);
+              }
+            }
           });
-        }
-        // At least 51% consent
-        if (acceptedCount / trackers.length + 1 > 0.51) {
-          callback(true);
-        } else {
-          callback(false);
         }
       });
     });

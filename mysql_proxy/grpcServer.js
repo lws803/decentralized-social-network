@@ -1,8 +1,9 @@
-var PROTO_PATH = __dirname + "/src/protos/transaction.proto";
+var PROTO_PATH = __dirname + "/protos/transaction.proto";
 
 var grpc = require("grpc");
 const mysql = require("mysql");
 const Blockchain = require("./common/block");
+const Encryption = require("./common/encryption");
 var protoLoader = require("@grpc/proto-loader");
 var packageDefinition = protoLoader.loadSync(PROTO_PATH, {
   keepCase: true,
@@ -34,6 +35,7 @@ function startTransaction(callback) {
 }
 
 function testAndExecute(dbSession, statement, callback) {
+  // TODO: Add better checks here
   startTransaction((error, results) => {
     if (error) callback(error, results);
     dbSession.query(statement, (error, results) => {
@@ -46,22 +48,23 @@ function testAndExecute(dbSession, statement, callback) {
 }
 
 function sendBlock(call, callback) {
-  dbSession.connect(err => {
-    if (err) {
-      console.error("error connecting: " + err.stack);
+  getPrevHash(dbSession, prevHash => {
+    if (call.request.precedingHash === prevHash) {
+      let sqlStatement = Encryption.decrypt(
+        JSON.parse(call.request.encryptedPayload)["data"]
+      );
+      console.log(sqlStatement);
+      callback(null, { acknowledgement: true });
+      // callback(null, { acknowledgement: true });
+      // testAndExecute(
+      //   dbSession,
+      //   sqlStatement,
+      //   (error, results) => {
+      //     if (error) callback(null, { acknowledgement: false });
+      //     callback(null, { acknowledgement: true });
+      //   }
+      // );
     }
-    getPrevHash(dbSession, prevHash => {
-      if (call.request.precedingHash === prevHash) {
-        testAndExecute(
-          dbSession,
-          call.request.sqlStatement,  // TODO: Decrypt this first
-          (error, results) => {
-            if (error) callback(null, { acknowledgement: false });
-            callback(null, { acknowledgement: true });
-          }
-        );
-      }
-    });
   });
 }
 
