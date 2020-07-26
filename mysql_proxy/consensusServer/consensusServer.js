@@ -69,3 +69,6 @@ server.start();
 
 console.log("server started, listening for RPC calls")
 // TODO: Server will take on the role of updating and receiving updates
+// It is the role of the more updated node to send the updates to the out of date nodes
+// Receiver will have to resolve by rolling back a few steps to the starting hash of the payloads
+// Only way to do so is to start the db from a blank state and replay from the start

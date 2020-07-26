@@ -19,12 +19,10 @@ message Block {
 }
 
 message Update {
-  enum Type {
-    WE_ARE_OUT_OF_DATE = 0;
-    THEY_ARE_OUT_OF_DATE = 1;
-    WE_ARE_IN_SYNC = 2;
+  message Payload {
+    string encryptedPayload = 1;
   }
-  Type type = 1;
+  repeated Payload payloads = 1;
 }
 
 message Acknowledgement {
