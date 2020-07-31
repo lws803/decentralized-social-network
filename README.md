@@ -1,2 +1,2 @@
-# decentralized-social-network
-Decentralized social networking platform
+# decentralized-social-news-site
+Decentralized social news platform for the independent journalists
