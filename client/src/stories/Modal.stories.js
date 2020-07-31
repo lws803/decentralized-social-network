@@ -12,7 +12,13 @@ export const Default = () => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <div>
-      <button onClick={() => setIsOpen(true)}>Open Modal</button>
+      <button
+        onClick={() => {
+          setIsOpen(true);
+        }}
+      >
+        Open Modal
+      </button>
       <ModalView
         isOpen={isOpen}
         contentLabel="Example Modal"
@@ -23,5 +29,17 @@ export const Default = () => {
         Hello world
       </ModalView>
     </div>
+  );
+};
+
+export const AuthModal = () => {
+  return (
+    <ModalView
+      isOpen={true}
+      contentLabel="Example Auth modal"
+      onRequestClose={action("close")}
+    >
+      Hello world
+    </ModalView>
   );
 };
