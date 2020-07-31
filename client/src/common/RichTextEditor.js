@@ -3,13 +3,11 @@ import React from "react";
 import "./RichTextEditorStyle.scss";
 import { DraftailEditor, BLOCK_TYPE, INLINE_STYLE } from "draftail";
 
-const initial = JSON.parse(sessionStorage.getItem("draftail:content"));
-
 class RichTextEditor extends React.Component {
   render() {
     return (
       <DraftailEditor
-        rawContentState={initial || null}
+        rawContentState={this.props.initial || null}
         onSave={this.props.onSave}
         blockTypes={[
           { type: BLOCK_TYPE.HEADER_ONE },

@@ -8,4 +8,8 @@ export default {
   component: RichTextEditor,
 };
 
-export const ArticleEditor = () => <RichTextEditor onSave={action("saved")} />;
+const initial = JSON.parse(sessionStorage.getItem("draftail:content"));
+
+export const ArticleEditor = () => (
+  <RichTextEditor onSave={action("saved")} initial={initial} />
+);

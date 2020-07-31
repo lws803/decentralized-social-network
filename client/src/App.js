@@ -1,6 +1,5 @@
 import React from "react";
 
-import "./App.css";
 import "draft-js/dist/Draft.css";
 import "draftail/dist/draftail.css";
 import { DraftailEditor, BLOCK_TYPE, INLINE_STYLE } from "draftail";
