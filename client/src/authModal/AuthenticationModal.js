@@ -1,5 +1,5 @@
 import React from "react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 import ModalView from "../common/Modal";
 import styled from "styled-components";
@@ -63,8 +63,8 @@ class AuthenticationModal extends React.Component {
 AuthenticationModal.propTypes = {
   onSignup: PropTypes.func,
   onLogin: PropTypes.func,
-  ...ModalView.propTypes
-}
+  ...ModalView.propTypes,
+};
 
 const UserForm = styled.div`
   display: flex;
