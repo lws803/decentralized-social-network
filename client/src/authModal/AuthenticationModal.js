@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from 'prop-types';
 
 import ModalView from "../common/Modal";
 import styled from "styled-components";
@@ -59,7 +60,11 @@ class AuthenticationModal extends React.Component {
   }
 }
 
-export default AuthenticationModal;
+AuthenticationModal.propTypes = {
+  onSignup: PropTypes.func,
+  onLogin: PropTypes.func,
+  ...ModalView.propTypes
+}
 
 const UserForm = styled.div`
   display: flex;
@@ -69,3 +74,5 @@ const UserForm = styled.div`
   align-items: center;
   // justify-content: space-between;
 `;
+
+export default AuthenticationModal;
