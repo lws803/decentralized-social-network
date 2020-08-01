@@ -20,6 +20,7 @@ class NavigationBar extends React.Component {
 }
 
 const NavContainer = styled.div`
+  border-style: solid;
   display: flex;
   height: 40px;
   flex-direction: row;
@@ -39,6 +40,9 @@ const IconButton = styled.button`
   margin-right: 4px;
 `;
 
-const MainLogo = styled.button``;
+const MainLogo = styled.button`
+  margin-left: 4px;
+  margin-right: 4px;
+`;
 
 export default NavigationBar;

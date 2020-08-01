@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 import { action } from "@storybook/addon-actions";
 import ModalView from "../common/Modal";
+import AuthenticationModal from "../authModal/AuthenticationModal";
 
 export default {
   title: "ModalView",
@@ -34,12 +35,10 @@ export const Default = () => {
 
 export const AuthModal = () => {
   return (
-    <ModalView
+    <AuthenticationModal
       isOpen={true}
-      contentLabel="Example Auth modal"
-      onRequestClose={action("close")}
-    >
-      Hello world
-    </ModalView>
+      onSignup={action("sign up")}
+      onLogin={action("login")}
+    />
   );
 };
