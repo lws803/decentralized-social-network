@@ -1,8 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import ModalView from "../common/Modal";
+import Validator from "jsonschema";
 import styled from "styled-components";
+
+import ModalView from "../common/Modal";
+import { AuthSchema } from "../common/Schemas";
 
 class AuthenticationModal extends React.Component {
   constructor(props) {
@@ -14,8 +17,9 @@ class AuthenticationModal extends React.Component {
   }
 
   validation() {
-    // TODO: Add validation here
-    return true;
+    const v = new Validator.Validator();
+    // TODO: Display a list of errors on the modal view
+    console.log(v.validate(this.state, AuthSchema));
   }
 
   render() {
@@ -42,14 +46,16 @@ class AuthenticationModal extends React.Component {
           </div>
           <button
             onClick={() => {
-              if (this.validation()) this.props.onSignup(this.state);
+              this.validation();
+              this.props.onSignup(this.state);
             }}
           >
             Sign up
           </button>
           <button
             onClick={() => {
-              if (this.validation()) this.props.onLogin(this.state);
+              this.validation();
+              this.props.onLogin(this.state);
             }}
           >
             Login
@@ -72,7 +78,6 @@ const UserForm = styled.div`
   flex-direction: column;
   width: 100%;
   align-items: center;
-  // justify-content: space-between;
 `;
 
 export default AuthenticationModal;
