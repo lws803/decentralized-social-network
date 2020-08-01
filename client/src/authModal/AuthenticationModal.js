@@ -61,8 +61,8 @@ class AuthenticationModal extends React.Component {
 }
 
 AuthenticationModal.propTypes = {
-  onSignup: PropTypes.func,
-  onLogin: PropTypes.func,
+  onSignup: PropTypes.func.isRequired,
+  onLogin: PropTypes.func.isRequired,
   ...ModalView.propTypes,
 };
 
