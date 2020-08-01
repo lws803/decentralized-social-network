@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 
 import styled from "styled-components";
 
+import ProfileDropdown from "./ProfileDropdown";
+
 class NavigationBar extends React.Component {
   render() {
     return (
@@ -13,10 +15,13 @@ class NavigationBar extends React.Component {
           <IconButton onClick={this.props.onBookmarksClick}>
             Bookmarks
           </IconButton>
+          <ProfileDropdown />
           <IconButton onClick={this.props.onNewStoryClick}>
             New Story
           </IconButton>
-          <IconButton onClick={this.props.onProfileClick}>Profile</IconButton>
+          {false && (
+            <IconButton onClick={this.props.onProfileClick}>Profile</IconButton>
+          )}
         </ButtonsContainer>
       </NavContainer>
     );
@@ -36,7 +41,9 @@ const NavContainer = styled.div`
   display: flex;
   height: 40px;
   flex-direction: row;
-  width: 100%;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
   align-items: center;
   justify-content: space-between;
 `;
