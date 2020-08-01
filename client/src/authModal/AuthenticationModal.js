@@ -19,7 +19,8 @@ class AuthenticationModal extends React.Component {
   validation() {
     const v = new Validator.Validator();
     // TODO: Display a list of errors on the modal view
-    console.log(v.validate(this.state, AuthSchema));
+    const result = v.validate(this.state, AuthSchema);
+    return result;
   }
 
   render() {
@@ -46,16 +47,14 @@ class AuthenticationModal extends React.Component {
           </div>
           <button
             onClick={() => {
-              this.validation();
-              this.props.onSignup(this.state);
+              if (this.validation().valid) this.props.onSignup(this.state);
             }}
           >
             Sign up
           </button>
           <button
             onClick={() => {
-              this.validation();
-              this.props.onLogin(this.state);
+              if (this.validation().valid) this.props.onLogin(this.state);
             }}
           >
             Login
