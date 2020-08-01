@@ -15,7 +15,11 @@ class NavigationBar extends React.Component {
           <IconButton onClick={this.props.onBookmarksClick}>
             Bookmarks
           </IconButton>
-          <ProfileDropdown />
+          <ProfileDropdown
+            onProfileClick={this.props.onProfileClick}
+            onSettingsClick={this.props.onSettingsClick}
+            onFollowingClick={this.props.onFollowingClick}
+          />
           <IconButton onClick={this.props.onNewStoryClick}>
             New Story
           </IconButton>
@@ -34,6 +38,8 @@ NavigationBar.propTypes = {
   onBookmarksClick: PropTypes.func,
   onNewStoryClick: PropTypes.func,
   onProfileClick: PropTypes.func,
+  onSettingsClick: PropTypes.func,
+  onFollowingClick: PropTypes.func,
 };
 
 const NavContainer = styled.div`

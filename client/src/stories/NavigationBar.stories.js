@@ -15,5 +15,7 @@ export const Default = () => (
     onBookmarksClick={action("bookmarks")}
     onNewStoryClick={action("new story")}
     onProfileClick={action("profile")}
+    onSettingsClick={action("settings")}
+    onFollowingClick={action("following")}
   />
 );
