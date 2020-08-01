@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import styled from "styled-components";
 
@@ -12,12 +13,23 @@ class NavigationBar extends React.Component {
           <IconButton onClick={this.props.onBookmarksClick}>
             Bookmarks
           </IconButton>
+          <IconButton onClick={this.props.onNewStoryClick}>
+            New Story
+          </IconButton>
           <IconButton onClick={this.props.onProfileClick}>Profile</IconButton>
         </ButtonsContainer>
       </NavContainer>
     );
   }
 }
+
+NavigationBar.propTypes = {
+  onLogoClick: PropTypes.func,
+  onSearchClick: PropTypes.func,
+  onBookmarksClick: PropTypes.func,
+  onNewStoryClick: PropTypes.func,
+  onProfileClick: PropTypes.func,
+};
 
 const NavContainer = styled.div`
   border-style: solid;
