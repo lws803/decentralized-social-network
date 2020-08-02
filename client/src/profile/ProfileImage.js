@@ -35,7 +35,8 @@ class ProfileImage extends React.Component {
                 {...getRootProps(isDragActive, isDragAccept, isDragReject)}
               >
                 <MiddleSection>
-                  {this.state.imageFile && <img src={this.state.imageFile} />}
+                  {/* {this.state.imageFile && <img src={this.state.imageFile} />} */}
+                  {/* FIXME: Display the png file properly */}
                 </MiddleSection>
                 <input {...getInputProps()} />
               </DragDropContainer>
@@ -81,6 +82,7 @@ const DragDropContainer = styled.div`
   transition: border 0.24s ease-in-out;
   height: 100%;
   width: 100%;
+  border-radius: 50%;
 `;
 
 const MiddleSection = styled.div`
@@ -91,6 +93,7 @@ const MiddleSection = styled.div`
 const StyledSection = styled.section`
   width: 100%;
   height: 100%;
+  border-radius: 50%;
 `;
 
 export default ProfileImage;
