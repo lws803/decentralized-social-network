@@ -43,7 +43,6 @@ NavigationBar.propTypes = {
 };
 
 const NavContainer = styled.div`
-  border-style: solid;
   display: flex;
   height: 40px;
   flex-direction: row;
