@@ -7,7 +7,7 @@ class ProfileImage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      files: [],
+      imageFile: undefined,
     };
   }
 
@@ -16,7 +16,11 @@ class ProfileImage extends React.Component {
       <Container>
         <Dropzone
           onDrop={acceptedFiles => {
-            this.setState({ files: acceptedFiles });
+            this.setState({
+              imageFile: acceptedFiles ? acceptedFiles[0] : undefined,
+            });
+            // TODO: Change image once drag and dropped
+            // TODO: Also add a max size and file type validation
           }}
         >
           {({
@@ -30,9 +34,9 @@ class ProfileImage extends React.Component {
               <DragDropContainer
                 {...getRootProps(isDragActive, isDragAccept, isDragReject)}
               >
+                <MiddleText>Hello</MiddleText>
+                {this.state.imageFile && <img src={this.state.imageFile} />}
                 <input {...getInputProps()} />
-                <p>Profile</p>
-                {/* TODO: Display image here instead */}
               </DragDropContainer>
             </StyledSection>
           )}
@@ -78,9 +82,14 @@ const DragDropContainer = styled.div`
   width: 100%;
 `;
 
+const MiddleText = styled.div`
+  position: relative;
+  margin: auto;
+`
+
 const StyledSection = styled.section`
   width: 100%;
   height: 100%;
-`
+`;
 
 export default ProfileImage;
