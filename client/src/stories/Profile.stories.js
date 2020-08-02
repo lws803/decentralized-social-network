@@ -9,6 +9,10 @@ export default {
   component: ProfileImage,
 };
 
-export const Default = () => <ProfileImage onImageSelect={action("file selected")}/>;
+export const Default = () => (
+  <ProfileImage onImageSelect={action("file selected")} />
+);
 
-export const WithImage = () => <ProfileImage image={profileImage}/>;
+export const WithImage = () => (
+  <ProfileImage image={profileImage} onImageSelect={action("file selected")} />
+);
