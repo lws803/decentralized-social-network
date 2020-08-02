@@ -32,6 +32,7 @@ class ProfileImage extends React.Component {
               >
                 <input {...getInputProps()} />
                 <p>Profile</p>
+                {/* TODO: Display image here instead */}
               </DragDropContainer>
             </StyledSection>
           )}

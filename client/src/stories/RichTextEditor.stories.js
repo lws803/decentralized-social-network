@@ -4,7 +4,7 @@ import { action } from "@storybook/addon-actions";
 import RichTextEditor from "../common/RichTextEditor";
 
 export default {
-  title: "RichTextEditor",
+  title: "RichText Editor",
   component: RichTextEditor,
 };
 
