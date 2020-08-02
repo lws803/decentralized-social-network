@@ -34,8 +34,9 @@ class ProfileImage extends React.Component {
               <DragDropContainer
                 {...getRootProps(isDragActive, isDragAccept, isDragReject)}
               >
-                <MiddleText>Hello</MiddleText>
-                {this.state.imageFile && <img src={this.state.imageFile} />}
+                <MiddleSection>
+                  {this.state.imageFile && <img src={this.state.imageFile} />}
+                </MiddleSection>
                 <input {...getInputProps()} />
               </DragDropContainer>
             </StyledSection>
@@ -82,10 +83,10 @@ const DragDropContainer = styled.div`
   width: 100%;
 `;
 
-const MiddleText = styled.div`
+const MiddleSection = styled.div`
   position: relative;
   margin: auto;
-`
+`;
 
 const StyledSection = styled.section`
   width: 100%;
