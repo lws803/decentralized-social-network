@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import styled from "styled-components";
 import Dropzone from "react-dropzone";
@@ -6,9 +7,6 @@ import Dropzone from "react-dropzone";
 class ProfileImage extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      imageFile: undefined,
-    };
   }
 
   render() {
@@ -16,11 +14,9 @@ class ProfileImage extends React.Component {
       <Container>
         <Dropzone
           onDrop={acceptedFiles => {
-            this.setState({
+            this.props.onImageSelect({
               imageFile: acceptedFiles ? acceptedFiles[0] : undefined,
             });
-            // TODO: Change image once drag and dropped
-            // TODO: Also add a max size and file type validation
           }}
         >
           {({
@@ -30,23 +26,34 @@ class ProfileImage extends React.Component {
             isDragActive,
             isDragReject,
           }) => (
-            <StyledSection>
+            <section
+              style={{
+                width: "100%",
+                height: "100%",
+                overflow: "hidden",
+              }}
+            >
               <DragDropContainer
                 {...getRootProps(isDragActive, isDragAccept, isDragReject)}
+                style={{
+                  backgroundImage: `url(${this.props.image})`,
+                  backgroundSize: "cover",
+                }}
               >
-                <MiddleSection>
-                  {/* {this.state.imageFile && <img src={this.state.imageFile} />} */}
-                  {/* FIXME: Display the png file properly */}
-                </MiddleSection>
                 <input {...getInputProps()} />
               </DragDropContainer>
-            </StyledSection>
+            </section>
           )}
         </Dropzone>
       </Container>
     );
   }
 }
+
+ProfileImage.propTypes = {
+  onImageSelect: PropTypes.func,
+  image: PropTypes.any,
+};
 
 const getColor = props => {
   if (props.isDragAccept) {
@@ -64,6 +71,7 @@ const getColor = props => {
 const Container = styled.div`
   width: 100px;
   height: 100px;
+  position: absolute;
 `;
 
 const DragDropContainer = styled.div`
@@ -83,17 +91,14 @@ const DragDropContainer = styled.div`
   height: 100%;
   width: 100%;
   border-radius: 50%;
-`;
-
-const MiddleSection = styled.div`
+  overflow: hidden;
   position: relative;
-  margin: auto;
 `;
 
-const StyledSection = styled.section`
+const ImageDiv = styled.img`
   width: 100%;
   height: 100%;
-  border-radius: 50%;
+  object-fit: cover;
 `;
 
 export default ProfileImage;
