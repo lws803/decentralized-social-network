@@ -9,7 +9,7 @@ class Card extends React.Component {
       <ProfileCardContainer>
         <ProfileImage src={this.props.authorPhoto} />
         <ArticleDetails>
-          <AuthorName>{this.props.authorName}</AuthorName>
+          <div>{this.props.authorName}</div>
           <TimeDate>{this.props.dateCreated}</TimeDate>
         </ArticleDetails>
         <ButtonContainer>
@@ -47,8 +47,6 @@ const ArticleDetails = styled.div`
   margin-left: 10px;
 `;
 
-const AuthorName = styled.div``;
-
 const TimeDate = styled.div`
   margin-top: 5px;
   font-weight: 200;
@@ -61,4 +59,55 @@ const ButtonContainer = styled.div`
   padding-top: 10px;
 `;
 
-export default Card;
+class LargeCard extends React.Component {
+  render() {
+    return (
+      <LargeCardContainer>
+        <LargeProfileImage src={this.props.authorPhoto} />
+        <ProfileDetails>
+          <LargeAuthorName>{this.props.authorName}</LargeAuthorName>
+          <Bio>{this.props.bio}</Bio>
+        </ProfileDetails>
+      </LargeCardContainer>
+    );
+  }
+}
+
+LargeCard.propTypes = {
+  authorPhoto: PropTypes.string.isRequired,
+  authorName: PropTypes.string.isRequired,
+  dateCreated: PropTypes.string.isRequired,
+  bio: PropTypes.string.isRequired,
+};
+
+const LargeCardContainer = styled.div`
+  width: 694px;
+  height: 167px;
+  display: flex;
+  align-items: center;
+`;
+
+const LargeProfileImage = styled.img`
+  height: 127px;
+  width: 127px;
+  object-fit: cover;
+  border-radius: 50%;
+`;
+
+const ProfileDetails = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+`;
+
+const LargeAuthorName = styled.div`
+  font-weight: bold;
+  font-size: 20px;
+`;
+
+const Bio = styled.div`
+  margin-top: 10px;
+  font-size: 15px;
+`;
+
+export { Card, LargeCard };
