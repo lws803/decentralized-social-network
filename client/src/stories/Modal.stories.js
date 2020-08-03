@@ -5,7 +5,7 @@ import ModalView from "../common/Modal";
 import AuthenticationModal from "../authModal/AuthenticationModal";
 
 export default {
-  title: "ModalView",
+  title: "Modal View",
   component: ModalView,
 };
 
