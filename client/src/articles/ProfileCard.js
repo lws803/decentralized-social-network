@@ -44,7 +44,7 @@ const ProfileImage = styled.img`
 const ArticleDetails = styled.div`
   display: flex;
   flex-direction: column;
-  margin-left: 17px;
+  margin-left: 10px;
 `;
 
 const AuthorName = styled.div``;
