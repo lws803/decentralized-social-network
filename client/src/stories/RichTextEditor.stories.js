@@ -8,8 +8,21 @@ export default {
   component: RichTextEditor,
 };
 
+sessionStorage.setItem(
+  "draftail:content",
+  '{"blocks":[{"key":"fkoe9","text":"hello world","type":"header-two","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}'
+);
 const initial = JSON.parse(sessionStorage.getItem("draftail:content"));
 
-export const ArticleEditor = () => (
-  <RichTextEditor onSave={action("saved")} initial={initial} />
+export const Default = () => (
+  <RichTextEditor
+    onSave={action("save")}
+  />
+);
+
+export const WithContent = () => (
+  <RichTextEditor
+    onSave={action("save")}
+    initial={initial}
+  />
 );
