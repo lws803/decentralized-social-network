@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import DOMPurify from "dompurify";
-import styled from "styled-components";
 import draftToHtml from "draftjs-to-html";
 
 class Bio extends React.Component {
