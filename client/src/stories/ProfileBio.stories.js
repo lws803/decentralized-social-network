@@ -8,4 +8,11 @@ export default {
   component: Bio,
 };
 
-export const Default = () => <Bio />;
+export const Default = () => (
+  <Bio
+    content={
+      '{"blocks":[{"key":"fkoe9","text":"hello world","type":"header-two",\
+  "depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}'
+    }
+  />
+);
