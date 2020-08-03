@@ -25,6 +25,6 @@ export const Default = () => (
     Gravida rutrum quisque non tellus…
     "
     author="lws803"
-    time="3 Aug 2020"
+    time="3 Aug, 2020"
   />
 );
