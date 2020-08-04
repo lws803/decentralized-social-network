@@ -6,7 +6,6 @@ const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const _ = require("lodash");
 
-const { globSource } = IpfsHttpClient;
 const ipfs = IpfsHttpClient();
 var app = express();
 
@@ -22,12 +21,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
-async function uploadFileIPFS() {
-  const file = await ipfs.add(globSource("./cat_7.png", { recursive: true }));
-  console.log(file);
+async function uploadFileIPFS(file) {
+  console.log("uploading...");
+  const uploadedFile = await ipfs.add(file);
+  return uploadedFile;
 }
-
-// uploadFile().then();
 
 app.post("/image_upload", async (req, res) => {
   try {
@@ -37,23 +35,22 @@ app.post("/image_upload", async (req, res) => {
         message: "No file uploaded",
       });
     } else {
-      //Use the name of the input field (i.e. "avatar") to retrieve the uploaded file
-      // let avatar = req.files.avatar;
-
-      //Use the mv() method to place the file in upload directory (i.e. "uploads")
-      // avatar.mv("./uploads/" + avatar.name);
-      console.log(req.files.upload)
-      // TODO: FInd out how to extract the blob and upload it to IPFS
-
-      //send response
-      res.send({
-        status: true,
-        message: "File is uploaded",
-      });
+      let file = req.files.upload;
+      console.log(file);
+      uploadFileIPFS(file.data)
+        .then(uploadedFile => {
+          const url = `http://ipfs.io/ipfs/${uploadedFile.path}`;
+          console.log(url);
+          res.send({
+            url: url,
+          });
+        })
+        .catch(err => {
+          res.status(500).send({ message: err });
+        });
     }
   } catch (err) {
-    console.log(err)
-    res.status(500).send(err);
+    res.status(500).send({ message: err });
   }
 });
 
