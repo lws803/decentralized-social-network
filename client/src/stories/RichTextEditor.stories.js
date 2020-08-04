@@ -24,5 +24,12 @@ export const WithContent = () => (
 );
 
 export const CKEditor = () => {
-  return <CustomCKEditor />;
+  return (
+    <CustomCKEditor
+      data="
+      <p>Hello from CKEditor 5!</p>
+      <img src='http://ipfs.io/ipfs/QmadQpErLiKb2b7ZYYwMq6JB3fcjHdTzW54gRiSCev6mG3'/>"
+      onChange={action("onChange")}
+    />
+  );
 };

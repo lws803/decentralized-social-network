@@ -13,7 +13,6 @@ class CustomCKEditor extends React.Component {
     return (
       <CKEditor
         editor={ClassicEditor}
-        data="<p>Hello from CKEditor 5!</p>"
         onInit={editor => {
           console.log("Editor is ready to use!", editor);
         }}
@@ -65,6 +64,7 @@ class CustomCKEditor extends React.Component {
             withCredentials: false,
           },
         }}
+        {...this.props}
       />
     );
   }
