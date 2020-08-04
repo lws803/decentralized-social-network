@@ -19,9 +19,10 @@ class NewArticle extends React.Component {
 
   publish() {
     const root = parse(this.state.content);
-    const title = root.querySelector("h1").text;
-    const coverPhoto = root.querySelector("img");
-    console.log(title, coverPhoto.rawAttrs);
+    // const title = root.querySelector("h1").text;
+    // const coverPhoto = root.querySelector("img").rawAttrs;
+    const firstPara = root.querySelector("p").text
+    console.log(firstPara);
   }
 
   render() {

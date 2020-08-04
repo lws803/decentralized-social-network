@@ -4,11 +4,6 @@ import CKEditor from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "ckeditor5-for-code-and-image/build/ckeditor";
 
 class CustomCKEditor extends React.Component {
-  constructor(props) {
-    super(props);
-    console.log(process.env.REACT_APP_API_URL);
-  }
-
   render() {
     return (
       <CKEditor
