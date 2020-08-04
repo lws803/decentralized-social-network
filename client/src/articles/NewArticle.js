@@ -17,6 +17,7 @@ class NewArticle extends React.Component {
   render() {
     return (
       <div>
+        {/* TODO: Change new story button to publish */}
         <NavigationBar />
         <CustomCKEditor
           onChange={newContent => this.setState({ content: newContent })}
