@@ -18,7 +18,7 @@ class NewArticle extends React.Component {
     return (
       <div>
         <NavigationBar
-          storyButton={<IconButton onClick={() => {}}>Publish</IconButton>}
+          articleButton={<IconButton onClick={() => {}}>Publish</IconButton>}
         />
         <CustomCKEditor
           onChange={newContent => this.setState({ content: newContent })}

@@ -13,7 +13,7 @@ export const Default = () => (
     onLogoClick={action("main logo")}
     onSearchClick={action("search")}
     onBookmarksClick={action("bookmarks")}
-    storyButton={
+    articleButton={
       <IconButton onClick={action("new story")}>New Story</IconButton>
     }
     onProfileClick={action("profile")}
