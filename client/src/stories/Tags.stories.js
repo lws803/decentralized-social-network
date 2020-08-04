@@ -13,7 +13,7 @@ export const Default = () => {
   return (
     <ReactTagInput
       tags={tags}
-      onChange={newTags => setTags(newTags)}
+      onChange={newTags => setTags(newTags)}  // TODO: remove any trailing spaces if there are any
       removeOnBackspace
       maxTags={10}
     />
