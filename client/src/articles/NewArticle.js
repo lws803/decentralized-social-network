@@ -1,6 +1,5 @@
 import React from "react";
 
-import styled from "styled-components";
 import ReactTagInput from "@pathofdev/react-tag-input";
 import "@pathofdev/react-tag-input/build/index.css";
 
@@ -12,13 +11,16 @@ class NewArticle extends React.Component {
     super(props);
     this.state = {
       tags: [],
+      content: "",
     };
   }
   render() {
     return (
       <div>
         <NavigationBar />
-        <CustomCKEditor />
+        <CustomCKEditor
+          onChange={newContent => this.setState({ content: newContent })}
+        />
         <ReactTagInput
           tags={this.state.tags}
           onChange={newTags => this.setState({ tags: newTags })}
@@ -33,3 +35,4 @@ class NewArticle extends React.Component {
 NewArticle.propTypes = {};
 
 export default NewArticle;
+// TODO: Integrate gundb stuff into this
