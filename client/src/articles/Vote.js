@@ -4,16 +4,22 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 
 class Vote extends React.Component {
+  kFormatter(num) {
+    return Math.abs(num) > 999
+      ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + "k"
+      : Math.sign(num) * Math.abs(num);
+  }
+
   render() {
     return (
       <Container>
         <ButtonVoteNum>
           <button onClick={this.props.onClickUpVote}>U</button>
-          <VoteCount>{this.props.upVoteCount}</VoteCount>
+          <VoteCount>{this.kFormatter(this.props.upVoteCount)}</VoteCount>
         </ButtonVoteNum>
         <ButtonVoteNum>
           <button onClick={this.props.onClickDownVote}>D</button>
-          <VoteCount>{this.props.downVoteCount}</VoteCount>
+          <VoteCount>{this.kFormatter(this.props.downVoteCount)}</VoteCount>
         </ButtonVoteNum>
       </Container>
     );
