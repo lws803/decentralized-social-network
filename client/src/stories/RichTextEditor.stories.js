@@ -17,12 +17,20 @@ sessionStorage.setItem(
 );
 const initial = JSON.parse(sessionStorage.getItem("draftail:content"));
 
-export const Default = () => <RichTextEditor onSave={action("save")} />;
+export const Default = () => {
+  return (
+    <CustomCKEditor
+      data="
+      <p>Hello penyet, have some maggiemee</p>
+      <img src='http://ipfs.io/ipfs/QmadQpErLiKb2b7ZYYwMq6JB3fcjHdTzW54gRiSCev6mG3'/>"
+      onChange={action("onChange")}
+    />
+  );
+};
 
-export const WithContent = () => (
+export const Draftail = () => <RichTextEditor onSave={action("save")} />;
+
+export const DraftailWithContent = () => (
   <RichTextEditor onSave={action("save")} initial={initial} />
 );
 
-export const CKEditor = () => {
-  return <CustomCKEditor />;
-};

@@ -1,0 +1,21 @@
+{
+  "name": "peer_httpserver",
+  "version": "1.0.0",
+  "description": "HTTP server for extra HTTP endpoints",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "lws803",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.1.9",
+    "ipfs-http-client": "^45.0.0",
+    "lodash": "^4.17.19",
+    "morgan": "^1.10.0"
+  }
+}
