@@ -1,6 +1,5 @@
 import React from "react";
 
-import { action } from "@storybook/addon-actions";
 import Bio from "../profile/Bio";
 
 export default {
@@ -9,10 +8,5 @@ export default {
 };
 
 export const Default = () => (
-  <Bio
-    content={
-      '{"blocks":[{"key":"fkoe9","text":"hello world","type":"header-two",\
-  "depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}'
-    }
-  />
+  <Bio content={"<h1>My name is lws803</h1><p>Hello world</p>"} />
 );
