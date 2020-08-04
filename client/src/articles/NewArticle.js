@@ -4,7 +4,7 @@ import ReactTagInput from "@pathofdev/react-tag-input";
 import "@pathofdev/react-tag-input/build/index.css";
 
 import CustomCKEditor from "../common/CustomCKEditor";
-import NavigationBar from "../navBar/NavigationBar";
+import NavigationBar, { IconButton } from "../navBar/NavigationBar";
 
 class NewArticle extends React.Component {
   constructor(props) {
@@ -17,8 +17,9 @@ class NewArticle extends React.Component {
   render() {
     return (
       <div>
-        {/* TODO: Change new story button to publish */}
-        <NavigationBar />
+        <NavigationBar
+          storyButton={<IconButton onClick={() => {}}>Publish</IconButton>}
+        />
         <CustomCKEditor
           onChange={newContent => this.setState({ content: newContent })}
         />

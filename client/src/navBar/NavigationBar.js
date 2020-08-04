@@ -20,12 +20,7 @@ class NavigationBar extends React.Component {
             onSettingsClick={this.props.onSettingsClick}
             onFollowingClick={this.props.onFollowingClick}
           />
-          <IconButton onClick={this.props.onNewStoryClick}>
-            New Story
-          </IconButton>
-          {false && (
-            <IconButton onClick={this.props.onProfileClick}>Profile</IconButton>
-          )}
+          {this.props.storyButton}
         </ButtonsContainer>
       </NavContainer>
     );
@@ -36,7 +31,8 @@ NavigationBar.propTypes = {
   onLogoClick: PropTypes.func,
   onSearchClick: PropTypes.func,
   onBookmarksClick: PropTypes.func,
-  onNewStoryClick: PropTypes.func,
+  // onNewStoryClick: PropTypes.func,
+  storyButton: PropTypes.element,
   onProfileClick: PropTypes.func,
   onSettingsClick: PropTypes.func,
   onFollowingClick: PropTypes.func,
@@ -70,3 +66,4 @@ const MainLogo = styled.button`
 `;
 
 export default NavigationBar;
+export { IconButton };
