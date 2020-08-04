@@ -6,6 +6,7 @@ import ClassicEditor from "ckeditor5-for-code-and-image/build/ckeditor";
 class CustomCKEditor extends React.Component {
   constructor(props) {
     super(props);
+    console.log(process.env.REACT_APP_API_URL);
   }
 
   render() {
@@ -59,15 +60,9 @@ class CustomCKEditor extends React.Component {
               "imageStyle:side",
             ],
           },
-          // TODO: Add IPFS to to upload peacefully
           simpleUpload: {
-            uploadUrl: "http://localhost:3000/image_upload",
+            uploadUrl: process.env.REACT_APP_API_URL,  // TODO: Make this dynamic in future
             withCredentials: false,
-            // Headers sent along with the XMLHttpRequest to the upload server.
-            // headers: {
-            //   "X-CSRF-TOKEN": "CSFR-Token",
-            //   Authorization: "Bearer <JSON Web Token>",
-            // },
           },
         }}
       />

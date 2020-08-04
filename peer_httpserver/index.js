@@ -5,6 +5,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const _ = require("lodash");
+require("dotenv").config();
 
 const ipfs = IpfsHttpClient();
 var app = express();
@@ -54,6 +55,6 @@ app.post("/image_upload", async (req, res) => {
   }
 });
 
-app.listen(3000, () => {
-  console.log("Server started...");
+app.listen(process.env.PORT, () => {
+  console.log(`Server started on port: ${process.env.PORT}...`);
 });
