@@ -3,6 +3,7 @@ import React from "react";
 import ReactTagInput from "@pathofdev/react-tag-input";
 import "@pathofdev/react-tag-input/build/index.css";
 import styled from "styled-components";
+import { parse } from "node-html-parser";
 
 import CustomCKEditor from "../common/CustomCKEditor";
 import NavigationBar, { IconButton } from "../navBar/NavigationBar";
@@ -15,12 +16,24 @@ class NewArticle extends React.Component {
       content: "",
     };
   }
+
+  publish() {
+    const root = parse(this.state.content);
+    const title = root.querySelector("h1").text;
+    const coverPhoto = root.querySelector("img");
+    console.log(title, coverPhoto.rawAttrs);
+  }
+
   render() {
     return (
       <Container>
         <NavigationBar
           articleButton={
-            <IconButton onClick={() => console.log(this.state.content)}>
+            <IconButton
+              onClick={() => {
+                this.publish();
+              }}
+            >
               Publish
             </IconButton>
           }

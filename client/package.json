@@ -16,6 +16,7 @@
     "draftjs-to-html": "^0.9.1",
     "fibers": "^5.0.0",
     "jsonschema": "^1.2.6",
+    "node-html-parser": "^1.2.20",
     "node-sass": "^4.14.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
