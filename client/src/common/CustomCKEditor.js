@@ -59,7 +59,20 @@ class CustomCKEditor extends React.Component {
               "imageStyle:side",
             ],
           },
-          licenseKey: "",
+          // TODO: Add IPFS to to upload peacefully
+          simpleUpload: {
+            // The URL that the images are uploaded to.
+            uploadUrl: "http://example.com",
+
+            // Enable the XMLHttpRequest.withCredentials property.
+            withCredentials: true,
+
+            // Headers sent along with the XMLHttpRequest to the upload server.
+            headers: {
+              "X-CSRF-TOKEN": "CSFR-Token",
+              Authorization: "Bearer <JSON Web Token>",
+            },
+          },
         }}
       />
     );
