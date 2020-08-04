@@ -2,6 +2,7 @@ import React from "react";
 
 import ReactTagInput from "@pathofdev/react-tag-input";
 import "@pathofdev/react-tag-input/build/index.css";
+import styled from "styled-components";
 
 import CustomCKEditor from "../common/CustomCKEditor";
 import NavigationBar, { IconButton } from "../navBar/NavigationBar";
@@ -16,7 +17,7 @@ class NewArticle extends React.Component {
   }
   render() {
     return (
-      <div>
+      <Container>
         <NavigationBar
           articleButton={<IconButton onClick={() => {}}>Publish</IconButton>}
         />
@@ -29,12 +30,18 @@ class NewArticle extends React.Component {
           removeOnBackspace
           maxTags={10}
         />
-      </div>
+      </Container>
     );
   }
 }
 
 NewArticle.propTypes = {};
+
+const Container = styled.div`
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+`;
 
 export default NewArticle;
 // TODO: Integrate gundb stuff into this
