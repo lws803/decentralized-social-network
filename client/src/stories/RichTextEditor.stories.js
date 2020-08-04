@@ -2,7 +2,7 @@ import React from "react";
 
 import { action } from "@storybook/addon-actions";
 import CKEditor from '@ckeditor/ckeditor5-react';
-import Editor from "ckeditor5-for-code-and-image";
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 import RichTextEditor from "../common/RichTextEditor";
 
@@ -27,7 +27,7 @@ export const WithContent = () => (
 export const NewEditor = () => {
   return (
     <CKEditor
-      editor={Editor}
+      editor={ClassicEditor}
       data="<p>Hello from CKEditor 5!</p>"
       onInit={editor => {
         // You can store the "editor" and use when it is needed.
