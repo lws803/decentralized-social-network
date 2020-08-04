@@ -27,6 +27,8 @@ export const Default = () => (
     "
     author="lws803"
     time="3 Aug, 2020"
+    upVoteCount={10}
+    downVoteCount={100000}
   />
 );
 
@@ -63,6 +65,8 @@ export const PodListView = () => {
             "
             author="lws803"
             time={`${index} Aug, 2020`}
+            upVoteCount={index*1000}
+            downVoteCount={index}
           />
         </PodContainer>
       ))}

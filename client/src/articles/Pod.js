@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 
 import styled from "styled-components";
 
+import { kFormatter } from "./Vote";
+
 class Pod extends React.Component {
   render() {
     return (
@@ -13,10 +15,18 @@ class Pod extends React.Component {
             <Title>{this.props.title}</Title>
             <Body>{this.props.body}</Body>
           </div>
-          <div>
-            <Author>{this.props.author}</Author>
-            <TimeDate>{this.props.time}</TimeDate>
-          </div>
+          <ExtraDetails>
+            <div>
+              <Author>{this.props.author}</Author>
+              <TimeDate>{this.props.time}</TimeDate>
+            </div>
+            <VotesContainer>
+              <VoteCount>Up: {kFormatter(this.props.upVoteCount)}</VoteCount>
+              <VoteCount>
+                Down: {kFormatter(this.props.downVoteCount)}
+              </VoteCount>
+            </VotesContainer>
+          </ExtraDetails>
         </DescriptionContainer>
       </Container>
     );
@@ -29,6 +39,8 @@ Pod.propTypes = {
   body: PropTypes.string.isRequired,
   author: PropTypes.string.isRequired,
   time: PropTypes.string.isRequired,
+  upVoteCount: PropTypes.number.isRequired,
+  downVoteCount: PropTypes.number.isRequired,
 };
 
 const Container = styled.div`
@@ -76,6 +88,21 @@ const Author = styled.div`
 const TimeDate = styled.div`
   font-size: 15px;
   color: #454545;
+`;
+
+const ExtraDetails = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 100%;
+`;
+
+const VotesContainer = styled.div`
+  display: flex;
+`;
+
+const VoteCount = styled.div`
+  margin-left: 10px;
 `;
 
 export default Pod;
