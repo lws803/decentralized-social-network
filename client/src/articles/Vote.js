@@ -8,19 +8,24 @@ class Vote extends React.Component {
     return (
       <Container>
         <ButtonVoteNum>
-          <button>U</button>
-          <VoteCount>100</VoteCount>
+          <button onClick={this.props.onClickUpVote}>U</button>
+          <VoteCount>{this.props.upVoteCount}</VoteCount>
         </ButtonVoteNum>
         <ButtonVoteNum>
-          <button>D</button>
-          <VoteCount>1000</VoteCount>
+          <button onClick={this.props.onClickDownVote}>D</button>
+          <VoteCount>{this.props.downVoteCount}</VoteCount>
         </ButtonVoteNum>
       </Container>
     );
   }
 }
 
-Vote.propTypes = {};
+Vote.propTypes = {
+  onClickUpVote: PropTypes.func.isRequired,
+  onClickDownVote: PropTypes.func.isRequired,
+  upVoteCount: PropTypes.func.isRequired,
+  downVoteCount: PropTypes.func.isRequired,
+};
 
 const Container = styled.div`
   display: flex;
