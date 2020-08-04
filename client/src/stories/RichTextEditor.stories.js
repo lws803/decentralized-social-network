@@ -1,6 +1,8 @@
 import React from "react";
 
 import { action } from "@storybook/addon-actions";
+
+import CustomCKEditor from "../common/CustomCKEditor";
 import RichTextEditor from "../common/RichTextEditor";
 
 export default {
@@ -20,3 +22,7 @@ export const Default = () => <RichTextEditor onSave={action("save")} />;
 export const WithContent = () => (
   <RichTextEditor onSave={action("save")} initial={initial} />
 );
+
+export const CKEditor = () => {
+  return <CustomCKEditor />;
+};

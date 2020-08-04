@@ -1,13 +1,16 @@
 import React from "react";
+import PropTypes from "prop-types";
+
+import { DraftailEditor, BLOCK_TYPE, INLINE_STYLE } from "draftail";
 
 import "./RichTextEditorStyle.scss";
-import { DraftailEditor, BLOCK_TYPE, INLINE_STYLE } from "draftail";
 
 class RichTextEditor extends React.Component {
   render() {
     return (
       <DraftailEditor
         rawContentState={this.props.initial || null}
+        maxListNesting={6}
         onSave={this.props.onSave}
         blockTypes={[
           { type: BLOCK_TYPE.HEADER_ONE },
@@ -29,8 +32,13 @@ class RichTextEditor extends React.Component {
           { type: INLINE_STYLE.KEYBOARD },
         ]}
       />
-    );      
+    );
   }
 }
+
+RichTextEditor.propTypes = {
+  initial: PropTypes.string,
+  ...DraftailEditor.propTypes,
+};
 
 export default RichTextEditor;
