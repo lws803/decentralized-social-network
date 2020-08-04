@@ -16,29 +16,20 @@ class NewArticle extends React.Component {
   }
   render() {
     return (
-      <PageContainer>
-        <div>
-          <NavigationBar />
-          <CustomCKEditor />
-        </div>
+      <div>
+        <NavigationBar />
+        <CustomCKEditor />
         <ReactTagInput
           tags={this.state.tags}
           onChange={newTags => this.setState({ tags: newTags })}
           removeOnBackspace
           maxTags={10}
         />
-      </PageContainer>
+      </div>
     );
   }
 }
 
 NewArticle.propTypes = {};
-
-const PageContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100vh;
-`;
 
 export default NewArticle;
