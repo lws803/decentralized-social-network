@@ -14,11 +14,21 @@ class Vote extends React.Component {
     return (
       <Container>
         <ButtonVoteNum>
-          <button onClick={this.props.onClickUpVote}>U</button>
+          <button
+            onClick={this.props.onClickUpVote}
+            disabled={this.props.upDisabled}
+          >
+            U
+          </button>
           <VoteCount>{this.kFormatter(this.props.upVoteCount)}</VoteCount>
         </ButtonVoteNum>
         <ButtonVoteNum>
-          <button onClick={this.props.onClickDownVote}>D</button>
+          <button
+            onClick={this.props.onClickDownVote}
+            disabled={this.props.downDisabled}
+          >
+            D
+          </button>
           <VoteCount>{this.kFormatter(this.props.downVoteCount)}</VoteCount>
         </ButtonVoteNum>
       </Container>
@@ -31,6 +41,8 @@ Vote.propTypes = {
   onClickDownVote: PropTypes.func.isRequired,
   upVoteCount: PropTypes.func.isRequired,
   downVoteCount: PropTypes.func.isRequired,
+  upDisabled: PropTypes.bool,
+  downDisabled: PropTypes.bool,
 };
 
 const Container = styled.div`

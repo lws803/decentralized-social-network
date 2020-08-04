@@ -16,3 +16,13 @@ export const Default = () => (
     downVoteCount={10000}
   />
 );
+
+export const UpDisabled = () => (
+  <Vote
+    upDisabled
+    onClickUpVote={action("up vote")}
+    onClickDownVote={action("down vote")}
+    upVoteCount={101}
+    downVoteCount={10000}
+  />
+);
