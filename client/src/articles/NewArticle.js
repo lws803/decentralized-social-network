@@ -19,10 +19,16 @@ class NewArticle extends React.Component {
     return (
       <Container>
         <NavigationBar
-          articleButton={<IconButton onClick={() => {}}>Publish</IconButton>}
+          articleButton={
+            <IconButton onClick={() => console.log(this.state.content)}>
+              Publish
+            </IconButton>
+          }
         />
         <CustomCKEditor
-          onChange={newContent => this.setState({ content: newContent })}
+          onChange={(event, editor) => {
+            this.setState({ content: editor.getData() });
+          }}
         />
         <ReactTagInput
           tags={this.state.tags}
