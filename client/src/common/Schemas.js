@@ -14,7 +14,7 @@ export const NewArticleSchema = {
   properties: {
     uuid: { type: "string", required: true },
     content: { type: "string", required: true },
-    coverPhotoURL: { type: "string", required: true },
+    coverPhoto: { type: "string", required: true },
     title: { type: "string", required: true },
   },
 };

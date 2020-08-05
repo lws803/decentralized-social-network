@@ -68,13 +68,13 @@ class PostArticle extends React.Component {
       ? root.querySelector("h1").text
       : undefined;
     const coverPhotoElem = root.querySelector("img");
-    var coverPhotoURL = undefined;
+    var coverPhoto = undefined;
     if (coverPhotoElem && coverPhotoElem.rawAttrs) {
       var srcURL = coverPhotoElem.rawAttrs.substring(5);
       srcURL = srcURL.substring(0, srcURL.length - 1);
-      coverPhotoURL = srcURL;
+      coverPhoto = srcURL;
     }
-    return { coverPhotoURL: coverPhotoURL, title: title };
+    return { coverPhotocoverPhoto: coverPhoto, title: title };
   }
 
   publish() {
@@ -85,8 +85,13 @@ class PostArticle extends React.Component {
       content: this.state.content,
       ...this.extractContentMetadata(root),
     };
-    const result = v.validate(article, NewArticleSchema);
-    const tagsResult = v.validate(this.state.tags, TagsSchema);
+    const result = v.validate(article, NewArticleSchema, {
+      propertyName: "article",
+    });
+    const tagsResult = v.validate(this.state.tags, TagsSchema, {
+      propertyName: "tags",
+    });
+    console.log(result);
     var validationErrors = result.errors.concat(tagsResult.errors);
     if (validationErrors.length) alert(validationErrors.join("\n"));
 
