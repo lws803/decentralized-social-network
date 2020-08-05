@@ -13,6 +13,13 @@ module.exports = {
     // Make whatever fine-grained changes you need
     config.node = {
       fs: 'empty',
+      child_process: 'empty',
+      module: 'empty',
+      dgram: 'empty',
+      dns: 'mock',
+      http2: 'empty',
+      net: 'empty',
+      tls: 'empty',
       global: true,
     }
     config.module.rules.push({

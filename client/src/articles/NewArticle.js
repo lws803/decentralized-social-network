@@ -13,13 +13,15 @@ import NavigationBar, { IconButton } from "../navBar/NavigationBar";
 
 async function newPost(user, gunSession, content) {
   const postUUID = uuidv4();
-  // const workHash = await argon2.hash(postUUID, {
-  //   type: argon2.argon2id,
-  //   memoryCost: 2 ** 16,
-  //   hashLength: 50,
-  //   timeCost: 3,
-  // });
-  const workHash = "test";
+  // FIXME: Fix argon2 issue
+  const workHash = await argon2.hash({
+    pass: postUUID,
+    salt: "somesalt",
+    type: argon2.ArgonType.Argon2id,
+    memoryCost: 2 ** 16,
+    hashLength: 50,
+    timeCost: 3,
+  });
   var post = await user
     .get("posts")
     .get(postUUID)
