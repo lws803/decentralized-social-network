@@ -18,7 +18,6 @@ class AuthenticationModal extends React.Component {
 
   validation() {
     const v = new Validator.Validator();
-    // TODO: Display a list of errors on the modal view
     const result = v.validate(this.state, AuthSchema, { propertyName: "user" });
     if (result.errors) {
       alert(result.errors.join("\n"));
