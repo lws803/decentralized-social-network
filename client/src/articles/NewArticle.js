@@ -10,7 +10,7 @@ import Validator from "jsonschema";
 
 import CustomCKEditor from "../common/CustomCKEditor";
 import NavigationBar, { IconButton } from "../navBar/NavigationBar";
-import { NewArticleSchema } from "../common/Schemas";
+import { NewArticleSchema, TagsSchema } from "../common/Schemas";
 
 class NewArticle extends React.Component {
   constructor(props) {
@@ -29,21 +29,35 @@ class NewArticle extends React.Component {
     };
   }
 
-  async postNewArticle(article) {
+  async postNewArticle(article, tags) {
+    var errors = [];
     var post = await this.user
       .get("posts")
       .get(article.uuid)
       .put(article, ack => {
-        if (ack.err) alert(ack.err);
+        if (ack.err) errors.push(ack.err);
       });
+
+    for (var i = 0; i < tags.length; i++) {
+      await this.user
+        .get("posts")
+        .get(article.uuid)
+        .get("tags")
+        .set(tags[i], ack => {
+          if (ack.err) errors.push(ack.err);
+        });
+    }
     const ref = post["_"]["#"];
     var hash = await SEA.work(ref, null, null, { name: "SHA-256" });
-    this.gun
+    await this.gun
       .get("#posts")
       .get(hash)
       .put(ref, ack => {
-        if (ack.err) alert(ack.err);
+        if (ack.err) errors.push(ack.err);
       });
+    if (errors.length > 0) {
+      throw new Error(errors);
+    }
   }
 
   extractImgSrc(element) {
@@ -64,15 +78,18 @@ class NewArticle extends React.Component {
       content: this.state.content,
       title: root.querySelector("h1").text,
       coverPhotoURL: this.extractImgSrc(root.querySelector("img")),
-      tags: this.state.tags,  // TODO: Can't use tags as array here
     };
     const result = v.validate(article, NewArticleSchema);
-    if (result.valid) {
-      this.postNewArticle(article)
-        .then(alert("posted"))
+    const tagsResult = v.validate(this.state.tags, TagsSchema);
+    if (!result.valid) alert(result.errors);
+    if (!tagsResult.valid) alert(tagsResult.errors);
+
+    if (result.valid && tagsResult.valid) {
+      this.postNewArticle(article, this.state.tags)
+        .then(() => {
+          // TODO: Take us away from this page -> exit this page
+        })
         .catch(err => alert(err));
-    } else {
-      alert(result.errors);
     }
   }
 
@@ -118,4 +135,3 @@ const Container = styled.div`
 `;
 
 export default NewArticle;
-// TODO: Integrate gundb stuff into this

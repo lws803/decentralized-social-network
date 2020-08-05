@@ -14,17 +14,19 @@ export const NewArticleSchema = {
   properties: {
     uuid: { type: "string", required: true },
     content: { type: "string", required: true },
-    tags: {
-      type: "array",
-      minItems: 1,
-      maxItems: 10,
-      items: {
-        type: "string",
-        uniqueItems: true,
-      },
-      required: true,
-    },
     coverPhotoURL: { type: "string", required: true },
     title: { type: "string", required: true },
   },
+};
+
+export const TagsSchema = {
+  id: "/Tags",
+  type: "array",
+  minItems: 1,
+  maxItems: 10,
+  items: {
+    type: "string",
+    uniqueItems: true,
+  },
+  required: true,
 };
