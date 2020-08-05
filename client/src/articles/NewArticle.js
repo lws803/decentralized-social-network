@@ -135,3 +135,5 @@ const Container = styled.div`
 `;
 
 export default NewArticle;
+// TODO: Check properties to see if exiting UUID is provided if it is, retrieve the post instead
+// and fix the UUID + allow users to edit the content
