@@ -5,7 +5,7 @@ import ReactTagInput from "@pathofdev/react-tag-input";
 import "@pathofdev/react-tag-input/build/index.css";
 import styled from "styled-components";
 import { parse } from "node-html-parser";
-// import * as argon2 from "argon2-browser";
+import * as argon2 from "argon2-browser";
 import { v4 as uuidv4 } from "uuid";
 
 import CustomCKEditor from "../common/CustomCKEditor";
