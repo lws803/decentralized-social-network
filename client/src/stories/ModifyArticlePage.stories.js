@@ -3,15 +3,15 @@ import React from "react";
 import Gun from "gun/gun";
 import { action } from "@storybook/addon-actions";
 
-import NewArticle from "../articles/NewArticle";
+import ModifyArticle from "../articles/ModifyArticle";
 
 export default {
-  title: "New Article Page",
-  component: NewArticle,
+  title: "Modify Article Page",
+  component: ModifyArticle,
 };
 
 var gunSession = new Gun([process.env.REACT_GUN_HOST_URL]);
 var user = gunSession.user().recall({ sessionStorage: true });
 user.auth("lws803", "cool"); // Test user
 
-export const Default = () => <NewArticle gunSession={gunSession} user={user} />;
+export const Default = () => <ModifyArticle gunSession={gunSession} user={user} />;
