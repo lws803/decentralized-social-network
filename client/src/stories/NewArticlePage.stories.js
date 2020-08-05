@@ -10,10 +10,8 @@ export default {
   component: NewArticle,
 };
 
-var gunSession = new Gun(["http://127.0.0.1:8765/gun"])
-var user = gunSession.user().recall({sessionStorage: true});
-user.auth("lws803", "cool");  // Test user
+var gunSession = new Gun([process.env.REACT_GUN_HOST_URL]);
+var user = gunSession.user().recall({ sessionStorage: true });
+user.auth("lws803", "cool"); // Test user
 
-export const Default = () => (
-  <NewArticle gunSession={gunSession} user={user}/>
-);
+export const Default = () => <NewArticle gunSession={gunSession} user={user} />;
