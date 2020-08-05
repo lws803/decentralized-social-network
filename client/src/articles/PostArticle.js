@@ -87,8 +87,8 @@ class PostArticle extends React.Component {
     };
     const result = v.validate(article, NewArticleSchema);
     const tagsResult = v.validate(this.state.tags, TagsSchema);
-    if (!result.valid) alert(result.errors);
-    if (!tagsResult.valid) alert(tagsResult.errors);
+    var validationErrors = result.errors.concat(tagsResult.errors);
+    if (validationErrors.length) alert(validationErrors.join("\n"));
 
     if (result.valid && tagsResult.valid) {
       this.postNewArticle(article, this.state.tags)
