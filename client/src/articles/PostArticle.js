@@ -13,7 +13,7 @@ import CustomCKEditor from "../common/CustomCKEditor";
 import NavigationBar, { IconButton } from "../navBar/NavigationBar";
 import { NewArticleSchema, TagsSchema } from "../common/Schemas";
 
-class ModifyArticle extends React.Component {
+class PostArticle extends React.Component {
   constructor(props) {
     super(props);
     this.gun = this.props.gunSession;
@@ -105,13 +105,12 @@ class ModifyArticle extends React.Component {
       <Container>
         <NavigationBar
           articleButton={
-            // TODO: Check if its editing existing document
             <IconButton
               onClick={() => {
                 this.publish();
               }}
             >
-              Publish
+              {this.props.existingUUID ? "Save" : "Publish"}
             </IconButton>
           }
         />
@@ -134,7 +133,7 @@ class ModifyArticle extends React.Component {
   }
 }
 
-ModifyArticle.propTypes = {
+PostArticle.propTypes = {
   existingUUID: PropTypes.string,
 };
 
@@ -144,5 +143,5 @@ const Container = styled.div`
   margin-right: auto;
 `;
 
-export default ModifyArticle;
+export default PostArticle;
 // TODO: Check properties to see if exiting UUID is provided if it is, retrieve the post instead
