@@ -6,27 +6,11 @@ import "@pathofdev/react-tag-input/build/index.css";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 import { parse } from "node-html-parser";
+import Validator from "jsonschema";
 
 import CustomCKEditor from "../common/CustomCKEditor";
 import NavigationBar, { IconButton } from "../navBar/NavigationBar";
-
-async function newPost(user, gunSession, content) {
-  const postUUID = uuidv4();
-  var post = await user
-    .get("posts")
-    .get(postUUID)
-    .put({ content: content, uuid: postUUID }, ack => {
-      if (ack.err) console.log(ack.err); // TODO: Throw the error properly
-    });
-  const ref = post["_"]["#"];
-  var hash = await SEA.work(ref, null, null, { name: "SHA-256" });
-  gunSession
-    .get("#posts")
-    .get(hash)
-    .put(ref, ack => {
-      if (ack.err) console.log(ack.err); // TODO: Throw the error properly
-    });
-}
+import { NewArticleSchema } from "../common/Schemas";
 
 class NewArticle extends React.Component {
   constructor(props) {
@@ -45,24 +29,51 @@ class NewArticle extends React.Component {
     };
   }
 
+  async postNewArticle(article) {
+    var post = await this.user
+      .get("posts")
+      .get(article.uuid)
+      .put(article, ack => {
+        if (ack.err) alert(ack.err);
+      });
+    const ref = post["_"]["#"];
+    var hash = await SEA.work(ref, null, null, { name: "SHA-256" });
+    this.gun
+      .get("#posts")
+      .get(hash)
+      .put(ref, ack => {
+        if (ack.err) alert(ack.err);
+      });
+  }
+
+  extractImgSrc(element) {
+    if (!element) return undefined;
+    const rawAttrs = element.rawAttrs;
+    if (rawAttrs) {
+      var srcURL = rawAttrs.substring(5);
+      return srcURL.substring(0, srcURL.length - 1);
+    }
+    return rawAttrs;
+  }
+
   publish() {
-    // const root = parse(this.state.content);
-    // const title = root.querySelector("h1").text;
-    // const coverPhoto = root.querySelector("img").rawAttrs;
-    // Find the first para with text
-    // const firstPara = root.querySelector("p").text;
-    // console.log(firstPara);
-    newPost(this.user, this.gun, this.state.content).then(
-      // this.gun
-      //   .get("#posts")
-      //   .map()
-      //   .once(ref =>
-      //     this.gun.get(ref).once(payload => {
-      //       console.log(payload);
-      //     })
-      //   )
-      console.log("posted")
-    );
+    const root = parse(this.state.content);
+    const v = new Validator.Validator();
+    var article = {
+      uuid: uuidv4(),
+      content: this.state.content,
+      title: root.querySelector("h1").text,
+      coverPhotoURL: this.extractImgSrc(root.querySelector("img")),
+      tags: this.state.tags,  // TODO: Can't use tags as array here
+    };
+    const result = v.validate(article, NewArticleSchema);
+    if (result.valid) {
+      this.postNewArticle(article)
+        .then(alert("posted"))
+        .catch(err => alert(err));
+    } else {
+      alert(result.errors);
+    }
   }
 
   render() {
