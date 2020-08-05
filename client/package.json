@@ -9,6 +9,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
+    "argon2-browser": "^1.13.0",
     "ckeditor5-for-code-and-image": "^0.0.2",
     "dompurify": "^2.0.12",
     "draft-js": "^0.10.5",
