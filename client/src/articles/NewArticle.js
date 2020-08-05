@@ -11,9 +11,17 @@ import NavigationBar, { IconButton } from "../navBar/NavigationBar";
 class NewArticle extends React.Component {
   constructor(props) {
     super(props);
+    this.gun = this.props.gunSession;
+    this.user = this.props.user;
+    if (this.user.is) {
+      console.log("user logged in")
+    } else {
+      // TODO: Show the login modal here
+      console.log("user not logged in")
+    }
     this.state = {
       tags: [],
-      content: "",
+      content: sessionStorage.getItem("article:draft") || "",
     };
   }
 
@@ -21,7 +29,7 @@ class NewArticle extends React.Component {
     const root = parse(this.state.content);
     // const title = root.querySelector("h1").text;
     // const coverPhoto = root.querySelector("img").rawAttrs;
-    const firstPara = root.querySelector("p").text
+    const firstPara = root.querySelector("p").text;
     console.log(firstPara);
   }
 
@@ -43,6 +51,9 @@ class NewArticle extends React.Component {
           onChange={(event, editor) => {
             this.setState({ content: editor.getData() });
           }}
+          onBlur={() =>
+            sessionStorage.setItem("article:draft", this.state.content)
+          }
         />
         <ReactTagInput
           tags={this.state.tags}
