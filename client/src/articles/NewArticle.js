@@ -4,7 +4,7 @@ import SEA from "gun/sea";
 import ReactTagInput from "@pathofdev/react-tag-input";
 import "@pathofdev/react-tag-input/build/index.css";
 import styled from "styled-components";
-import argon2 from "argon2-browser/lib/argon2.js";
+// import argon2 from "argon2-browser/lib/argon2.js";
 import { v4 as uuidv4 } from "uuid";
 import { parse } from "node-html-parser";
 
@@ -13,20 +13,20 @@ import NavigationBar, { IconButton } from "../navBar/NavigationBar";
 
 async function newPost(user, gunSession, content) {
   const postUUID = uuidv4();
-  // FIXME: Fix argon2 issue
-  const workHash = await argon2.hash({
-    pass: postUUID,
-    salt: "somesalt",
-    type: argon2.ArgonType.Argon2id,
-    memoryCost: 2 ** 16,
-    hashLength: 50,
-    timeCost: 3,
-  });
+  // const workHash = await argon2.hash({
+  //   pass: postUUID,
+  //   salt: "somesalt",
+  //   type: argon2.ArgonType.Argon2id,
+  //   memoryCost: 2 ** 16,
+  //   hashLength: 50,
+  //   timeCost: 3,
+  // });
+  // TODO: Get the workhash working
   var post = await user
     .get("posts")
     .get(postUUID)
-    .put({ content: content, uuid: postUUID, work: workHash }, ack => {
-      if (ack.err) console.log(ack.err);
+    .put({ content: content, uuid: postUUID }, ack => {
+      if (ack.err) console.log(ack.err); // TODO: Throw the error properly
     });
   const ref = post["_"]["#"];
   var hash = await SEA.work(ref, null, null, { name: "SHA-256" });
@@ -34,7 +34,7 @@ async function newPost(user, gunSession, content) {
     .get("#posts")
     .get(hash)
     .put(ref, ack => {
-      if (ack.err) console.log(ack.err);
+      if (ack.err) console.log(ack.err); // TODO: Throw the error properly
     });
 }
 
