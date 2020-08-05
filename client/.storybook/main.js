@@ -21,6 +21,9 @@ module.exports = {
       net: 'empty',
       tls: 'empty',
       global: true,
+      __dirname: false,
+      Buffer: false,
+      process: false,
     }
     config.module.rules.push({
       test: /\.wasm$/,

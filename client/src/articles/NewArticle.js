@@ -4,9 +4,9 @@ import SEA from "gun/sea";
 import ReactTagInput from "@pathofdev/react-tag-input";
 import "@pathofdev/react-tag-input/build/index.css";
 import styled from "styled-components";
-import { parse } from "node-html-parser";
-import * as argon2 from "argon2-browser";
+import argon2 from "argon2-browser/lib/argon2.js";
 import { v4 as uuidv4 } from "uuid";
+import { parse } from "node-html-parser";
 
 import CustomCKEditor from "../common/CustomCKEditor";
 import NavigationBar, { IconButton } from "../navBar/NavigationBar";
@@ -63,14 +63,15 @@ class NewArticle extends React.Component {
     // const firstPara = root.querySelector("p").text;
     // console.log(firstPara);
     newPost(this.user, this.gun, this.state.content).then(
-      this.gun
-        .get("#posts")
-        .map()
-        .once(ref =>
-          this.gun.get(ref).once(payload => {
-            console.log(payload);
-          })
-        )
+      // this.gun
+      //   .get("#posts")
+      //   .map()
+      //   .once(ref =>
+      //     this.gun.get(ref).once(payload => {
+      //       console.log(payload);
+      //     })
+      //   )
+      console.log("posted")
     );
   }
 
