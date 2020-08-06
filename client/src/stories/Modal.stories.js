@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import Gun from "gun/gun";
+import { action } from "@storybook/addon-actions";
 
 import ModalView from "../common/Modal";
 import AuthenticationModal from "../authModal/AuthenticationModal";
@@ -35,12 +35,10 @@ export const Default = () => {
 };
 
 export const AuthModal = () => {
-  var gunSession = new Gun([process.env.REACT_APP_GUN_HOST_URL]);
-  var user = gunSession.user().recall({ sessionStorage: true });
-  return (
-    <AuthenticationModal
-      isOpen={true}
-      user={user}
-    />
-  );
+  var mockUser = {
+    is: false,
+    auth: action("login"),
+    create: action("signup"),
+  };
+  return <AuthenticationModal user={mockUser} />;
 };
