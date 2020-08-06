@@ -82,7 +82,7 @@ const UserForm = styled.div`
 `;
 
 const Field = styled.div`
-  width: 30%;
+  width: 20%;
   margin-top: 10px;
   display: flex;
   justify-content: space-between;
