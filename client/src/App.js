@@ -1,36 +1,48 @@
 import React from "react";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
-import "draft-js/dist/Draft.css";
-import "draftail/dist/draftail.css";
-import { DraftailEditor, BLOCK_TYPE, INLINE_STYLE } from "draftail";
-import draftToHtml from 'draftjs-to-html';
+import Gun from "gun/gun";
 
-const initial = JSON.parse(sessionStorage.getItem("draftail:content"));
+import NavigationBar, { IconButton, MainLogo } from "./navBar/NavigationBar";
+import PostArticle from "./articles/PostArticle";
+import Main from "./Main";
 
-const onSave = content => {
-  console.log("saving", content);
-  sessionStorage.setItem("draftail:content", JSON.stringify(content));
-  const markup = draftToHtml(
-    content,
-  );
-  // HTML markup for storage
-};
+export default function App() {
+  var gunSession = new Gun([process.env.REACT_APP_GUN_HOST_URL]);
+  var user = gunSession.user().recall({ sessionStorage: true });
+  user.auth("lws803", "cool");
 
-function App() {
+  if (user.is) {
+    console.log("user logged in");
+  } else {
+    // TODO: Show the login modal here
+    console.log("user not logged in");
+  }
+
   return (
-    <DraftailEditor
-      rawContentState={initial || null}
-      onSave={onSave}
-      blockTypes={[
-        { type: BLOCK_TYPE.HEADER_THREE },
-        { type: BLOCK_TYPE.UNORDERED_LIST_ITEM },
-      ]}
-      inlineStyles={[
-        { type: INLINE_STYLE.BOLD },
-        { type: INLINE_STYLE.ITALIC },
-      ]}
-    />
+    <div>
+      <Router>
+        <NavigationBar
+          mainLogoButton={
+            <Link to="/">
+              <MainLogo>Main Logo</MainLogo>
+            </Link>
+          }
+          articleButton={
+            <Link to="/new_article">
+              <IconButton>New Story</IconButton>
+            </Link>
+          }
+        />
+        <Switch>
+          <Route exact path="/">
+            <Main />
+          </Route>
+          <Route path="/new_article">
+            <PostArticle />
+          </Route>
+        </Switch>
+      </Router>
+    </div>
   );
 }
-
-export default App;

@@ -1,0 +1,19 @@
+version: "3"
+services:
+  ipfs:
+    image: ipfs/go-ipfs:latest
+    volumes:
+    - "./export:/export"
+    - "./data/ipfs:/data/ipfs"
+    ports:
+    - "5001:5001"
+    - "4001:4001"
+    - "8080:8080"
+  server:
+    build: .
+    ports:
+      - "5000:5000"
+    depends_on:
+      - ipfs
+    environment:
+      IPFS_URL: "http://ipfs:5001"

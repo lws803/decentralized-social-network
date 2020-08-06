@@ -4,27 +4,12 @@ import CKEditor from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "ckeditor5-for-code-and-image/build/ckeditor";
 
 class CustomCKEditor extends React.Component {
-  constructor(props) {
-    super(props);
-    console.log(process.env.REACT_APP_API_URL);
-  }
-
   render() {
     return (
       <CKEditor
         editor={ClassicEditor}
         onInit={editor => {
           console.log("Editor is ready to use!", editor);
-        }}
-        onChange={(event, editor) => {
-          const data = editor.getData();
-          console.log({ event, editor, data });
-        }}
-        onBlur={(event, editor) => {
-          console.log("Blur.", editor);
-        }}
-        onFocus={(event, editor) => {
-          console.log("Focus.", editor);
         }}
         config={{
           toolbar: {

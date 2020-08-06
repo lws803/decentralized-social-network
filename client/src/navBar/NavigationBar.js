@@ -9,7 +9,7 @@ class NavigationBar extends React.Component {
   render() {
     return (
       <NavContainer>
-        <MainLogo onClick={this.props.onLogoClick}>Main Logo</MainLogo>
+        {this.props.mainLogoButton}
         <ButtonsContainer>
           <IconButton onClick={this.props.onSearchClick}>Search</IconButton>
           <IconButton onClick={this.props.onBookmarksClick}>
@@ -20,12 +20,7 @@ class NavigationBar extends React.Component {
             onSettingsClick={this.props.onSettingsClick}
             onFollowingClick={this.props.onFollowingClick}
           />
-          <IconButton onClick={this.props.onNewStoryClick}>
-            New Story
-          </IconButton>
-          {false && (
-            <IconButton onClick={this.props.onProfileClick}>Profile</IconButton>
-          )}
+          {this.props.articleButton}
         </ButtonsContainer>
       </NavContainer>
     );
@@ -33,10 +28,10 @@ class NavigationBar extends React.Component {
 }
 
 NavigationBar.propTypes = {
-  onLogoClick: PropTypes.func,
+  mainLogoButton: PropTypes.element,
   onSearchClick: PropTypes.func,
   onBookmarksClick: PropTypes.func,
-  onNewStoryClick: PropTypes.func,
+  articleButton: PropTypes.element,
   onProfileClick: PropTypes.func,
   onSettingsClick: PropTypes.func,
   onFollowingClick: PropTypes.func,
@@ -46,7 +41,7 @@ const NavContainer = styled.div`
   display: flex;
   height: 40px;
   flex-direction: row;
-  width: 80%;
+  width: 70%;
   margin-left: auto;
   margin-right: auto;
   align-items: center;
@@ -70,3 +65,4 @@ const MainLogo = styled.button`
 `;
 
 export default NavigationBar;
+export { IconButton, MainLogo };
