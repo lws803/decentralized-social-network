@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import Gun from "gun/gun";
 import SEA from "gun/sea";
 import ReactTagInput from "@pathofdev/react-tag-input";
 import "@pathofdev/react-tag-input/build/index.css";
@@ -16,8 +17,8 @@ import { NewArticleSchema, TagsSchema } from "../common/Schemas";
 class PostArticle extends React.Component {
   constructor(props) {
     super(props);
-    this.gun = this.props.gunSession;
-    this.user = this.props.user;
+    this.gun = new Gun([process.env.REACT_GUN_HOST_URL]);
+    this.user = this.gun.user().recall({ sessionStorage: true });
     if (this.user.is) {
       console.log("user logged in");
     } else {
@@ -84,7 +85,9 @@ class PostArticle extends React.Component {
     var article = {
       uuid: this.props.uuid ? this.props.uuid : uuidv4(),
       content: this.state.content,
-      createdAt: this.props.createdAt ? this.props.createdAt : date.toISOString(),
+      createdAt: this.props.createdAt
+        ? this.props.createdAt
+        : date.toISOString(),
       updatedAt: this.props.uuid ? date.toISOString() : undefined,
       ...this.extractContentMetadata(root),
     };
