@@ -29,15 +29,15 @@ class AuthenticationModal extends React.Component {
     return (
       <ModalView {...this.props}>
         <UserForm>
-          <div>
+          <Field>
             Name:
             <input
               type="text"
               value={this.state.name}
               onChange={event => this.setState({ name: event.target.value })}
             />
-          </div>
-          <div>
+          </Field>
+          <Field>
             Password:
             <input
               type="password"
@@ -46,21 +46,21 @@ class AuthenticationModal extends React.Component {
                 this.setState({ password: event.target.value })
               }
             />
-          </div>
-          <button
+          </Field>
+          <Button
             onClick={() => {
               if (this.validation().valid) this.props.onSignup(this.state);
             }}
           >
             Sign up
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={() => {
               if (this.validation().valid) this.props.onLogin(this.state);
             }}
           >
             Login
-          </button>
+          </Button>
         </UserForm>
       </ModalView>
     );
@@ -80,5 +80,16 @@ const UserForm = styled.div`
   width: 100%;
   align-items: center;
 `;
+
+const Field = styled.div`
+  width: 30%;
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const Button = styled.button`
+  margin-top: 10px;
+`
 
 export default AuthenticationModal;
