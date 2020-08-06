@@ -33,7 +33,6 @@ class PostArticle extends React.Component {
   }
 
   async postArticle(article, tags) {
-    // TODO: Add date posted and date updated as well
     var errors = [];
     var post = await this.user
       .get("posts")
@@ -81,9 +80,11 @@ class PostArticle extends React.Component {
   publish() {
     const root = parse(this.state.content);
     const v = new Validator.Validator();
+    var date = new Date();
     var article = {
       uuid: this.props.uuid ? this.props.uuid : uuidv4(),
       content: this.state.content,
+      createdAt: date.toISOString(),
       ...this.extractContentMetadata(root),
     };
     const result = v.validate(article, NewArticleSchema, {
