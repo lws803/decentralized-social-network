@@ -10,15 +10,11 @@ import Main from "./Main";
 export default function App() {
   var gunSession = new Gun([process.env.REACT_APP_GUN_HOST_URL]);
   var user = gunSession.user().recall({ sessionStorage: true });
-  user.auth("lws803", "cool");
-
   if (user.is) {
     console.log("user logged in");
   } else {
-    // TODO: Show the login modal here
     console.log("user not logged in");
   }
-
   return (
     <div>
       <Router>
