@@ -35,11 +35,11 @@ export default function App() {
           }
         />
         <Switch>
+          <Route exact path="/">
+            <Main />
+          </Route>
           <Route path="/new_article">
             <PostArticle />
-          </Route>
-          <Route path="/">
-            <Main />
           </Route>
         </Switch>
       </Router>
