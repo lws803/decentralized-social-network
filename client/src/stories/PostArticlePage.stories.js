@@ -19,5 +19,5 @@ export const NewArticle = () => (
 );
 
 export const EditArticle = () => (
-  <PostArticle gunSession={gunSession} user={user} existingUUID={"test"} />
+  <PostArticle gunSession={gunSession} user={user} uuid={"test"} />
 );

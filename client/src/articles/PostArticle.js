@@ -25,12 +25,15 @@ class PostArticle extends React.Component {
       console.log("user not logged in");
     }
     this.state = {
-      tags: [],
-      content: sessionStorage.getItem("article:draft") || "",
+      tags: [] || this.props.tags,
+      content: this.props.content
+        ? this.props.content
+        : sessionStorage.getItem("article:draft") || "",
     };
   }
 
-  async postNewArticle(article, tags) {
+  async postArticle(article, tags) {
+    // TODO: Add date posted and date updated as well
     var errors = [];
     var post = await this.user
       .get("posts")
@@ -61,8 +64,6 @@ class PostArticle extends React.Component {
     }
   }
 
-  async getArticleFromUUID() {}
-
   extractContentMetadata(root) {
     const title = root.querySelector("h1")
       ? root.querySelector("h1").text
@@ -74,14 +75,14 @@ class PostArticle extends React.Component {
       srcURL = srcURL.substring(0, srcURL.length - 1);
       coverPhoto = srcURL;
     }
-    return { coverPhotocoverPhoto: coverPhoto, title: title };
+    return { coverPhoto: coverPhoto, title: title };
   }
 
   publish() {
     const root = parse(this.state.content);
     const v = new Validator.Validator();
     var article = {
-      uuid: uuidv4(),
+      uuid: this.props.uuid ? this.props.uuid : uuidv4(),
       content: this.state.content,
       ...this.extractContentMetadata(root),
     };
@@ -91,12 +92,11 @@ class PostArticle extends React.Component {
     const tagsResult = v.validate(this.state.tags, TagsSchema, {
       propertyName: "tags",
     });
-    console.log(result);
     var validationErrors = result.errors.concat(tagsResult.errors);
     if (validationErrors.length) alert(validationErrors.join("\n"));
 
     if (result.valid && tagsResult.valid) {
-      this.postNewArticle(article, this.state.tags)
+      this.postArticle(article, this.state.tags)
         .then(() => {
           // TODO: Take us away from this page -> exit this page
           console.log("posted");
@@ -139,7 +139,9 @@ class PostArticle extends React.Component {
 }
 
 PostArticle.propTypes = {
-  existingUUID: PropTypes.string,
+  uuid: PropTypes.string,
+  content: PropTypes.string,
+  tags: PropTypes.array,
 };
 
 const Container = styled.div`
@@ -149,4 +151,3 @@ const Container = styled.div`
 `;
 
 export default PostArticle;
-// TODO: Check properties to see if exiting UUID is provided if it is, retrieve the post instead
