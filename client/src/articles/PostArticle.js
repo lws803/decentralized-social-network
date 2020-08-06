@@ -13,6 +13,7 @@ import Validator from "jsonschema";
 
 import CustomCKEditor from "../common/CustomCKEditor";
 import { NewArticleSchema, TagsSchema } from "../common/Schemas";
+import AuthenticationModal from "../authModal/AuthenticationModal";
 
 class PostArticle extends React.Component {
   constructor(props) {
@@ -23,15 +24,6 @@ class PostArticle extends React.Component {
       tags: [] || this.props.tags,
       content: this.props.content || "",
     };
-  }
-
-  componentDidMount() {
-    if (this.user.is) {
-      console.log("user logged in");
-    } else {
-      // TODO: Show the login modal here
-      console.log("user not logged in");
-    }
   }
 
   async postArticle(article, tags) {
@@ -114,6 +106,7 @@ class PostArticle extends React.Component {
   render() {
     return (
       <div>
+        <AuthenticationModal user={this.user} />
         <Container>
           <CustomCKEditor
             onChange={(event, editor) => {

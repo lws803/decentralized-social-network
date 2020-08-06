@@ -3,7 +3,7 @@ export const AuthSchema = {
   type: "object",
   properties: {
     name: { type: "string", minLength: 1, maxLength: 10, required: true },
-    password: { type: "string", minLength: 8, maxLength: 128, required: true },
+    password: { type: "string", minLength: 4, maxLength: 128, required: true },
   },
 };
 // TODO: See if we can include special character checks as well for password
