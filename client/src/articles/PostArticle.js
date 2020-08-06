@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import { withRouter } from "react-router-dom";
 import Gun from "gun/gun";
 import SEA from "gun/sea";
 import ReactTagInput from "@pathofdev/react-tag-input";
@@ -21,9 +22,7 @@ class PostArticle extends React.Component {
     this.user = this.gun.user().recall({ sessionStorage: true });
     this.state = {
       tags: [] || this.props.tags,
-      content: this.props.content
-        ? this.props.content
-        : sessionStorage.getItem("article:draft") || "",
+      content: this.props.content || "",
     };
   }
 
@@ -106,9 +105,8 @@ class PostArticle extends React.Component {
     if (result.valid && tagsResult.valid) {
       this.postArticle(article, this.state.tags)
         .then(() => {
-          // const history = useHistory();
-          // history.push("/"); // TODO: Redirect to the page we wanna see not the main page
           console.log("posted");
+          this.props.history.push("/"); // TODO: Redirect to the main page
         })
         .catch(err => alert(err));
     }
@@ -122,9 +120,6 @@ class PostArticle extends React.Component {
             onChange={(event, editor) => {
               this.setState({ content: editor.getData() });
             }}
-            onBlur={() =>
-              sessionStorage.setItem("article:draft", this.state.content)
-            }
             data={this.state.content}
           />
           <ReactTagInput
@@ -161,4 +156,4 @@ const PublishButton = styled.button`
   margin-right: auto;
 `;
 
-export default PostArticle;
+export default withRouter(PostArticle);
