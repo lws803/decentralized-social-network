@@ -1,7 +1,6 @@
 import React from "react";
 
 import Gun from "gun/gun";
-import { action } from "@storybook/addon-actions";
 
 import PostArticle from "../articles/PostArticle";
 

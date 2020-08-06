@@ -10,7 +10,6 @@ import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 import { parse } from "node-html-parser";
 import Validator from "jsonschema";
-import { useHistory } from "react-router-dom";
 
 import CustomCKEditor from "../common/CustomCKEditor";
 import { NewArticleSchema, TagsSchema } from "../common/Schemas";
