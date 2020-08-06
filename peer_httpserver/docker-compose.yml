@@ -9,11 +9,17 @@ services:
     - "5001:5001"
     - "4001:4001"
     - "8080:8080"
-  server:
-    build: .
+  http_server:
+    build: ./http_server
     ports:
       - "5000:5000"
     depends_on:
       - ipfs
     environment:
       IPFS_URL: "http://ipfs:5001"
+  gun_server:
+    build: ./gun_server
+    ports:
+      - "8765:8765"
+    depends_on:
+      - ipfs
