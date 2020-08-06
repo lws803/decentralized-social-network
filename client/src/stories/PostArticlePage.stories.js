@@ -10,7 +10,7 @@ export default {
   component: PostArticle,
 };
 
-var gunSession = new Gun([process.env.REACT_GUN_HOST_URL]);
+var gunSession = new Gun([process.env.REACT_APP_GUN_HOST_URL]);
 var user = gunSession.user().recall({ sessionStorage: true });
 user.auth("lws803", "cool"); // Test user
 

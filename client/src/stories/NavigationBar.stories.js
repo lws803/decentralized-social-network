@@ -1,7 +1,7 @@
 import React from "react";
 
 import { action } from "@storybook/addon-actions";
-import NavigationBar, { IconButton } from "../navBar/NavigationBar";
+import NavigationBar, { IconButton, MainLogo } from "../navBar/NavigationBar";
 
 export default {
   title: "Navigation Bar",
@@ -10,7 +10,7 @@ export default {
 
 export const Default = () => (
   <NavigationBar
-    onLogoClick={action("main logo")}
+    mainLogoButton={<MainLogo onClick={action("main")}>Main Logo</MainLogo>}
     onSearchClick={action("search")}
     onBookmarksClick={action("bookmarks")}
     articleButton={

@@ -9,29 +9,31 @@ import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 import { parse } from "node-html-parser";
 import Validator from "jsonschema";
+import { useHistory } from "react-router-dom";
 
 import CustomCKEditor from "../common/CustomCKEditor";
 import { NewArticleSchema, TagsSchema } from "../common/Schemas";
 
 class PostArticle extends React.Component {
   constructor(props) {
-    // TODO: Find a way to make it such that the New story button becomes the publish button on
-    // this page
     super(props);
-    this.gun = new Gun([process.env.REACT_GUN_HOST_URL]);
+    this.gun = new Gun([process.env.REACT_APP_GUN_HOST_URL]);
     this.user = this.gun.user().recall({ sessionStorage: true });
-    if (this.user.is) {
-      console.log("user logged in");
-    } else {
-      // TODO: Show the login modal here
-      console.log("user not logged in");
-    }
     this.state = {
       tags: [] || this.props.tags,
       content: this.props.content
         ? this.props.content
         : sessionStorage.getItem("article:draft") || "",
     };
+  }
+
+  componentDidMount() {
+    if (this.user.is) {
+      console.log("user logged in");
+    } else {
+      // TODO: Show the login modal here
+      console.log("user not logged in");
+    }
   }
 
   async postArticle(article, tags) {
@@ -89,7 +91,7 @@ class PostArticle extends React.Component {
       createdAt: this.props.createdAt
         ? this.props.createdAt
         : date.toISOString(),
-      updatedAt: this.props.uuid ? date.toISOString() : undefined,
+      updatedAt: this.props.uuid ? date.toISOString() : "",
       ...this.extractContentMetadata(root),
     };
     const result = v.validate(article, NewArticleSchema, {
@@ -104,7 +106,8 @@ class PostArticle extends React.Component {
     if (result.valid && tagsResult.valid) {
       this.postArticle(article, this.state.tags)
         .then(() => {
-          // TODO: Take us away from this page -> exit this page
+          // const history = useHistory();
+          // history.push("/"); // TODO: Redirect to the page we wanna see not the main page
           console.log("posted");
         })
         .catch(err => alert(err));
