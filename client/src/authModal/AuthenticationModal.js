@@ -54,7 +54,12 @@ class AuthenticationModal extends React.Component {
               if (this.validation().valid)
                 this.user.create(this.state.name, this.state.password, ack => {
                   if (ack.err) alert(ack.err);
-                  else this.setState({ authenticated: true });
+                  else {
+                    this.user.auth(this.state.name, this.state.password, ack => {
+                      if (ack.err) alert(ack.err);
+                      else this.setState({ authenticated: true });
+                    });    
+                  }
                 });
             }}
           >
