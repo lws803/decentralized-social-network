@@ -116,7 +116,7 @@ class PostArticle extends React.Component {
                 this.publish();
               }}
             >
-              {this.props.existingUUID ? "Save" : "Publish"}
+              {this.props.uuid ? "Save" : "Publish"}
             </IconButton>
           }
         />
@@ -127,6 +127,7 @@ class PostArticle extends React.Component {
           onBlur={() =>
             sessionStorage.setItem("article:draft", this.state.content)
           }
+          data={this.state.content}
         />
         <ReactTagInput
           tags={this.state.tags}

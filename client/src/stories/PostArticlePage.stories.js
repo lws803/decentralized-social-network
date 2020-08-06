@@ -19,5 +19,14 @@ export const NewArticle = () => (
 );
 
 export const EditArticle = () => (
-  <PostArticle gunSession={gunSession} user={user} uuid={"test"} />
+  <PostArticle
+    gunSession={gunSession}
+    user={user}
+    uuid={"test"}
+    content={
+      "<p>Hello penyet, have some cat</p>\
+      <img src='https://ipfs.io/ipfs/QmTNRkX4ZnZ1JoDwnLtWsGRWN5K22X5wf1dNg93htF4Jj8'/>"
+    }
+    tags={["hello", "cat"]}
+  />
 );
