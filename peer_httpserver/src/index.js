@@ -7,7 +7,7 @@ const morgan = require("morgan");
 const _ = require("lodash");
 require("dotenv").config();
 
-const ipfs = IpfsHttpClient();
+const ipfs = IpfsHttpClient(process.env.IPFS_URL)
 var app = express();
 
 app.use(
