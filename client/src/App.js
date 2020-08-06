@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  useHistory,
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 import Gun from "gun/gun";
 
@@ -14,8 +8,6 @@ import PostArticle from "./articles/PostArticle";
 import Main from "./Main";
 
 export default function App() {
-  let history = useHistory();
-
   var gunSession = new Gun([process.env.REACT_APP_GUN_HOST_URL]);
   var user = gunSession.user().recall({ sessionStorage: true });
   user.auth("lws803", "cool");
