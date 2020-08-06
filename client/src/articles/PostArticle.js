@@ -11,7 +11,6 @@ import { parse } from "node-html-parser";
 import Validator from "jsonschema";
 
 import CustomCKEditor from "../common/CustomCKEditor";
-import NavigationBar, { IconButton } from "../navBar/NavigationBar";
 import { NewArticleSchema, TagsSchema } from "../common/Schemas";
 
 class PostArticle extends React.Component {
@@ -87,7 +86,9 @@ class PostArticle extends React.Component {
     var article = {
       uuid: this.props.uuid ? this.props.uuid : uuidv4(),
       content: this.state.content,
-      createdAt: this.props.createdAt ? this.props.createdAt : date.toISOString(),
+      createdAt: this.props.createdAt
+        ? this.props.createdAt
+        : date.toISOString(),
       updatedAt: this.props.uuid ? date.toISOString() : undefined,
       ...this.extractContentMetadata(root),
     };
@@ -112,34 +113,26 @@ class PostArticle extends React.Component {
 
   render() {
     return (
-      <Container>
-        <NavigationBar
-          articleButton={
-            <IconButton
-              onClick={() => {
-                this.publish();
-              }}
-            >
-              {this.props.uuid ? "Save" : "Publish"}
-            </IconButton>
-          }
-        />
-        <CustomCKEditor
-          onChange={(event, editor) => {
-            this.setState({ content: editor.getData() });
-          }}
-          onBlur={() =>
-            sessionStorage.setItem("article:draft", this.state.content)
-          }
-          data={this.state.content}
-        />
-        <ReactTagInput
-          tags={this.state.tags}
-          onChange={newTags => this.setState({ tags: newTags })}
-          removeOnBackspace
-          maxTags={10}
-        />
-      </Container>
+      <div>
+        <Container>
+          <CustomCKEditor
+            onChange={(event, editor) => {
+              this.setState({ content: editor.getData() });
+            }}
+            onBlur={() =>
+              sessionStorage.setItem("article:draft", this.state.content)
+            }
+            data={this.state.content}
+          />
+          <ReactTagInput
+            tags={this.state.tags}
+            onChange={newTags => this.setState({ tags: newTags })}
+            removeOnBackspace
+            maxTags={10}
+          />
+          <PublishButton onClick={() => this.publish()}>Publish!</PublishButton>
+        </Container>
+      </div>
     );
   }
 }
@@ -153,6 +146,14 @@ PostArticle.propTypes = {
 
 const Container = styled.div`
   width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+`;
+
+const PublishButton = styled.button`
+  margin-top: 10px;
   margin-left: auto;
   margin-right: auto;
 `;

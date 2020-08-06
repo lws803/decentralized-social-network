@@ -20,6 +20,9 @@ function App() {
           <Route path="/new_article">
             <PostArticle />
           </Route>
+          <Route path="/">
+            <Main />
+          </Route>
         </Switch>
       </Router>
     </div>

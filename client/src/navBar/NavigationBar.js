@@ -41,7 +41,7 @@ const NavContainer = styled.div`
   display: flex;
   height: 40px;
   flex-direction: row;
-  width: 80%;
+  width: 70%;
   margin-left: auto;
   margin-right: auto;
   align-items: center;
