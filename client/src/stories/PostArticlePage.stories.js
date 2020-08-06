@@ -28,5 +28,6 @@ export const EditArticle = () => (
       <img src='https://ipfs.io/ipfs/QmTNRkX4ZnZ1JoDwnLtWsGRWN5K22X5wf1dNg93htF4Jj8'/>"
     }
     tags={["hello", "cat"]}
+    createdAt=""
   />
 );

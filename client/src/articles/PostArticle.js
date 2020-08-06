@@ -84,7 +84,8 @@ class PostArticle extends React.Component {
     var article = {
       uuid: this.props.uuid ? this.props.uuid : uuidv4(),
       content: this.state.content,
-      createdAt: date.toISOString(),
+      createdAt: this.props.createdAt ? this.props.createdAt : date.toISOString(),
+      updatedAt: this.props.uuid ? date.toISOString() : undefined,
       ...this.extractContentMetadata(root),
     };
     const result = v.validate(article, NewArticleSchema, {
@@ -144,6 +145,7 @@ PostArticle.propTypes = {
   uuid: PropTypes.string,
   content: PropTypes.string,
   tags: PropTypes.array,
+  createdAt: PropTypes.string,
 };
 
 const Container = styled.div`
