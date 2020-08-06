@@ -9,6 +9,7 @@ services:
     - "5001:5001"
     - "4001:4001"
     - "8080:8080"
+    restart: on-failure
   http_server:
     build: ./http_server
     ports:
@@ -17,7 +18,9 @@ services:
       - ipfs
     environment:
       IPFS_URL: "http://ipfs:5001"
+    restart: on-failure
   gun_server:
     build: ./gun_server
     ports:
       - "8765:8765"
+    restart: on-failure
