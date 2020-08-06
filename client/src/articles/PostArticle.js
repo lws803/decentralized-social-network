@@ -16,6 +16,8 @@ import { NewArticleSchema, TagsSchema } from "../common/Schemas";
 
 class PostArticle extends React.Component {
   constructor(props) {
+    // TODO: Find a way to make it such that the New story button becomes the publish button on
+    // this page
     super(props);
     this.gun = new Gun([process.env.REACT_GUN_HOST_URL]);
     this.user = this.gun.user().recall({ sessionStorage: true });
@@ -85,9 +87,7 @@ class PostArticle extends React.Component {
     var article = {
       uuid: this.props.uuid ? this.props.uuid : uuidv4(),
       content: this.state.content,
-      createdAt: this.props.createdAt
-        ? this.props.createdAt
-        : date.toISOString(),
+      createdAt: this.props.createdAt ? this.props.createdAt : date.toISOString(),
       updatedAt: this.props.uuid ? date.toISOString() : undefined,
       ...this.extractContentMetadata(root),
     };
