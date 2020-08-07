@@ -9,7 +9,7 @@ import NavigationBar, { IconButton, MainLogo } from "./navBar/NavigationBar";
 import PostArticle from "./PostArticle";
 import Article from "./Article";
 import Main from "./Main";
-import Profile from "./Profile";
+import ProfileEdit from "./ProfileEdit";
 
 export default function App() {
   var gunSession = new Gun([process.env.REACT_APP_GUN_HOST_URL]);
@@ -49,14 +49,15 @@ export default function App() {
           <Route exact path="/">
             <Main />
           </Route>
-          <Route path="/new_article">
+          <Route exact path="/new_article">
             <PostArticle />
           </Route>
-          <Route path="/article/:user/:path/:articleID">
+          <Route exact path="/article/:user/:path/:articleID">
             <Article />
           </Route>
-          <Route path="/my_profile">
-            <Profile />
+          <Route exact path="/my_profile">Hello World</Route>
+          <Route exact path="/my_profile/edit">
+            <ProfileEdit />
           </Route>
         </Switch>
       </Router>

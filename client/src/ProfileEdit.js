@@ -5,14 +5,17 @@ import styled from "styled-components";
 
 import AuthenticationModal from "./authModal/AuthenticationModal";
 import ProfileImage from "./profile/ProfileImage";
+import LightCKEditor from "./common/LightCKEditor";
 
-class Profile extends React.Component {
+class ProfileEdit extends React.Component {
   constructor(props) {
     super(props);
     this.gun = new Gun([process.env.REACT_APP_GUN_HOST_URL]);
     this.user = this.gun.user().recall({ sessionStorage: true });
     this.state = {
       user: undefined,
+      content: undefined,
+      bioCharacters: undefined,
     };
   }
 
@@ -34,7 +37,7 @@ class Profile extends React.Component {
             onImageSelect={props => {
               console.log(props.imageFile);
             }}
-            // Now we upload this file
+            // TODO: Now we upload this file
           />
         </ProfileImageContainer>
         <div
@@ -42,6 +45,22 @@ class Profile extends React.Component {
         >
           {this.state.user}
         </div>
+        <BioEditor>
+          <LightCKEditor
+            onInit={editor => {
+              const wordCountPlugin = editor.plugins.get("WordCount");
+              wordCountPlugin.on("update", (evt, data) => {
+                this.setState({
+                  bioCharacters: data.characters,
+                });
+              });
+            }}
+            onChange={(event, editor) => {
+              this.setState({ content: editor.getData() });
+            }}
+            data={this.state.content}
+          />
+        </BioEditor>
       </Container>
     );
   }
@@ -63,4 +82,9 @@ const ProfileImageContainer = styled.div`
   height: 100px;
 `;
 
-export default Profile;
+const BioEditor = styled.div`
+  margin-top: 20px;
+`;
+
+export default ProfileEdit;
+// TODO: Consider creating an edit page to allow editing to bio
