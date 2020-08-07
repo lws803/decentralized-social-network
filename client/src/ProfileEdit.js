@@ -31,7 +31,8 @@ class ProfileEdit extends React.Component {
   }
 
   async updateProfile() {
-    // TODO: Do a schema check before returning
+    if (this.state.bioCharacters > 100)
+      throw new Error("Bio must be kept within the 100 character limit.");
     await this.user.get("photo").put(this.state.profilePhoto);
     await this.user.get("bio").put(this.state.bioContent);
   }
@@ -92,7 +93,7 @@ class ProfileEdit extends React.Component {
         <SaveButton
           onClick={() => {
             this.updateProfile()
-              .then(this.props.history.push("/profile/my_profile"))
+              .then(ack => this.props.history.push("/profile/my_profile"))
               .catch(err => alert(err));
           }}
         >
@@ -130,4 +131,3 @@ const SaveButton = styled.button`
 `;
 
 export default withRouter(ProfileEdit);
-// TODO: Consider creating an edit page to allow editing to bio
