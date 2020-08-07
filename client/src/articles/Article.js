@@ -8,6 +8,7 @@ import DOMPurify from "dompurify";
 
 import { Card, LargeCard } from "./ProfileCard";
 import Vote from "./Vote";
+import profileImage from "../res/7874219.jpeg";
 
 class Article extends React.Component {
   constructor(props) {
@@ -52,7 +53,7 @@ class Article extends React.Component {
         <Title>{this.state.title}</Title>
         <CardContainer>
           <Card
-            authorPhoto={undefined}
+            authorPhoto={profileImage}
             onFollowClick={() => {}}
             dateCreated={this.state.createdAt} // TODO: Beautify this using something like moment
             authorName={this.state.author}
@@ -74,6 +75,7 @@ class Article extends React.Component {
           downVoteCount={10000}
         />
         <LargeCard
+          authorPhoto={profileImage}
           dateCreated={this.state.createdAt}
           authorName={this.state.author}
           bio="Nunc porta lectus vitae elit hendrerit porta. 
