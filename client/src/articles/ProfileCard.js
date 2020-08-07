@@ -21,10 +21,10 @@ class Card extends React.Component {
 }
 
 Card.propTypes = {
-  authorPhoto: PropTypes.string.isRequired,
-  authorName: PropTypes.string.isRequired,
-  dateCreated: PropTypes.string.isRequired,
-  onFollowClick: PropTypes.func.isRequired,
+  authorPhoto: PropTypes.string,
+  authorName: PropTypes.string,
+  dateCreated: PropTypes.string,
+  onFollowClick: PropTypes.func,
 };
 
 const ProfileCardContainer = styled.div`
