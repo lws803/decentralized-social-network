@@ -1,6 +1,8 @@
 import React from "react";
 
 import Gun from "gun/gun";
+import ReactTagInput from "@pathofdev/react-tag-input";
+import "@pathofdev/react-tag-input/build/index.css";
 import styled from "styled-components";
 import DOMPurify from "dompurify";
 
@@ -9,7 +11,6 @@ import { Card, LargeCard } from "./ProfileCard";
 class Article extends React.Component {
   constructor(props) {
     super(props);
-    // TODO: Use a mock ref here or mock data first
     this.gun = new Gun([process.env.REACT_APP_GUN_HOST_URL]);
     // this.gun.get("#posts").map().once(console.log)
     this.state = {
@@ -17,6 +18,7 @@ class Article extends React.Component {
       author: undefined,
       title: undefined,
       createdAt: undefined,
+      tags: [],
     };
   }
 
@@ -25,36 +27,45 @@ class Article extends React.Component {
   }
 
   getContent() {
-    this.gun
-      .get(
-        "~H_XGlyWWdkWZtzdyJZEZot-eboc7Z8juH565DEU_k8I.yoGeHqAKRNSML9If4IkXfrqwd93GQ0jqcrjYvjIFJJQ/posts/b256844c-baa9-410f-b74e-31c4d865fa49"
-      )
-      .once(payload =>
-        this.setState({
-          author: JSON.parse(payload.author)[":"],
-          content: JSON.parse(payload.content)[":"],
-          title: JSON.parse(payload.title)[":"],
-          createdAt: JSON.parse(payload.createdAt)[":"],
-        })
-      );
+    const ref =
+      "~H_XGlyWWdkWZtzdyJZEZot-eboc7Z8juH565DEU_k8I.yoGeHqAKRNSML9If4IkXfrqwd93GQ0jqcrjYvjIFJJQ/posts/5f766e7b-3472-4cb2-a29e-d12fb8019a2c";
+    this.gun.get(ref).once(payload => {
+      this.setState({
+        author: JSON.parse(payload.author)[":"],
+        content: JSON.parse(payload.content)[":"],
+        title: JSON.parse(payload.title)[":"],
+        createdAt: JSON.parse(payload.createdAt)[":"],
+      });
+      this.gun
+        .get(JSON.parse(payload.tags)[":"]["#"])
+        .map()
+        .once(tag => {
+          this.setState(state => state.tags.push(JSON.parse(tag)[":"]));
+        });
+    });
   }
 
   render() {
     return (
       <Container>
         <Title>{this.state.title}</Title>
-        <Card
-          authorPhoto={undefined}
-          onFollowClick={() => {}}
-          dateCreated={this.state.createdAt} // TODO: Beautify this using something like moment
-          authorName={this.state.author}
-        />
+        <CardContainer>
+          <Card
+            authorPhoto={undefined}
+            onFollowClick={() => {}}
+            dateCreated={this.state.createdAt} // TODO: Beautify this using something like moment
+            authorName={this.state.author}
+          />
+        </CardContainer>
         <div
           className="content"
           dangerouslySetInnerHTML={{
             __html: DOMPurify.sanitize(this.state.content || ""),
           }}
         ></div>
+        <TagContainer>
+          <ReactTagInput tags={this.state.tags} readOnly />
+        </TagContainer>
       </Container>
     );
   }
@@ -64,14 +75,25 @@ Article.propTypes = {};
 
 const Title = styled.div`
   font-size: 40px;
+  height: 40px;
   margin-top: 10px;
 `;
 
 const Container = styled.div`
-  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  width: 70%;
   display: flex;
   flex-direction: column;
   align-items: center;
+`;
+
+const CardContainer = styled.div`
+  margin-top: 10px;
+`;
+
+const TagContainer = styled.div`
+  width: 80%;
 `;
 // TODO: See if align-items will affect the contents of the html element as well
 

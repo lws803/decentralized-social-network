@@ -73,6 +73,7 @@ class PostArticle extends React.Component {
 
   async publish() {
     const root = parse(this.state.content);
+    // TODO: Remove the header of the content
     const v = new Validator.Validator();
     var date = new Date();
     var article = {
