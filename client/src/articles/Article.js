@@ -16,7 +16,6 @@ class Article extends React.Component {
   constructor(props) {
     super(props);
     this.gun = new Gun([process.env.REACT_APP_GUN_HOST_URL]);
-    // this.gun.get("#posts").map().once(console.log)
     this.state = {
       content: undefined,
       author: undefined,

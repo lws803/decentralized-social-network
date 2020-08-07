@@ -28,10 +28,11 @@ Card.propTypes = {
 };
 
 const ProfileCardContainer = styled.div`
-  width: 305px;
+  width: 280px;
   height: 58px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 `;
 
 const ProfileImage = styled.img`
@@ -53,9 +54,7 @@ const TimeDate = styled.div`
 `;
 
 const ButtonContainer = styled.div`
-  width: 100px;
   height: 100%;
-  margin-left: 30px;
   padding-top: 10px;
 `;
 
