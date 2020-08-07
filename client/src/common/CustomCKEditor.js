@@ -45,7 +45,7 @@ class CustomCKEditor extends React.Component {
             ],
           },
           simpleUpload: {
-            uploadUrl: process.env.REACT_APP_API_URL,  // TODO: Make this dynamic in future
+            uploadUrl: process.env.REACT_APP_API_URL,
             withCredentials: false,
           },
         }}

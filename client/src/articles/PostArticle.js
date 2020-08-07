@@ -28,7 +28,6 @@ class PostArticle extends React.Component {
 
   async postArticle(article, tags) {
     var errors = [];
-    console.log(article.content)
     var post = await this.user
       .get("posts")
       .get(article.uuid)
@@ -56,6 +55,7 @@ class PostArticle extends React.Component {
     if (errors.length > 0) {
       throw new Error(errors);
     }
+    return ref;
   }
 
   extractContentMetadata() {
@@ -63,7 +63,6 @@ class PostArticle extends React.Component {
     const title = root.querySelector("h1")
       ? root.querySelector("h1").text
       : undefined;
-    if (root.querySelector("h1")) root.querySelector("h1").set_content("");
     const coverPhotoElem = root.querySelector("img");
     var coverPhoto = undefined;
     if (coverPhotoElem && coverPhotoElem.rawAttrs) {
@@ -71,7 +70,8 @@ class PostArticle extends React.Component {
       srcURL = srcURL.substring(0, srcURL.length - 1);
       coverPhoto = srcURL;
     }
-    return { coverPhoto: coverPhoto, title: title, content: root.toString() };
+    const sanitizedContent = this.state.content.replace(/<(\/?|\!?)(h1)>/g, "");
+    return { coverPhoto: coverPhoto, title: title, content: sanitizedContent };
   }
 
   async publish() {
@@ -98,9 +98,8 @@ class PostArticle extends React.Component {
 
     if (result.valid && tagsResult.valid) {
       this.postArticle(article, this.state.tags)
-        .then(() => {
-          console.log("posted");
-          this.props.history.push("/"); // TODO: Redirect to the main page
+        .then(ref => {
+          this.props.history.push(`/article/${ref}`);
         })
         .catch(err => alert(err));
     }
@@ -149,6 +148,7 @@ const Container = styled.div`
 
 const PublishButton = styled.button`
   margin-top: 10px;
+  margin-bottom: 50px;
   margin-left: auto;
   margin-right: auto;
 `;
