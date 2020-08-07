@@ -68,14 +68,14 @@ class Article extends React.Component {
           <div style={{ marginTop: "10px" }}>
             <ReactTagInput tags={this.state.tags} readOnly />
           </div>
-          <div style={{ marginTop: "26px" }}>
+          {/* <div style={{ marginTop: "26px" }}>
             <Vote
               onClickUpVote={() => {}}
               onClickDownVote={() => {}}
               upVoteCount={0}
               downVoteCount={0}
             />
-          </div>
+          </div> */}
         </VoteAndTagsContainer>
         <Divider />
         <LargeCard
