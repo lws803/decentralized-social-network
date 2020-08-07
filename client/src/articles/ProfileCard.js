@@ -21,17 +21,18 @@ class Card extends React.Component {
 }
 
 Card.propTypes = {
-  authorPhoto: PropTypes.string.isRequired,
-  authorName: PropTypes.string.isRequired,
-  dateCreated: PropTypes.string.isRequired,
-  onFollowClick: PropTypes.func.isRequired,
+  authorPhoto: PropTypes.string,
+  authorName: PropTypes.string,
+  dateCreated: PropTypes.string,
+  onFollowClick: PropTypes.func,
 };
 
 const ProfileCardContainer = styled.div`
-  width: 305px;
+  width: 280px;
   height: 58px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 `;
 
 const ProfileImage = styled.img`
@@ -53,9 +54,7 @@ const TimeDate = styled.div`
 `;
 
 const ButtonContainer = styled.div`
-  width: 100px;
   height: 100%;
-  margin-left: 30px;
   padding-top: 10px;
 `;
 
@@ -74,10 +73,10 @@ class LargeCard extends React.Component {
 }
 
 LargeCard.propTypes = {
-  authorPhoto: PropTypes.string.isRequired,
-  authorName: PropTypes.string.isRequired,
-  dateCreated: PropTypes.string.isRequired,
-  bio: PropTypes.string.isRequired,
+  authorPhoto: PropTypes.string,
+  authorName: PropTypes.string,
+  dateCreated: PropTypes.string,
+  bio: PropTypes.string,
 };
 
 const LargeCardContainer = styled.div`

@@ -5,6 +5,7 @@ import Gun from "gun/gun";
 
 import NavigationBar, { IconButton, MainLogo } from "./navBar/NavigationBar";
 import PostArticle from "./articles/PostArticle";
+import Article from "./articles/Article";
 import Main from "./Main";
 
 export default function App() {
@@ -36,6 +37,9 @@ export default function App() {
           </Route>
           <Route path="/new_article">
             <PostArticle />
+          </Route>
+          <Route path="/article/:user/:path/:articleID">
+            <Article />
           </Route>
         </Switch>
       </Router>

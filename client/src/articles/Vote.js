@@ -39,8 +39,8 @@ class Vote extends React.Component {
 Vote.propTypes = {
   onClickUpVote: PropTypes.func.isRequired,
   onClickDownVote: PropTypes.func.isRequired,
-  upVoteCount: PropTypes.func.isRequired,
-  downVoteCount: PropTypes.func.isRequired,
+  upVoteCount: PropTypes.number,
+  downVoteCount: PropTypes.number,
   upDisabled: PropTypes.bool,
   downDisabled: PropTypes.bool,
 };
@@ -49,13 +49,13 @@ const Container = styled.div`
   display: flex;
   height: 32px;
   width: 172px;
-  justify-content: space-between;
   align-items: center;
 `;
 
 const ButtonVoteNum = styled.div`
   display: flex;
   align-items: center;
+  margin-right: 20px;
 `;
 
 const VoteCount = styled.div`
