@@ -5,6 +5,7 @@ import Gun from "gun/gun";
 import styled from "styled-components";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
+import AuthenticationModal from "./authModal/AuthenticationModal";
 import Bio from "./profile/Bio";
 
 class Profile extends React.Component {
@@ -32,6 +33,7 @@ class Profile extends React.Component {
   render() {
     return (
       <Container>
+        <AuthenticationModal user={this.user} />
         <ImageContainer>
           <LazyLoadImage
             src={this.state.profilePhoto}

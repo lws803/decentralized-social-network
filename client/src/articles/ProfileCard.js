@@ -4,6 +4,8 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
+import Bio from "../profile/Bio";
+
 class Card extends React.Component {
   render() {
     return (
@@ -69,7 +71,9 @@ class LargeCard extends React.Component {
         />
         <ProfileDetails>
           <LargeAuthorName>{this.props.authorName}</LargeAuthorName>
-          <Bio>{this.props.bio}</Bio>
+          <BioContainer>
+            <Bio content={this.props.bio} />
+          </BioContainer>
         </ProfileDetails>
       </LargeCardContainer>
     );
@@ -101,7 +105,7 @@ const LargeAuthorName = styled.div`
   font-size: 20px;
 `;
 
-const Bio = styled.div`
+const BioContainer = styled.div`
   margin-top: 10px;
   font-size: 15px;
 `;
