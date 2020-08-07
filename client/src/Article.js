@@ -9,7 +9,7 @@ import moment from "moment";
 
 import { Card, LargeCard } from "./articles/ProfileCard";
 // import Vote from "./Vote";
-import profileImage from "../res/7874219.jpeg";
+import profileImage from "./res/7874219.jpeg";
 import ReadOnlyEditor from "./common/ReadOnlyEditor";
 
 class Article extends React.Component {

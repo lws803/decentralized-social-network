@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Gun from "gun/gun";
 
 import NavigationBar, { IconButton, MainLogo } from "./navBar/NavigationBar";
-import PostArticle from "./articles/PostArticle";
+import PostArticle from "./PostArticle";
 import Article from "./Article";
 import Main from "./Main";
 
