@@ -17,10 +17,6 @@ Modal.setAppElement("body");
 // Modal.defaultStyles.overlay.overflow = "auto";
 
 class ModalView extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <Modal
