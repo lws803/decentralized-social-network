@@ -60,7 +60,6 @@ class Article extends React.Component {
           />
         </CardContainer>
         <div
-          className="content"
           dangerouslySetInnerHTML={{
             __html: DOMPurify.sanitize(this.state.content || ""),
           }}
@@ -95,7 +94,7 @@ Article.propTypes = {};
 const Title = styled.div`
   font-size: 40px;
   height: 40px;
-  margin-top: 10px;
+  margin-top: 20px;
 `;
 
 const Container = styled.div`
@@ -119,6 +118,6 @@ const Divider = styled.div`
 
 const VoteAndTagsContainer = styled.div`
   width: 70%;
-`
+`;
 
 export default withRouter(Article);
