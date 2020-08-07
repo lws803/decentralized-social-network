@@ -60,8 +60,8 @@ class PostArticle extends React.Component {
   }
 
   extractContentMetadata() {
-    // TODO: Add extra content sanitation -> lazyloading images + responsive images
     var root = parse(this.state.content);
+    // TODO: Remove the h1 tags properly leaving no trace
     const title = root.querySelector("h1")
       ? root.querySelector("h1").text
       : undefined;
@@ -150,6 +150,7 @@ const Container = styled.div`
 
 const PublishButton = styled.button`
   margin-top: 10px;
+  margin-bottom: 50px;
   margin-left: auto;
   margin-right: auto;
 `;
