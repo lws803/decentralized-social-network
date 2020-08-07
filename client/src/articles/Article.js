@@ -72,8 +72,8 @@ class Article extends React.Component {
             <Vote
               onClickUpVote={() => {}}
               onClickDownVote={() => {}}
-              upVoteCount={100}
-              downVoteCount={10000}
+              upVoteCount={0}
+              downVoteCount={0}
             />
           </div>
         </VoteAndTagsContainer>
