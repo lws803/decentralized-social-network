@@ -28,7 +28,7 @@ class PostArticle extends React.Component {
 
   async postArticle(article, tags) {
     var errors = [];
-    console.log(article.uuid);
+    console.log(article.content)
     var post = await this.user
       .get("posts")
       .get(article.uuid)
@@ -58,10 +58,12 @@ class PostArticle extends React.Component {
     }
   }
 
-  extractContentMetadata(root) {
+  extractContentMetadata() {
+    var root = parse(this.state.content);
     const title = root.querySelector("h1")
       ? root.querySelector("h1").text
       : undefined;
+    if (root.querySelector("h1")) root.querySelector("h1").set_content("");
     const coverPhotoElem = root.querySelector("img");
     var coverPhoto = undefined;
     if (coverPhotoElem && coverPhotoElem.rawAttrs) {
@@ -69,11 +71,10 @@ class PostArticle extends React.Component {
       srcURL = srcURL.substring(0, srcURL.length - 1);
       coverPhoto = srcURL;
     }
-    return { coverPhoto: coverPhoto, title: title };
+    return { coverPhoto: coverPhoto, title: title, content: root.toString() };
   }
 
   async publish() {
-    const root = parse(this.state.content);
     const v = new Validator.Validator();
     var date = new Date();
     var article = {
@@ -83,11 +84,8 @@ class PostArticle extends React.Component {
         ? this.props.createdAt
         : date.toISOString(),
       updatedAt: this.props.uuid ? date.toISOString() : "",
-      ...this.extractContentMetadata(root),
+      ...this.extractContentMetadata(),
     };
-    // Remove the header
-    if (root.querySelector("h1")) root.querySelector("h1").set_content("");
-    article.content = root.toString();
 
     const result = v.validate(article, NewArticleSchema, {
       propertyName: "article",
