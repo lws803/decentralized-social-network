@@ -36,7 +36,6 @@ app.post("/image_upload", async (req, res) => {
       });
     } else {
       let file = req.files.upload;
-      console.log(file);
       uploadFileIPFS(file.data)
         .then(uploadedFile => {
           const url = `http://ipfs.io/ipfs/${uploadedFile.path}`;
