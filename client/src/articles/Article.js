@@ -1,6 +1,7 @@
 import React from "react";
 
 import Gun from "gun/gun";
+import { withRouter } from "react-router-dom";
 import ReactTagInput from "@pathofdev/react-tag-input";
 import "@pathofdev/react-tag-input/build/index.css";
 import styled from "styled-components";
@@ -25,26 +26,29 @@ class Article extends React.Component {
   }
 
   componentDidMount() {
-    this.getContent();
+    const { articleID, path, user } = this.props.match.params;
+    this.getContent(articleID, path, user);
   }
 
-  getContent() {
-    const ref =
-      "~H_XGlyWWdkWZtzdyJZEZot-eboc7Z8juH565DEU_k8I.yoGeHqAKRNSML9If4IkXfrqwd93GQ0jqcrjYvjIFJJQ/posts/31fea85f-ab8b-45fd-a482-d4bdc9e65f3e";
-    this.gun.get(ref).once(payload => {
-      this.setState({
-        author: JSON.parse(payload.author)[":"],
-        content: JSON.parse(payload.content)[":"],
-        title: JSON.parse(payload.title)[":"],
-        createdAt: JSON.parse(payload.createdAt)[":"],
-      });
-      this.gun
-        .get(JSON.parse(payload.tags)[":"]["#"])
-        .map()
-        .once(tag => {
-          this.setState(state => state.tags.push(JSON.parse(tag)[":"]));
+  getContent(articleID, path, user) {
+    this.gun
+      .get(user)
+      .get(path)
+      .get(articleID)
+      .once(payload => {
+        this.setState({
+          author: payload.author,
+          content: payload.content,
+          title: payload.title,
+          createdAt: payload.createdAt,
         });
-    });
+        this.gun
+          .get(payload.tags["#"])
+          .map()
+          .once(tag => {
+            this.setState(state => state.tags.push(tag));
+          });
+      });
   }
 
   render() {
@@ -112,4 +116,4 @@ const TagContainer = styled.div`
 `;
 // TODO: See if align-items will affect the contents of the html element as well
 
-export default Article;
+export default withRouter(Article);
