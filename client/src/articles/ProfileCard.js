@@ -92,6 +92,7 @@ const LargeCardContainer = styled.div`
   height: 167px;
   display: flex;
   align-items: center;
+  overflow: hidden;
 `;
 
 const ProfileDetails = styled.div`

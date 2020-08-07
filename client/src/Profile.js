@@ -71,10 +71,12 @@ const ImageContainer = styled.div`
 
 const BioContainer = styled.div`
   margin-top: 20px;
-  width: 60%;
+  width: 694px;
+  height: 167px;
   margin-left: auto;
   margin-right: auto;
   border-style: solid;
+  overflow: hidden;
 `;
 
 const EditButton = styled.button`
