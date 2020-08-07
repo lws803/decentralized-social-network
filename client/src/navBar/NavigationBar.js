@@ -3,8 +3,6 @@ import PropTypes from "prop-types";
 
 import styled from "styled-components";
 
-import ProfileDropdown from "./ProfileDropdown";
-
 class NavigationBar extends React.Component {
   render() {
     return (
@@ -15,11 +13,7 @@ class NavigationBar extends React.Component {
           <IconButton onClick={this.props.onBookmarksClick}>
             Bookmarks
           </IconButton> */}
-          <ProfileDropdown
-            onProfileClick={this.props.onProfileClick}
-            onSettingsClick={this.props.onSettingsClick}
-            onFollowingClick={this.props.onFollowingClick}
-          />
+          {this.props.profileDropdown}
           {this.props.articleButton}
         </ButtonsContainer>
       </NavContainer>
@@ -29,6 +23,7 @@ class NavigationBar extends React.Component {
 
 NavigationBar.propTypes = {
   mainLogoButton: PropTypes.element,
+  profileDropdown: PropTypes.element,
   onSearchClick: PropTypes.func,
   onBookmarksClick: PropTypes.func,
   articleButton: PropTypes.element,

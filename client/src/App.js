@@ -2,11 +2,14 @@ import React from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 import Gun from "gun/gun";
+import { Dropdown } from "semantic-ui-react";
+import "semantic-ui-css/semantic.min.css";
 
 import NavigationBar, { IconButton, MainLogo } from "./navBar/NavigationBar";
 import PostArticle from "./PostArticle";
 import Article from "./Article";
 import Main from "./Main";
+import Profile from "./Profile";
 
 export default function App() {
   var gunSession = new Gun([process.env.REACT_APP_GUN_HOST_URL]);
@@ -30,6 +33,17 @@ export default function App() {
               <IconButton>New Story</IconButton>
             </Link>
           }
+          profileDropdown={
+            <Dropdown text="Profile">
+              <Dropdown.Menu>
+                <Dropdown.Item>
+                  <Link to="/my_profile">My Profile</Link>
+                </Dropdown.Item>
+                <Dropdown.Item text="Following" onClick={() => {}} />
+                <Dropdown.Item text="Settings" onClick={() => {}} />
+              </Dropdown.Menu>
+            </Dropdown>
+          }
         />
         <Switch>
           <Route exact path="/">
@@ -40,6 +54,9 @@ export default function App() {
           </Route>
           <Route path="/article/:user/:path/:articleID">
             <Article />
+          </Route>
+          <Route path="/my_profile">
+            <Profile />
           </Route>
         </Switch>
       </Router>
