@@ -11,9 +11,9 @@ import { v4 as uuidv4 } from "uuid";
 import { parse } from "node-html-parser";
 import Validator from "jsonschema";
 
-import CustomCKEditor from "../common/CustomCKEditor";
-import { NewArticleSchema, TagsSchema } from "../common/Schemas";
-import AuthenticationModal from "../authModal/AuthenticationModal";
+import CustomCKEditor from "./common/CustomCKEditor";
+import { NewArticleSchema, TagsSchema } from "./common/Schemas";
+import AuthenticationModal from "./authModal/AuthenticationModal";
 
 class PostArticle extends React.Component {
   constructor(props) {

@@ -5,10 +5,6 @@ import styled from "styled-components";
 import Dropzone from "react-dropzone";
 
 class ProfileImage extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <Container>

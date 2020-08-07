@@ -3,6 +3,8 @@ import React from "react";
 import { action } from "@storybook/addon-actions";
 import NavigationBar, { IconButton, MainLogo } from "../navBar/NavigationBar";
 
+import ProfileDropdown from "../navBar/ProfileDropdown";
+
 export default {
   title: "Navigation Bar",
   component: NavigationBar,
@@ -16,8 +18,6 @@ export const Default = () => (
     articleButton={
       <IconButton onClick={action("new story")}>New Story</IconButton>
     }
-    onProfileClick={action("profile")}
-    onSettingsClick={action("settings")}
-    onFollowingClick={action("following")}
+    profileDropdown={<ProfileDropdown/>}
   />
 );

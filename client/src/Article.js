@@ -7,16 +7,17 @@ import "@pathofdev/react-tag-input/build/index.css";
 import styled from "styled-components";
 import moment from "moment";
 
-import { Card, LargeCard } from "./ProfileCard";
+import { Card, LargeCard } from "./articles/ProfileCard";
 // import Vote from "./Vote";
-import profileImage from "../res/7874219.jpeg";
-import ReadOnlyEditor from "../common/ReadOnlyEditor";
+import ReadOnlyEditor from "./common/ReadOnlyEditor";
 
 class Article extends React.Component {
   constructor(props) {
     super(props);
     this.gun = new Gun([process.env.REACT_APP_GUN_HOST_URL]);
     this.state = {
+      authorPhoto: undefined,
+      authorBio: undefined,
       content: undefined,
       author: undefined,
       title: undefined,
@@ -38,6 +39,11 @@ class Article extends React.Component {
       .map()
       .once(tag => tags.push(tag));
     this.setState({ ...article, tags: tags });
+    await this.gun
+      .get(user)
+      .once(user =>
+        this.setState({ authorPhoto: user.photo, authorBio: user.bio })
+      );
   }
 
   render() {
@@ -46,7 +52,7 @@ class Article extends React.Component {
         <Title>{this.state.title}</Title>
         <CardContainer>
           <Card
-            authorPhoto={profileImage}
+            authorPhoto={this.state.authorPhoto}
             onFollowClick={() => {}}
             dateCreated={
               this.state.createdAt
@@ -59,11 +65,6 @@ class Article extends React.Component {
             authorName={this.state.author}
           />
         </CardContainer>
-        {/* <div
-          dangerouslySetInnerHTML={{
-            __html: DOMPurify.sanitize(this.state.content || ""),
-          }}
-        ></div> */}
         <ReadOnlyEditor data={this.state.content} />
         <div style={{ marginTop: "10px" }}>
           <ReactTagInput tags={this.state.tags} readOnly />
@@ -79,10 +80,9 @@ class Article extends React.Component {
         <Divider />
         <LargeCardContainer>
           <LargeCard
-            authorPhoto={profileImage}
+            authorPhoto={this.state.authorPhoto}
             authorName={this.state.author}
-            bio="Nunc porta lectus vitae elit hendrerit porta. 
-          Nulla facilisi. Nulla laoreet sapien at eros maximus elementum"
+            bio={this.state.authorBio}
           />
         </LargeCardContainer>
       </Container>
@@ -112,6 +112,7 @@ const CardContainer = styled.div`
   margin-top: 10px;
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 10px;
 `;
 
 const Divider = styled.div`

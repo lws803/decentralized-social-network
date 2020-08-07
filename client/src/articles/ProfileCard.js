@@ -2,12 +2,20 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import styled from "styled-components";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+
+import Bio from "../profile/Bio";
 
 class Card extends React.Component {
   render() {
     return (
       <ProfileCardContainer>
-        <ProfileImage src={this.props.authorPhoto} />
+        <LazyLoadImage
+          src={this.props.authorPhoto}
+          width={54}
+          height={54}
+          style={{ borderRadius: "50%" }}
+        />
         <ArticleDetails>
           <div>{this.props.authorName}</div>
           <TimeDate>{this.props.dateCreated}</TimeDate>
@@ -35,13 +43,6 @@ const ProfileCardContainer = styled.div`
   justify-content: space-between;
 `;
 
-const ProfileImage = styled.img`
-  height: 54px;
-  width: 54px;
-  object-fit: cover;
-  border-radius: 50%;
-`;
-
 const ArticleDetails = styled.div`
   display: flex;
   flex-direction: column;
@@ -62,10 +63,17 @@ class LargeCard extends React.Component {
   render() {
     return (
       <LargeCardContainer>
-        <LargeProfileImage src={this.props.authorPhoto} />
+        <LazyLoadImage
+          src={this.props.authorPhoto}
+          width={127}
+          height={127}
+          style={{ borderRadius: "50%" }}
+        />
         <ProfileDetails>
           <LargeAuthorName>{this.props.authorName}</LargeAuthorName>
-          <Bio>{this.props.bio}</Bio>
+          <BioContainer>
+            <Bio content={this.props.bio} />
+          </BioContainer>
         </ProfileDetails>
       </LargeCardContainer>
     );
@@ -84,13 +92,7 @@ const LargeCardContainer = styled.div`
   height: 167px;
   display: flex;
   align-items: center;
-`;
-
-const LargeProfileImage = styled.img`
-  height: 127px;
-  width: 127px;
-  object-fit: cover;
-  border-radius: 50%;
+  overflow: hidden;
 `;
 
 const ProfileDetails = styled.div`
@@ -104,7 +106,7 @@ const LargeAuthorName = styled.div`
   font-size: 20px;
 `;
 
-const Bio = styled.div`
+const BioContainer = styled.div`
   margin-top: 10px;
   font-size: 15px;
 `;

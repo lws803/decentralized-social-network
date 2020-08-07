@@ -3,16 +3,35 @@ import React from "react";
 import CKEditor from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "ckeditor5-for-code-and-image/build/ckeditor";
 
-class ReadOnlyEditor extends React.Component {
+class LightCKEditor extends React.Component {
   render() {
     return (
       <CKEditor
         editor={ClassicEditor}
-        onInit={editor => {
-          editor.isReadOnly = true;
-        }}
         config={{
-          removePlugins: ["Title"],
+          removePlugins: [
+            "Title",
+            "FontSize",
+            "Heading",
+            "ImageUpload",
+            "PasteFromOffice",
+            "MediaEmbed",
+            "Code",
+            "CodeBlock",
+          ],
+          toolbar: {
+            items: [
+              "|",
+              "bold",
+              "italic",
+              "link",
+              "bulletedList",
+              "numberedList",
+              "underline",
+              "undo",
+              "redo",
+            ],
+          },
           language: "en",
           image: {
             toolbar: [
@@ -32,4 +51,4 @@ class ReadOnlyEditor extends React.Component {
   }
 }
 
-export default ReadOnlyEditor;
+export default LightCKEditor;
