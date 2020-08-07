@@ -7,6 +7,7 @@ import styled from "styled-components";
 import DOMPurify from "dompurify";
 
 import { Card, LargeCard } from "./ProfileCard";
+import Vote from "./Vote";
 
 class Article extends React.Component {
   constructor(props) {
@@ -28,7 +29,7 @@ class Article extends React.Component {
 
   getContent() {
     const ref =
-      "~H_XGlyWWdkWZtzdyJZEZot-eboc7Z8juH565DEU_k8I.yoGeHqAKRNSML9If4IkXfrqwd93GQ0jqcrjYvjIFJJQ/posts/5f766e7b-3472-4cb2-a29e-d12fb8019a2c";
+      "~H_XGlyWWdkWZtzdyJZEZot-eboc7Z8juH565DEU_k8I.yoGeHqAKRNSML9If4IkXfrqwd93GQ0jqcrjYvjIFJJQ/posts/31fea85f-ab8b-45fd-a482-d4bdc9e65f3e";
     this.gun.get(ref).once(payload => {
       this.setState({
         author: JSON.parse(payload.author)[":"],
@@ -66,6 +67,18 @@ class Article extends React.Component {
         <TagContainer>
           <ReactTagInput tags={this.state.tags} readOnly />
         </TagContainer>
+        <Vote
+          onClickUpVote={() => {}}
+          onClickDownVote={() => {}}
+          upVoteCount={100}
+          downVoteCount={10000}
+        />
+        <LargeCard
+          dateCreated={this.state.createdAt}
+          authorName={this.state.author}
+          bio="Nunc porta lectus vitae elit hendrerit porta. 
+          Nulla facilisi. Nulla laoreet sapien at eros maximus elementum"
+        />
       </Container>
     );
   }

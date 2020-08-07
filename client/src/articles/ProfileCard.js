@@ -74,10 +74,10 @@ class LargeCard extends React.Component {
 }
 
 LargeCard.propTypes = {
-  authorPhoto: PropTypes.string.isRequired,
-  authorName: PropTypes.string.isRequired,
-  dateCreated: PropTypes.string.isRequired,
-  bio: PropTypes.string.isRequired,
+  authorPhoto: PropTypes.string,
+  authorName: PropTypes.string,
+  dateCreated: PropTypes.string,
+  bio: PropTypes.string,
 };
 
 const LargeCardContainer = styled.div`

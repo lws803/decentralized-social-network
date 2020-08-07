@@ -39,8 +39,8 @@ class Vote extends React.Component {
 Vote.propTypes = {
   onClickUpVote: PropTypes.func.isRequired,
   onClickDownVote: PropTypes.func.isRequired,
-  upVoteCount: PropTypes.func.isRequired,
-  downVoteCount: PropTypes.func.isRequired,
+  upVoteCount: PropTypes.number,
+  downVoteCount: PropTypes.number,
   upDisabled: PropTypes.bool,
   downDisabled: PropTypes.bool,
 };
