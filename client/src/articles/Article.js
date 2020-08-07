@@ -9,7 +9,7 @@ import DOMPurify from "dompurify";
 import moment from "moment";
 
 import { Card, LargeCard } from "./ProfileCard";
-import Vote from "./Vote";
+// import Vote from "./Vote";
 import profileImage from "../res/7874219.jpeg";
 
 class Article extends React.Component {
