@@ -30,25 +30,14 @@ class Article extends React.Component {
     this.getContent(articleID, path, user);
   }
 
-  getContent(articleID, path, user) {
-    this.gun
-      .get(user)
-      .get(path)
-      .get(articleID)
-      .once(payload => {
-        this.setState({
-          author: payload.author,
-          content: payload.content,
-          title: payload.title,
-          createdAt: payload.createdAt,
-        });
-        this.gun
-          .get(payload.tags["#"])
-          .map()
-          .once(tag => {
-            this.setState(state => state.tags.push(tag));
-          });
-      });
+  async getContent(articleID, path, user) {
+    const article = await this.gun.get(user).get(path).get(articleID).once();
+    var tags = [];
+    await this.gun
+      .get(article.tags["#"])
+      .map()
+      .once(tag => tags.push(tag));
+    this.setState({ ...article, tags: tags });
   }
 
   render() {
@@ -80,7 +69,6 @@ class Article extends React.Component {
         />
         <LargeCard
           authorPhoto={profileImage}
-          dateCreated={this.state.createdAt}
           authorName={this.state.author}
           bio="Nunc porta lectus vitae elit hendrerit porta. 
           Nulla facilisi. Nulla laoreet sapien at eros maximus elementum"
