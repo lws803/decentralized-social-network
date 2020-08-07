@@ -16,6 +16,7 @@ export const NewArticleSchema = {
     content: { type: "string", required: true },
     coverPhoto: { type: "string", required: true },
     title: { type: "string", required: true },
+    author: { type: "string", required: true },
     createdAt: { type: "string", required: true },
     updatedAt: { type: "string" },
   },

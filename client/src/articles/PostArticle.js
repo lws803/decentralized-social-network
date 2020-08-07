@@ -71,11 +71,12 @@ class PostArticle extends React.Component {
     return { coverPhoto: coverPhoto, title: title };
   }
 
-  publish() {
+  async publish() {
     const root = parse(this.state.content);
     const v = new Validator.Validator();
     var date = new Date();
     var article = {
+      author: await this.user.get("alias").once(),
       uuid: this.props.uuid ? this.props.uuid : uuidv4(),
       content: this.state.content,
       createdAt: this.props.createdAt
@@ -120,7 +121,7 @@ class PostArticle extends React.Component {
             removeOnBackspace
             maxTags={10}
           />
-          <PublishButton onClick={() => this.publish()}>Publish!</PublishButton>
+          <PublishButton onClick={() => this.publish().then()}>Publish!</PublishButton>
         </Container>
       </div>
     );
