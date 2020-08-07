@@ -10,6 +10,7 @@ import PostArticle from "./PostArticle";
 import Article from "./Article";
 import Main from "./Main";
 import ProfileEdit from "./ProfileEdit";
+import Profile from "./Profile";
 
 export default function App() {
   var gunSession = new Gun([process.env.REACT_APP_GUN_HOST_URL]);
@@ -39,7 +40,7 @@ export default function App() {
                 <Dropdown.Item>
                   <Link to="/profile/my_profile">My Profile</Link>
                 </Dropdown.Item>
-                <Dropdown.Item text="Following" onClick={() => {}} />
+                {/* <Dropdown.Item text="Following" onClick={() => {}} /> */}
                 <Dropdown.Item text="Settings" onClick={() => {}} />
               </Dropdown.Menu>
             </Dropdown>
@@ -55,7 +56,9 @@ export default function App() {
           <Route exact path="/article/:user/:path/:articleID">
             <Article />
           </Route>
-          <Route exact path="/profile/my_profile">Hello World</Route>
+          <Route exact path="/profile/my_profile">
+            <Profile />
+          </Route>
           <Route exact path="/profile/my_profile/edit">
             <ProfileEdit />
           </Route>
