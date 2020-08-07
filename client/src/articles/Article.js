@@ -59,7 +59,6 @@ class Article extends React.Component {
             authorName={this.state.author}
           />
         </CardContainer>
-        {/* TODO: Reuse ckeditor 5 and make a read-only mode */}
         {/* <div
           dangerouslySetInnerHTML={{
             __html: DOMPurify.sanitize(this.state.content || ""),
