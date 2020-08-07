@@ -37,7 +37,7 @@ export default function App() {
             <Dropdown text="Profile">
               <Dropdown.Menu>
                 <Dropdown.Item>
-                  <Link to="/my_profile">My Profile</Link>
+                  <Link to="/profile/my_profile">My Profile</Link>
                 </Dropdown.Item>
                 <Dropdown.Item text="Following" onClick={() => {}} />
                 <Dropdown.Item text="Settings" onClick={() => {}} />
@@ -55,8 +55,8 @@ export default function App() {
           <Route exact path="/article/:user/:path/:articleID">
             <Article />
           </Route>
-          <Route exact path="/my_profile">Hello World</Route>
-          <Route exact path="/my_profile/edit">
+          <Route exact path="/profile/my_profile">Hello World</Route>
+          <Route exact path="/profile/my_profile/edit">
             <ProfileEdit />
           </Route>
         </Switch>

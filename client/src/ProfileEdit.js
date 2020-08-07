@@ -1,7 +1,9 @@
 import React from "react";
 
+import { withRouter } from "react-router-dom";
 import Gun from "gun/gun";
 import styled from "styled-components";
+import axios from "axios";
 
 import AuthenticationModal from "./authModal/AuthenticationModal";
 import ProfileImage from "./profile/ProfileImage";
@@ -14,8 +16,9 @@ class ProfileEdit extends React.Component {
     this.user = this.gun.user().recall({ sessionStorage: true });
     this.state = {
       user: undefined,
-      content: undefined,
+      bioContent: undefined,
       bioCharacters: undefined,
+      profilePhoto: undefined,
     };
   }
 
@@ -23,6 +26,30 @@ class ProfileEdit extends React.Component {
     this.user.get("alias").once(alias => {
       this.setState({ user: alias });
     });
+    this.user.get("photo").once(url => this.setState({ profilePhoto: url }));
+    this.user.get("bio").once(bio => this.setState({ bioContent: bio }));
+  }
+
+  async updateProfile() {
+    // TODO: Do a schema check before returning
+    await this.user.get("photo").put(this.state.profilePhoto);
+    await this.user.get("bio").put(this.state.bioContent);
+  }
+
+  async uploadPhoto(imageFile) {
+    const formData = new FormData();
+    formData.append("upload", imageFile);
+    const config = {
+      headers: {
+        "content-type": "multipart/form-data",
+      },
+    };
+    let res = await axios.post(
+      process.env.REACT_APP_API_URL + "/image_upload",
+      formData,
+      config
+    );
+    return res.data.url;
   }
 
   render() {
@@ -31,13 +58,14 @@ class ProfileEdit extends React.Component {
         <AuthenticationModal user={this.user} />
         <ProfileImageContainer>
           <ProfileImage
-            image={
-              "http://ipfs.io/ipfs/QmV4FZ3icC2AeaMFtLQH3VjaxQJBgjdXFSQSKp4Hp77kzM"
-            }
+            image={this.state.profilePhoto}
             onImageSelect={props => {
-              console.log(props.imageFile);
+              this.uploadPhoto(props.imageFile)
+                .then(url => {
+                  this.setState({ profilePhoto: url });
+                })
+                .catch(err => alert(err));
             }}
-            // TODO: Now we upload this file
           />
         </ProfileImageContainer>
         <div
@@ -56,11 +84,20 @@ class ProfileEdit extends React.Component {
               });
             }}
             onChange={(event, editor) => {
-              this.setState({ content: editor.getData() });
+              this.setState({ bioContent: editor.getData() });
             }}
-            data={this.state.content}
+            data={this.state.bioContent}
           />
         </BioEditor>
+        <SaveButton
+          onClick={() => {
+            this.updateProfile()
+              .then(this.props.history.push("/profile/my_profile"))
+              .catch(err => alert(err));
+          }}
+        >
+          Save
+        </SaveButton>
       </Container>
     );
   }
@@ -86,5 +123,11 @@ const BioEditor = styled.div`
   margin-top: 20px;
 `;
 
-export default ProfileEdit;
+const SaveButton = styled.button`
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+`;
+
+export default withRouter(ProfileEdit);
 // TODO: Consider creating an edit page to allow editing to bio
