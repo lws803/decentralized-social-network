@@ -5,7 +5,7 @@ import Gun from "gun/gun";
 
 import NavigationBar, { IconButton, MainLogo } from "./navBar/NavigationBar";
 import PostArticle from "./articles/PostArticle";
-import Article from "./articles/Article";
+import Article from "./Article";
 import Main from "./Main";
 
 export default function App() {
