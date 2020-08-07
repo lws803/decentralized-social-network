@@ -27,9 +27,6 @@ NavigationBar.propTypes = {
   onSearchClick: PropTypes.func,
   onBookmarksClick: PropTypes.func,
   articleButton: PropTypes.element,
-  onProfileClick: PropTypes.func,
-  onSettingsClick: PropTypes.func,
-  onFollowingClick: PropTypes.func,
 };
 
 const NavContainer = styled.div`
