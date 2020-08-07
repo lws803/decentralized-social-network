@@ -6,6 +6,7 @@ import ReactTagInput from "@pathofdev/react-tag-input";
 import "@pathofdev/react-tag-input/build/index.css";
 import styled from "styled-components";
 import DOMPurify from "dompurify";
+import moment from "moment";
 
 import { Card, LargeCard } from "./ProfileCard";
 import Vote from "./Vote";
@@ -48,7 +49,14 @@ class Article extends React.Component {
           <Card
             authorPhoto={profileImage}
             onFollowClick={() => {}}
-            dateCreated={this.state.createdAt} // TODO: Beautify this using something like moment
+            dateCreated={
+              this.state.createdAt
+                ? moment
+                    .utc(this.state.createdAt)
+                    .local()
+                    .format("DD MMM, YYYY")
+                : undefined
+            }
             authorName={this.state.author}
           />
         </CardContainer>
@@ -102,6 +110,5 @@ const CardContainer = styled.div`
 const TagContainer = styled.div`
   width: 80%;
 `;
-// TODO: See if align-items will affect the contents of the html element as well
 
 export default withRouter(Article);
