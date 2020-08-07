@@ -60,6 +60,7 @@ class PostArticle extends React.Component {
   }
 
   extractContentMetadata() {
+    // TODO: Add extra content sanitation -> lazyloading images + responsive images
     var root = parse(this.state.content);
     const title = root.querySelector("h1")
       ? root.querySelector("h1").text
