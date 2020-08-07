@@ -112,6 +112,7 @@ const CardContainer = styled.div`
   margin-top: 10px;
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 10px;
 `;
 
 const Divider = styled.div`
