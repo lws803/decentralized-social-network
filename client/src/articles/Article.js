@@ -65,15 +65,20 @@ class Article extends React.Component {
             __html: DOMPurify.sanitize(this.state.content || ""),
           }}
         ></div>
-        <TagContainer>
-          <ReactTagInput tags={this.state.tags} readOnly />
-        </TagContainer>
-        <Vote
-          onClickUpVote={() => {}}
-          onClickDownVote={() => {}}
-          upVoteCount={100}
-          downVoteCount={10000}
-        />
+        <VoteAndTagsContainer>
+          <div style={{ marginTop: "10px" }}>
+            <ReactTagInput tags={this.state.tags} readOnly />
+          </div>
+          <div style={{ marginTop: "26px" }}>
+            <Vote
+              onClickUpVote={() => {}}
+              onClickDownVote={() => {}}
+              upVoteCount={100}
+              downVoteCount={10000}
+            />
+          </div>
+        </VoteAndTagsContainer>
+        <Divider />
         <LargeCard
           authorPhoto={profileImage}
           authorName={this.state.author}
@@ -106,8 +111,14 @@ const CardContainer = styled.div`
   margin-top: 10px;
 `;
 
-const TagContainer = styled.div`
-  width: 80%;
+const Divider = styled.div`
+  margin-top: 57px;
+  width: 70%;
+  border: 1px solid black;
 `;
+
+const VoteAndTagsContainer = styled.div`
+  width: 70%;
+`
 
 export default withRouter(Article);
