@@ -5,7 +5,6 @@ import { withRouter } from "react-router-dom";
 import ReactTagInput from "@pathofdev/react-tag-input";
 import "@pathofdev/react-tag-input/build/index.css";
 import styled from "styled-components";
-import DOMPurify from "dompurify";
 import moment from "moment";
 
 import { Card, LargeCard } from "./ProfileCard";
