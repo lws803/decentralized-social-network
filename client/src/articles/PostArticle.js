@@ -56,6 +56,7 @@ class PostArticle extends React.Component {
     if (errors.length > 0) {
       throw new Error(errors);
     }
+    return ref;
   }
 
   extractContentMetadata() {
@@ -98,9 +99,8 @@ class PostArticle extends React.Component {
 
     if (result.valid && tagsResult.valid) {
       this.postArticle(article, this.state.tags)
-        .then(() => {
-          console.log("posted");
-          this.props.history.push("/"); // TODO: Redirect to the main page
+        .then(ref => {
+          this.props.history.push(`/article/${ref}`);
         })
         .catch(err => alert(err));
     }
