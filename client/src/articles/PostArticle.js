@@ -70,7 +70,13 @@ class PostArticle extends React.Component {
       srcURL = srcURL.substring(0, srcURL.length - 1);
       coverPhoto = srcURL;
     }
-    const sanitizedContent = this.state.content.replace(/<(\/?|\!?)(h1)>/g, "");
+    // Sanitize h1 contents
+    var div = document.createElement('div');
+    div.innerHTML = this.state.content;
+    var elements = div.getElementsByTagName('h1');
+    while (elements[0])
+      elements[0].parentNode.removeChild(elements[0])
+    var sanitizedContent = div.innerHTML
     return { coverPhoto: coverPhoto, title: title, content: sanitizedContent };
   }
 

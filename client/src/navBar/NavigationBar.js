@@ -11,10 +11,10 @@ class NavigationBar extends React.Component {
       <NavContainer>
         {this.props.mainLogoButton}
         <ButtonsContainer>
-          <IconButton onClick={this.props.onSearchClick}>Search</IconButton>
+          {/* <IconButton onClick={this.props.onSearchClick}>Search</IconButton>
           <IconButton onClick={this.props.onBookmarksClick}>
             Bookmarks
-          </IconButton>
+          </IconButton> */}
           <ProfileDropdown
             onProfileClick={this.props.onProfileClick}
             onSettingsClick={this.props.onSettingsClick}
