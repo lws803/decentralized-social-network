@@ -33,7 +33,10 @@ class Profile extends React.Component {
   render() {
     return (
       <Container>
-        <AuthenticationModal user={this.user} />
+        <AuthenticationModal
+          user={this.user}
+          reload={() => window.location.reload(false)}
+        />
         <ImageContainer>
           <LazyLoadImage
             src={this.state.profilePhoto}

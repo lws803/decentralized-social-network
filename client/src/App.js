@@ -30,7 +30,7 @@ export default function App() {
             </Link>
           }
           articleButton={
-            <Link to="/new_article">
+            <Link to="/article/new">
               <IconButton>New Story</IconButton>
             </Link>
           }
@@ -50,7 +50,10 @@ export default function App() {
           <Route exact path="/">
             <Main />
           </Route>
-          <Route exact path="/new_article">
+          <Route exact path="/article/new">
+            <PostArticle />
+          </Route>
+          <Route exact path="/article/edit/:user/:path/:articleID">
             <PostArticle />
           </Route>
           <Route exact path="/article/:user/:path/:articleID">

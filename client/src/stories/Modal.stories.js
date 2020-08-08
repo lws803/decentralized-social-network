@@ -40,5 +40,5 @@ export const AuthModal = () => {
     auth: action("login"),
     create: action("signup"),
   };
-  return <AuthenticationModal user={mockUser} />;
+  return <AuthenticationModal user={mockUser} reload={action("reload")}/>;
 };

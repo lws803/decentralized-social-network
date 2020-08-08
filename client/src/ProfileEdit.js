@@ -58,7 +58,10 @@ class ProfileEdit extends React.Component {
   render() {
     return (
       <Container>
-        <AuthenticationModal user={this.user} />
+        <AuthenticationModal
+          user={this.user}
+          reload={() => window.location.reload(false)}
+        />
         <ProfileImageContainer>
           <ProfileImage
             image={this.state.profilePhoto}

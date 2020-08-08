@@ -18,6 +18,7 @@ class Article extends React.Component {
     this.state = {
       authorPhoto: undefined,
       authorBio: undefined,
+      uuid: undefined,
       content: undefined,
       author: undefined,
       title: undefined,
@@ -33,12 +34,7 @@ class Article extends React.Component {
 
   async getContent(articleID, path, user) {
     const article = await this.gun.get(user).get(path).get(articleID).once();
-    var tags = [];
-    await this.gun
-      .get(article.tags["#"])
-      .map()
-      .once(tag => tags.push(tag));
-    this.setState({ ...article, tags: tags });
+    this.setState({ ...article, tags: JSON.parse(article.tags)["items"] });
     await this.gun
       .get(user)
       .once(user =>
