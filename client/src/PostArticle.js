@@ -13,6 +13,7 @@ import Validator from "jsonschema";
 import CustomCKEditor from "./common/CustomCKEditor";
 import { NewArticleSchema, TagsSchema } from "./common/Schemas";
 import AuthenticationModal from "./authModal/AuthenticationModal";
+import { Errors } from "./common/Messages";
 
 class PostArticle extends React.Component {
   constructor(props) {
@@ -34,7 +35,7 @@ class PostArticle extends React.Component {
         if (pubKey === user.substring(1)) {
           this.getContent(articleID, path, user);
         } else {
-          alert("You are not the author of this post");
+          alert(Errors.no_edit_perms_article);
           const { articleID, path, user } = this.props.match.params;
           this.props.history.push(`/article/${user}/${path}/${articleID}`);
         }
