@@ -34,8 +34,9 @@ class PostArticle extends React.Component {
         if (pubKey === user.substring(1)) {
           this.getContent(articleID, path, user);
         } else {
-          alert("You are not the user of this post");
-          this.props.history.goBack();
+          alert("You are not the author of this post");
+          const { articleID, path, user } = this.props.match.params;
+          this.props.history.push(`/article/${user}/${path}/${articleID}`);
         }
       });
     }
