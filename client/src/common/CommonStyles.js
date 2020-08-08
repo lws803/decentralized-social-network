@@ -8,3 +8,14 @@ export const PageContainer = styled.div`
   flex-direction: column;
   font-family: Georgia;
 `;
+
+export const Input = styled.input`
+  font-family: Georgia;
+`
+
+export const Button = styled.button`
+`
+
+export const ArticleBox = styled.div`
+  font-size: 20px;
+`;
