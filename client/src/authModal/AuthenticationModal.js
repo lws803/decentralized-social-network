@@ -27,6 +27,33 @@ class AuthenticationModal extends React.Component {
     return result;
   }
 
+  createUser() {
+    if (this.validation().valid)
+      this.user.create(this.state.name, this.state.password, ack => {
+        if (ack.err) alert(ack.err);
+        else {
+          this.authUser();
+        }
+      });
+  }
+
+  authUser() {
+    if (this.validation().valid)
+      this.user.auth(this.state.name, this.state.password, ack => {
+        if (ack.err) alert(ack.err);
+        else {
+          this.setState({ authenticated: true });
+          this.props.reload();
+        }
+      });
+  }
+
+  _handleKeyDown(e) {
+    if (e.key === "Enter") {
+      this.authUser();
+    }
+  }
+
   render() {
     return (
       <ModalView {...this.props} isOpen={!this.state.authenticated}>
@@ -37,6 +64,7 @@ class AuthenticationModal extends React.Component {
               type="text"
               value={this.state.name}
               onChange={event => this.setState({ name: event.target.value })}
+              onKeyDown={e => this._handleKeyDown(e)}
             />
           </Field>
           <Field>
@@ -47,41 +75,11 @@ class AuthenticationModal extends React.Component {
               onChange={event =>
                 this.setState({ password: event.target.value })
               }
+              onKeyDown={e => this._handleKeyDown(e)}
             />
           </Field>
-          <Button
-            onClick={() => {
-              if (this.validation().valid)
-                this.user.create(this.state.name, this.state.password, ack => {
-                  if (ack.err) alert(ack.err);
-                  else {
-                    this.user.auth(this.state.name, this.state.password, ack => {
-                      if (ack.err) alert(ack.err);
-                      else {
-                        this.setState({ authenticated: true })
-                        this.props.reload();
-                      };
-                    });    
-                  }
-                });
-            }}
-          >
-            Sign up
-          </Button>
-          <Button
-            onClick={() => {
-              if (this.validation().valid)
-                this.user.auth(this.state.name, this.state.password, ack => {
-                  if (ack.err) alert(ack.err);
-                  else {
-                    this.setState({ authenticated: true })
-                    this.props.reload();
-                  };
-                });
-            }}
-          >
-            Login
-          </Button>
+          <Button onClick={() => this.createUser()}>Sign up</Button>
+          <Button onClick={() => this.authUser()}>Login</Button>
         </UserForm>
       </ModalView>
     );

@@ -30,7 +30,7 @@ class PostArticle extends React.Component {
     };
 
     const { articleID, path, user } = this.props.match.params;
-    if (articleID && path && user) {
+    if (articleID && path && user && this.user.is) {
       this.user.get("pub").once(pubKey => {
         if (pubKey === user.substring(1)) {
           this.getContent(articleID, path, user);
