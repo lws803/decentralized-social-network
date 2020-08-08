@@ -32,10 +32,6 @@ NavigationBar.propTypes = {
 const NavContainer = styled.div`
   display: flex;
   height: 40px;
-  flex-direction: row;
-  width: 70%;
-  margin-left: auto;
-  margin-right: auto;
   align-items: center;
   justify-content: space-between;
 `;

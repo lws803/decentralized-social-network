@@ -6,4 +6,5 @@ export const PageContainer = styled.div`
   width: 70%;
   display: flex;
   flex-direction: column;
+  font-family: Georgia;
 `;

@@ -12,6 +12,7 @@ import Main from "./pages/Main";
 import ProfileEdit from "./pages/ProfileEdit";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
+import { PageContainer } from "./common/CommonStyles";
 
 export default function App() {
   var gunSession = new Gun([process.env.REACT_APP_GUN_HOST_URL]);
@@ -24,29 +25,31 @@ export default function App() {
   return (
     <div>
       <Router>
-        <NavigationBar
-          mainLogoButton={
-            <Link to="/">
-              <MainLogo>Main Logo</MainLogo>
-            </Link>
-          }
-          articleButton={
-            <Link to="/article/new">
-              <IconButton>New Story</IconButton>
-            </Link>
-          }
-          profileDropdown={
-            <Dropdown text="Profile">
-              <Dropdown.Menu>
-                <Dropdown.Item>
-                  <Link to="/profile/my_profile">My Profile</Link>
-                </Dropdown.Item>
-                {/* <Dropdown.Item text="Following" onClick={() => {}} /> */}
-                <Dropdown.Item text="Settings" onClick={() => {}} />
-              </Dropdown.Menu>
-            </Dropdown>
-          }
-        />
+        <PageContainer>
+          <NavigationBar
+            mainLogoButton={
+              <Link to="/">
+                <MainLogo>Main Logo</MainLogo>
+              </Link>
+            }
+            articleButton={
+              <Link to="/article/new">
+                <IconButton>New Story</IconButton>
+              </Link>
+            }
+            profileDropdown={
+              <Dropdown text="Profile">
+                <Dropdown.Menu>
+                  <Dropdown.Item>
+                    <Link to="/profile/my_profile">My Profile</Link>
+                  </Dropdown.Item>
+                  {/* <Dropdown.Item text="Following" onClick={() => {}} /> */}
+                  <Dropdown.Item text="Settings" onClick={() => {}} />
+                </Dropdown.Menu>
+              </Dropdown>
+            }
+          />
+        </PageContainer>
         <Switch>
           <Route exact path="/" component={Main} />
           <Route exact path="/article/new" component={PostArticle} />
