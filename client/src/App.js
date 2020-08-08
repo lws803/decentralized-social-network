@@ -6,11 +6,12 @@ import { Dropdown } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 
 import NavigationBar, { IconButton, MainLogo } from "./navBar/NavigationBar";
-import PostArticle from "./PostArticle";
-import Article from "./Article";
-import Main from "./Main";
-import ProfileEdit from "./ProfileEdit";
-import Profile from "./Profile";
+import PostArticle from "./pages/PostArticle";
+import Article from "./pages/Article";
+import Main from "./pages/Main";
+import ProfileEdit from "./pages/ProfileEdit";
+import Profile from "./pages/Profile";
+import NotFound from "./pages/NotFound";
 
 export default function App() {
   var gunSession = new Gun([process.env.REACT_APP_GUN_HOST_URL]);
@@ -47,24 +48,25 @@ export default function App() {
           }
         />
         <Switch>
-          <Route exact path="/">
-            <Main />
-          </Route>
-          <Route exact path="/article/new">
-            <PostArticle />
-          </Route>
-          <Route exact path="/article/:user/:path/:articleID/edit">
-            <PostArticle />
-          </Route>
-          <Route exact path="/article/:user/:path/:articleID">
-            <Article />
-          </Route>
-          <Route exact path="/profile/my_profile">
-            <Profile />
-          </Route>
-          <Route exact path="/profile/my_profile/edit">
-            <ProfileEdit />
-          </Route>
+          <Route exact path="/" component={Main} />
+          <Route exact path="/article/new" component={PostArticle} />
+          <Route
+            exact
+            path="/article/:user/:path/:articleID/edit"
+            component={PostArticle}
+          />
+          <Route
+            exact
+            path="/article/:user/:path/:articleID"
+            component={Article}
+          />
+          <Route exact path="/profile/my_profile" component={Profile} />
+          <Route
+            exact
+            path="/profile/my_profile/edit"
+            component={ProfileEdit}
+          />
+          <Route component={NotFound}></Route>
         </Switch>
       </Router>
     </div>

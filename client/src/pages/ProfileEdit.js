@@ -5,10 +5,10 @@ import Gun from "gun/gun";
 import styled from "styled-components";
 import axios from "axios";
 
-import AuthenticationModal from "./authModal/AuthenticationModal";
-import ProfileImage from "./profile/ProfileImage";
-import LightCKEditor from "./common/LightCKEditor";
-import { Errors } from "./common/Messages";
+import AuthenticationModal from "../authModal/AuthenticationModal";
+import ProfileImage from "../profile/ProfileImage";
+import LightCKEditor from "../common/LightCKEditor";
+import { Errors } from "../common/Messages";
 
 class ProfileEdit extends React.Component {
   constructor(props) {

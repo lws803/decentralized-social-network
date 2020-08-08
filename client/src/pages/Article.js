@@ -7,9 +7,9 @@ import "@pathofdev/react-tag-input/build/index.css";
 import styled from "styled-components";
 import moment from "moment";
 
-import { Card, LargeCard } from "./articles/ProfileCard";
+import { Card, LargeCard } from "../articles/ProfileCard";
 // import Vote from "./Vote";
-import ReadOnlyEditor from "./common/ReadOnlyEditor";
+import ReadOnlyEditor from "../common/ReadOnlyEditor";
 
 class Article extends React.Component {
   constructor(props) {

@@ -4,9 +4,9 @@ import { withRouter } from "react-router-dom";
 import Gun from "gun/gun";
 import styled from "styled-components";
 
-import AuthenticationModal from "./authModal/AuthenticationModal";
-import Bio from "./profile/Bio";
-import LazyImage from "./common/LazyImage";
+import AuthenticationModal from "../authModal/AuthenticationModal";
+import Bio from "../profile/Bio";
+import LazyImage from "../common/LazyImage";
 
 class Profile extends React.Component {
   constructor(props) {
