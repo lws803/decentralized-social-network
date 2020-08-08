@@ -15,30 +15,25 @@ class Article extends React.Component {
   constructor(props) {
     super(props);
     this.gun = new Gun([process.env.REACT_APP_GUN_HOST_URL]);
+    this.user = this.gun.user().recall({ sessionStorage: true });
     this.state = {
       authorPhoto: undefined,
       authorBio: undefined,
+      uuid: undefined,
       content: undefined,
       author: undefined,
       title: undefined,
       createdAt: undefined,
       tags: [],
     };
-  }
 
-  componentDidMount() {
     const { articleID, path, user } = this.props.match.params;
     this.getContent(articleID, path, user);
   }
 
   async getContent(articleID, path, user) {
     const article = await this.gun.get(user).get(path).get(articleID).once();
-    var tags = [];
-    await this.gun
-      .get(article.tags["#"])
-      .map()
-      .once(tag => tags.push(tag));
-    this.setState({ ...article, tags: tags });
+    this.setState({ ...article, tags: JSON.parse(article.tags)["items"] });
     await this.gun
       .get(user)
       .once(user =>
@@ -69,6 +64,18 @@ class Article extends React.Component {
         <div style={{ marginTop: "10px" }}>
           <ReactTagInput tags={this.state.tags} readOnly />
         </div>
+        <button
+          style={{
+            marginTop: "10px",
+            marginLeft: "auto",
+            marginRight: "auto",
+          }}
+          onClick={() =>
+            this.props.history.push(this.props.location.pathname + "/edit")
+          }
+        >
+          Edit Post
+        </button>
         {/* <div style={{ marginTop: "26px" }}>
             <Vote
               onClickUpVote={() => {}}

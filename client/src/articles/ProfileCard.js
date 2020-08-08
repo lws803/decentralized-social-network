@@ -2,15 +2,15 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import styled from "styled-components";
-import { LazyLoadImage } from "react-lazy-load-image-component";
 
 import Bio from "../profile/Bio";
+import LazyImage from "../common/LazyImage";
 
 class Card extends React.Component {
   render() {
     return (
       <ProfileCardContainer>
-        <LazyLoadImage
+        <LazyImage
           src={this.props.authorPhoto}
           width={54}
           height={54}
@@ -21,7 +21,7 @@ class Card extends React.Component {
           <TimeDate>{this.props.dateCreated}</TimeDate>
         </ArticleDetails>
         <ButtonContainer>
-          <button onClick={this.props.onFollowClick}>Follow</button>
+          <button onClick={this.props.onFollowClick} disabled>Follow</button>
         </ButtonContainer>
       </ProfileCardContainer>
     );
@@ -63,7 +63,7 @@ class LargeCard extends React.Component {
   render() {
     return (
       <LargeCardContainer>
-        <LazyLoadImage
+        <LazyImage
           src={this.props.authorPhoto}
           width={127}
           height={127}

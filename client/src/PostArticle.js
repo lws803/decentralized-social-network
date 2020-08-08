@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 
 import { withRouter } from "react-router-dom";
 import Gun from "gun/gun";
@@ -14,6 +13,7 @@ import Validator from "jsonschema";
 import CustomCKEditor from "./common/CustomCKEditor";
 import { NewArticleSchema, TagsSchema } from "./common/Schemas";
 import AuthenticationModal from "./authModal/AuthenticationModal";
+import { Errors } from "./common/Messages";
 
 class PostArticle extends React.Component {
   constructor(props) {
@@ -21,12 +21,38 @@ class PostArticle extends React.Component {
     this.gun = new Gun([process.env.REACT_APP_GUN_HOST_URL]);
     this.user = this.gun.user().recall({ sessionStorage: true });
     this.state = {
-      tags: [] || this.props.tags,
-      content: this.props.content || "",
+      tags: [],
+      uuid: undefined,
+      content: undefined,
+      author: undefined,
+      title: undefined,
+      createdAt: undefined,
     };
+
+    const { articleID, path, user } = this.props.match.params;
+    if (articleID && path && user) {
+      this.user.get("pub").once(pubKey => {
+        if (pubKey === user.substring(1)) {
+          this.getContent(articleID, path, user);
+        } else {
+          alert(Errors.no_edit_perms_article);
+          const { articleID, path, user } = this.props.match.params;
+          this.props.history.push(`/article/${user}/${path}/${articleID}`);
+        }
+      });
+    }
   }
 
-  async postArticle(article, tags) {
+  async getContent(articleID, path, user) {
+    const article = await this.gun.get(user).get(path).get(articleID).once();
+    this.setState({
+      ...article,
+      tags: JSON.parse(article.tags)["items"],
+      content: `<h1>${article.title}</h1>` + article.content,
+    });
+  }
+
+  async postArticle(article) {
     var errors = [];
     var post = await this.user
       .get("posts")
@@ -34,16 +60,6 @@ class PostArticle extends React.Component {
       .put(article, ack => {
         if (ack.err) errors.push(ack.err);
       });
-
-    for (var i = 0; i < tags.length; i++) {
-      await this.user
-        .get("posts")
-        .get(article.uuid)
-        .get("tags")
-        .set(tags[i], ack => {
-          if (ack.err) errors.push(ack.err);
-        });
-    }
     const ref = post["_"]["#"];
     var hash = await SEA.work(ref, null, null, { name: "SHA-256" });
     await this.gun
@@ -64,19 +80,18 @@ class PostArticle extends React.Component {
       ? root.querySelector("h1").text
       : undefined;
     const coverPhotoElem = root.querySelector("img");
-    var coverPhoto = undefined;
+    var coverPhoto = "";
     if (coverPhotoElem && coverPhotoElem.rawAttrs) {
       var srcURL = coverPhotoElem.rawAttrs.substring(5);
       srcURL = srcURL.substring(0, srcURL.length - 1);
       coverPhoto = srcURL;
     }
     // Sanitize h1 contents
-    var div = document.createElement('div');
+    var div = document.createElement("div");
     div.innerHTML = this.state.content;
-    var elements = div.getElementsByTagName('h1');
-    while (elements[0])
-      elements[0].parentNode.removeChild(elements[0])
-    var sanitizedContent = div.innerHTML
+    var elements = div.getElementsByTagName("h1");
+    while (elements[0]) elements[0].parentNode.removeChild(elements[0]);
+    var sanitizedContent = div.innerHTML;
     return { coverPhoto: coverPhoto, title: title, content: sanitizedContent };
   }
 
@@ -85,11 +100,12 @@ class PostArticle extends React.Component {
     var date = new Date();
     var article = {
       author: await this.user.get("alias").once(),
-      uuid: this.props.uuid ? this.props.uuid : uuidv4(),
-      createdAt: this.props.createdAt
-        ? this.props.createdAt
+      uuid: this.state.uuid ? this.state.uuid : uuidv4(),
+      createdAt: this.state.createdAt
+        ? this.state.createdAt
         : date.toISOString(),
-      updatedAt: this.props.uuid ? date.toISOString() : "",
+      updatedAt: this.state.uuid ? date.toISOString() : "",
+      tags: JSON.stringify({ items: this.state.tags }),
       ...this.extractContentMetadata(),
     };
 
@@ -103,7 +119,7 @@ class PostArticle extends React.Component {
     if (validationErrors.length) alert(validationErrors.join("\n"));
 
     if (result.valid && tagsResult.valid) {
-      this.postArticle(article, this.state.tags)
+      this.postArticle(article)
         .then(ref => {
           this.props.history.push(`/article/${ref}`);
         })
@@ -114,7 +130,12 @@ class PostArticle extends React.Component {
   render() {
     return (
       <div>
-        <AuthenticationModal user={this.user} />
+        <AuthenticationModal
+          user={this.user}
+          reload={() => {
+            window.location.reload(false);
+          }}
+        />
         <Container>
           <CustomCKEditor
             onChange={(event, editor) => {
@@ -136,13 +157,6 @@ class PostArticle extends React.Component {
     );
   }
 }
-
-PostArticle.propTypes = {
-  uuid: PropTypes.string,
-  content: PropTypes.string,
-  tags: PropTypes.array,
-  createdAt: PropTypes.string,
-};
 
 const Container = styled.div`
   width: 70%;

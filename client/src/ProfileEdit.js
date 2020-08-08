@@ -8,6 +8,7 @@ import axios from "axios";
 import AuthenticationModal from "./authModal/AuthenticationModal";
 import ProfileImage from "./profile/ProfileImage";
 import LightCKEditor from "./common/LightCKEditor";
+import { Errors } from "./common/Messages";
 
 class ProfileEdit extends React.Component {
   constructor(props) {
@@ -34,7 +35,7 @@ class ProfileEdit extends React.Component {
 
   async updateProfile() {
     if (this.state.bioCharacters > 100)
-      throw new Error("Bio must be kept within the 100 character limit.");
+      throw new Error(Errors.bio_character_limit);
     await this.user.get("photo").put(this.state.profilePhoto);
     await this.user.get("bio").put(this.state.bioContent);
   }
@@ -58,7 +59,10 @@ class ProfileEdit extends React.Component {
   render() {
     return (
       <Container>
-        <AuthenticationModal user={this.user} />
+        <AuthenticationModal
+          user={this.user}
+          reload={() => window.location.reload(false)}
+        />
         <ProfileImageContainer>
           <ProfileImage
             image={this.state.profilePhoto}

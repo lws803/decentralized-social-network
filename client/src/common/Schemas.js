@@ -14,7 +14,7 @@ export const NewArticleSchema = {
   properties: {
     uuid: { type: "string", required: true },
     content: { type: "string", required: true },
-    coverPhoto: { type: "string", required: true },
+    coverPhoto: { type: "string" },
     title: { type: "string", required: true },
     author: { type: "string", required: true },
     createdAt: { type: "string", required: true },
@@ -30,6 +30,8 @@ export const TagsSchema = {
   items: {
     type: "string",
     uniqueItems: true,
+    maxLength: 10,
+    minLength: 1,
   },
   required: true,
 };
