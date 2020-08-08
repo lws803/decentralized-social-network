@@ -9,4 +9,9 @@ Run `npm install` from this folder before proceeding
 npm run storybook
 ```
 
-> To run CKEditor stories, please follow the README in peer_httpserver module and host the node server
+## Run locally
+Please follow readme in `peer` directory before running the following
+
+```bash
+npm run start
+```
