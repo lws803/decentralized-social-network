@@ -7,6 +7,7 @@ import styled from "styled-components";
 import AuthenticationModal from "../authModal/AuthenticationModal";
 import Bio from "../profile/Bio";
 import LazyImage from "../common/LazyImage";
+import { PageContainer } from "../common/CommonStyles";
 
 class Profile extends React.Component {
   constructor(props) {
@@ -32,7 +33,7 @@ class Profile extends React.Component {
 
   render() {
     return (
-      <Container>
+      <PageContainer>
         <AuthenticationModal
           user={this.user}
           reload={() => window.location.reload(false)}
@@ -53,18 +54,10 @@ class Profile extends React.Component {
         >
           Edit
         </EditButton>
-      </Container>
+      </PageContainer>
     );
   }
 }
-
-const Container = styled.div`
-  display: flex;
-  width: 70%;
-  margin-left: auto;
-  margin-right: auto;
-  flex-direction: column;
-`;
 
 const ImageContainer = styled.div`
   margin-top: 50px;

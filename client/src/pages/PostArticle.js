@@ -14,6 +14,7 @@ import CustomCKEditor from "../common/CustomCKEditor";
 import { NewArticleSchema, TagsSchema } from "../common/Schemas";
 import AuthenticationModal from "../authModal/AuthenticationModal";
 import { Errors } from "../common/Messages";
+import { PageContainer } from "../common/CommonStyles";
 
 class PostArticle extends React.Component {
   constructor(props) {
@@ -136,7 +137,7 @@ class PostArticle extends React.Component {
             window.location.reload(false);
           }}
         />
-        <Container>
+        <PageContainer>
           <CustomCKEditor
             onChange={(event, editor) => {
               this.setState({ content: editor.getData() });
@@ -152,19 +153,11 @@ class PostArticle extends React.Component {
           <PublishButton onClick={() => this.publish().then()}>
             Publish!
           </PublishButton>
-        </Container>
+        </PageContainer>
       </div>
     );
   }
 }
-
-const Container = styled.div`
-  width: 70%;
-  margin-left: auto;
-  margin-right: auto;
-  display: flex;
-  flex-direction: column;
-`;
 
 const PublishButton = styled.button`
   margin-top: 10px;

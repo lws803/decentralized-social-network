@@ -1,5 +1,7 @@
 import React from "react";
 
+import { PageContainer } from "../common/CommonStyles";
+
 export default function NotFound() {
-  return <div>Not Found</div>;
+  return <PageContainer>Not Found</PageContainer>;
 }

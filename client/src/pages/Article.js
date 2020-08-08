@@ -10,6 +10,7 @@ import moment from "moment";
 import { Card, LargeCard } from "../articles/ProfileCard";
 // import Vote from "./Vote";
 import ReadOnlyEditor from "../common/ReadOnlyEditor";
+import { PageContainer } from "../common/CommonStyles";
 
 class Article extends React.Component {
   constructor(props) {
@@ -43,7 +44,7 @@ class Article extends React.Component {
 
   render() {
     return (
-      <Container>
+      <PageContainer>
         <Title>{this.state.title}</Title>
         <CardContainer>
           <Card
@@ -92,20 +93,10 @@ class Article extends React.Component {
             bio={this.state.authorBio}
           />
         </LargeCardContainer>
-      </Container>
+      </PageContainer>
     );
   }
 }
-
-Article.propTypes = {};
-
-const Container = styled.div`
-  margin-left: auto;
-  margin-right: auto;
-  width: 70%;
-  display: flex;
-  flex-direction: column;
-`;
 
 const Title = styled.div`
   font-size: 40px;
