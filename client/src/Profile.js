@@ -3,10 +3,10 @@ import React from "react";
 import { withRouter } from "react-router-dom";
 import Gun from "gun/gun";
 import styled from "styled-components";
-import { LazyLoadImage } from "react-lazy-load-image-component";
 
 import AuthenticationModal from "./authModal/AuthenticationModal";
 import Bio from "./profile/Bio";
+import LazyImage from "./common/LazyImage";
 
 class Profile extends React.Component {
   constructor(props) {
@@ -38,7 +38,7 @@ class Profile extends React.Component {
           reload={() => window.location.reload(false)}
         />
         <ImageContainer>
-          <LazyLoadImage
+          <LazyImage
             src={this.state.profilePhoto}
             width={100}
             height={100}

@@ -53,7 +53,7 @@ export default function App() {
           <Route exact path="/article/new">
             <PostArticle />
           </Route>
-          <Route exact path="/article/edit/:user/:path/:articleID">
+          <Route exact path="/article/:user/:path/:articleID/edit">
             <PostArticle />
           </Route>
           <Route exact path="/article/:user/:path/:articleID">
