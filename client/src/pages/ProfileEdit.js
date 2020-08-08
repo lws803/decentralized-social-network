@@ -59,54 +59,61 @@ class ProfileEdit extends React.Component {
 
   render() {
     return (
-      <PageContainer>
+      <div>
         <AuthenticationModal
           user={this.user}
           reload={() => window.location.reload(false)}
         />
-        <ProfileImageContainer>
-          <ProfileImage
-            image={this.state.profilePhoto}
-            onImageSelect={props => {
-              this.uploadPhoto(props.imageFile)
-                .then(url => {
-                  this.setState({ profilePhoto: url });
-                })
+
+        <PageContainer>
+          <ProfileImageContainer>
+            <ProfileImage
+              image={this.state.profilePhoto}
+              onImageSelect={props => {
+                this.uploadPhoto(props.imageFile)
+                  .then(url => {
+                    this.setState({ profilePhoto: url });
+                  })
+                  .catch(err => alert(err));
+              }}
+            />
+          </ProfileImageContainer>
+          <div
+            style={{
+              marginTop: "20px",
+              fontSize: "large",
+              textAlign: "center",
+            }}
+          >
+            {this.state.user}
+          </div>
+          <BioEditor>
+            <LightCKEditor
+              onInit={editor => {
+                const wordCountPlugin = editor.plugins.get("WordCount");
+                wordCountPlugin.on("update", (evt, data) => {
+                  this.setState({
+                    bioCharacters: data.characters,
+                  });
+                });
+              }}
+              onChange={(event, editor) => {
+                this.setState({ bioContent: editor.getData() });
+              }}
+              data={this.state.bioContent}
+            />
+          </BioEditor>
+          <SaveButton
+            onClick={() => {
+              this.updateProfile()
+                .then(ack => this.props.history.push("/profile/my_profile"))
                 .catch(err => alert(err));
             }}
-          />
-        </ProfileImageContainer>
-        <div
-          style={{ marginTop: "20px", fontSize: "large", textAlign: "center" }}
-        >
-          {this.state.user}
-        </div>
-        <BioEditor>
-          <LightCKEditor
-            onInit={editor => {
-              const wordCountPlugin = editor.plugins.get("WordCount");
-              wordCountPlugin.on("update", (evt, data) => {
-                this.setState({
-                  bioCharacters: data.characters,
-                });
-              });
-            }}
-            onChange={(event, editor) => {
-              this.setState({ bioContent: editor.getData() });
-            }}
-            data={this.state.bioContent}
-          />
-        </BioEditor>
-        <SaveButton
-          onClick={() => {
-            this.updateProfile()
-              .then(ack => this.props.history.push("/profile/my_profile"))
-              .catch(err => alert(err));
-          }}
-        >
-          Save
-        </SaveButton>
-      </PageContainer>
+          >
+            Save
+          </SaveButton>
+        </PageContainer>
+      </div>
     );
   }
 }

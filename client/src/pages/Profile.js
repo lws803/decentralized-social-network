@@ -33,28 +33,30 @@ class Profile extends React.Component {
 
   render() {
     return (
-      <PageContainer>
+      <div>
         <AuthenticationModal
           user={this.user}
           reload={() => window.location.reload(false)}
         />
-        <ImageContainer>
-          <LazyImage
-            src={this.state.profilePhoto}
-            width={100}
-            height={100}
-            style={{ borderRadius: "50%" }}
-          />
-        </ImageContainer>
-        <BioContainer>
-          <Bio content={this.state.bioContent} />
-        </BioContainer>
-        <EditButton
-          onClick={() => this.props.history.push("/profile/my_profile/edit")}
-        >
-          Edit
-        </EditButton>
-      </PageContainer>
+        <PageContainer>
+          <ImageContainer>
+            <LazyImage
+              src={this.state.profilePhoto}
+              width={100}
+              height={100}
+              style={{ borderRadius: "50%" }}
+            />
+          </ImageContainer>
+          <BioContainer>
+            <Bio content={this.state.bioContent} />
+          </BioContainer>
+          <EditButton
+            onClick={() => this.props.history.push("/profile/my_profile/edit")}
+          >
+            Edit
+          </EditButton>
+        </PageContainer>
+      </div>
     );
   }
 }
