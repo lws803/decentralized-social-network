@@ -26,7 +26,7 @@ class PostArticle extends React.Component {
       uuid: undefined,
       content: undefined,
       author: undefined,
-      title: undefined,
+      title: "",
       createdAt: undefined,
     };
 

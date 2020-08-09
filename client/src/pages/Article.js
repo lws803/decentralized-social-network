@@ -104,6 +104,7 @@ const Title = styled.div`
   margin-top: 20px;
   margin-left: auto;
   margin-right: auto;
+  font-family: Georgia;
 `;
 
 const CardContainer = styled.div`

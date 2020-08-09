@@ -13,6 +13,7 @@ import ProfileEdit from "./pages/ProfileEdit";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 import { PageContainer } from "./common/CommonStyles";
+import AuthenticationModal from "./authModal/AuthenticationModal";
 
 export default function App() {
   var gunSession = new Gun([process.env.REACT_APP_GUN_HOST_URL]);
@@ -75,3 +76,5 @@ export default function App() {
     </div>
   );
 }
+
+// TODO: Find a better way to move auth modal here instead

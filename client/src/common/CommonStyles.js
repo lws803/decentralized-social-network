@@ -6,7 +6,6 @@ export const PageContainer = styled.div`
   width: 70%;
   display: flex;
   flex-direction: column;
-  font-family: Georgia;
 `;
 
 export const Input = styled.input`
@@ -17,5 +16,6 @@ export const Button = styled.button`
 `
 
 export const ArticleBox = styled.div`
-  font-size: 20px;
+  font-size: 15px;
+  font-family: Georgia;
 `;
