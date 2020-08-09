@@ -12,7 +12,6 @@ import Validator from "jsonschema";
 
 import CustomCKEditor from "../common/CustomCKEditor";
 import { NewArticleSchema, TagsSchema } from "../common/Schemas";
-import AuthenticationModal from "../authModal/AuthenticationModal";
 import { Errors } from "../common/Messages";
 import { PageContainer } from "../common/CommonStyles";
 
@@ -129,36 +128,28 @@ class PostArticle extends React.Component {
 
   render() {
     return (
-      <div>
-        <AuthenticationModal
-          user={this.user}
-          reload={() => {
-            window.location.reload(false);
-          }}
+      <PageContainer>
+        <TitleInput
+          placeholder="Enter title here..."
+          onChange={event => this.setState({ title: event.target.value })}
+          value={this.state.title}
         />
-        <PageContainer>
-          <TitleInput
-            placeholder="Enter title here..."
-            onChange={event => this.setState({ title: event.target.value })}
-            value={this.state.title}
-          />
-          <CustomCKEditor
-            onChange={(event, editor) => {
-              this.setState({ content: editor.getData() });
-            }}
-            data={this.state.content}
-          />
-          <ReactTagInput
-            tags={this.state.tags}
-            onChange={newTags => this.setState({ tags: newTags })}
-            removeOnBackspace
-            maxTags={10}
-          />
-          <PublishButton onClick={() => this.publish().then()}>
-            Publish!
-          </PublishButton>
-        </PageContainer>
-      </div>
+        <CustomCKEditor
+          onChange={(event, editor) => {
+            this.setState({ content: editor.getData() });
+          }}
+          data={this.state.content}
+        />
+        <ReactTagInput
+          tags={this.state.tags}
+          onChange={newTags => this.setState({ tags: newTags })}
+          removeOnBackspace
+          maxTags={10}
+        />
+        <PublishButton onClick={() => this.publish().then()}>
+          Publish!
+        </PublishButton>
+      </PageContainer>
     );
   }
 }

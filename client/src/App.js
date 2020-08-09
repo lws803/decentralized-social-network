@@ -53,28 +53,42 @@ export default function App() {
         </PageContainer>
         <Switch>
           <Route exact path="/" component={Main} />
-          <Route exact path="/article/new" component={PostArticle} />
-          <Route
-            exact
-            path="/article/:user/:path/:articleID/edit"
-            component={PostArticle}
-          />
+          <Route exact path="/article/new">
+            <PostArticle />
+            <AuthenticationModal
+              user={user}
+              reload={() => window.location.reload(false)}
+            />
+          </Route>
+          <Route exact path="/article/:user/:path/:articleID/edit">
+            <AuthenticationModal
+              user={user}
+              reload={() => window.location.reload(false)}
+            />
+            <PostArticle />
+          </Route>
           <Route
             exact
             path="/article/:user/:path/:articleID"
             component={Article}
           />
-          <Route exact path="/profile/my_profile" component={Profile} />
-          <Route
-            exact
-            path="/profile/my_profile/edit"
-            component={ProfileEdit}
-          />
+          <Route exact path="/profile/my_profile">
+            <AuthenticationModal
+              user={user}
+              reload={() => window.location.reload(false)}
+            />
+            <Profile />
+          </Route>
+          <Route exact path="/profile/my_profile/edit">
+            <AuthenticationModal
+              user={user}
+              reload={() => window.location.reload(false)}
+            />
+            <ProfileEdit />
+          </Route>
           <Route component={NotFound}></Route>
         </Switch>
       </Router>
     </div>
   );
 }
-
-// TODO: Find a better way to move auth modal here instead

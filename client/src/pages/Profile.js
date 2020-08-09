@@ -4,7 +4,6 @@ import { withRouter } from "react-router-dom";
 import Gun from "gun/gun";
 import styled from "styled-components";
 
-import AuthenticationModal from "../authModal/AuthenticationModal";
 import Bio from "../profile/Bio";
 import LazyImage from "../common/LazyImage";
 import { PageContainer } from "../common/CommonStyles";
@@ -33,30 +32,24 @@ class Profile extends React.Component {
 
   render() {
     return (
-      <div>
-        <AuthenticationModal
-          user={this.user}
-          reload={() => window.location.reload(false)}
-        />
-        <PageContainer>
-          <ImageContainer>
-            <LazyImage
-              src={this.state.profilePhoto}
-              width={100}
-              height={100}
-              style={{ borderRadius: "50%" }}
-            />
-          </ImageContainer>
-          <BioContainer>
-            <Bio content={this.state.bioContent} />
-          </BioContainer>
-          <EditButton
-            onClick={() => this.props.history.push("/profile/my_profile/edit")}
-          >
-            Edit
-          </EditButton>
-        </PageContainer>
-      </div>
+      <PageContainer>
+        <ImageContainer>
+          <LazyImage
+            src={this.state.profilePhoto}
+            width={100}
+            height={100}
+            style={{ borderRadius: "50%" }}
+          />
+        </ImageContainer>
+        <BioContainer>
+          <Bio content={this.state.bioContent} />
+        </BioContainer>
+        <EditButton
+          onClick={() => this.props.history.push("/profile/my_profile/edit")}
+        >
+          Edit
+        </EditButton>
+      </PageContainer>
     );
   }
 }
