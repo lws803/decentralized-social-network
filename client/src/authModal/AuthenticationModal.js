@@ -82,7 +82,7 @@ class AuthenticationModal extends React.Component {
             Login
           </Button>
           <Button color="black" onClick={() => this.createUser()}>
-            SignUp
+            Sign up
           </Button>
         </Modal.Actions>
       </Modal>
