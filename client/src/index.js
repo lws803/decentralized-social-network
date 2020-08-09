@@ -35,9 +35,9 @@ async function InitiateGunPeers() {
   const selectedPeer =
     storedPeers[Math.floor(Math.random() * storedPeers.length)];
   localStorage.setItem("peers", JSON.stringify({ peers: storedPeers }));
-  console.log("currently set peer:", sessionStorage.getItem("currentPeer"));
   sessionStorage.setItem("currentPeer", `http://${selectedPeer}:8765/gun`);
   sessionStorage.setItem("currentAPI", `http://${selectedPeer}:5000`);
+  console.log("currently set peer:", sessionStorage.getItem("currentPeer"));
 }
 
 InitiateGunPeers().then();

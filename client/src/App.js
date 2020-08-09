@@ -23,6 +23,7 @@ export default function App() {
   } else {
     console.log("user not logged in");
   }
+  // FIXME: Find out what's wrong with loggin in the first time when we start up everything
   return (
     <div>
       <Router>
