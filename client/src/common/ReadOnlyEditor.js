@@ -4,6 +4,7 @@ import CKEditor from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "ckeditor5-for-code-and-image/build/ckeditor";
 
 import { ArticleBox } from "../common/CommonStyles";
+import {ChangeFontForAllHeadings} from "./CKPlugins";
 
 class ReadOnlyEditor extends React.Component {
   render() {
@@ -15,6 +16,7 @@ class ReadOnlyEditor extends React.Component {
             editor.isReadOnly = true;
           }}
           config={{
+            extraPlugins: [ChangeFontForAllHeadings],
             removePlugins: ["Title"],
             language: "en",
             image: {

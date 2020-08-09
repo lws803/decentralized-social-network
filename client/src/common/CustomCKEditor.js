@@ -3,7 +3,8 @@ import React from "react";
 import CKEditor from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "ckeditor5-for-code-and-image/build/ckeditor";
 
-import { ArticleBox } from "../common/CommonStyles";
+import { ArticleBox } from "./CommonStyles";
+import {ChangeFontForAllHeadings} from "./CKPlugins";
 
 class CustomCKEditor extends React.Component {
   render() {
@@ -15,6 +16,7 @@ class CustomCKEditor extends React.Component {
             console.log("Editor is ready to use!", editor);
           }}
           config={{
+            extraPlugins: [ChangeFontForAllHeadings],
             removePlugins: ["Title"],
             toolbar: {
               items: [
