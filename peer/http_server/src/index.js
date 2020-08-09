@@ -84,13 +84,21 @@ app.get("/peers", async (req, res) => {
       .then(peersJSON => {
         if (peersJSON) {
           var peers = JSON.parse(peersJSON).items;
-          if (peers.length > 3) peers = getRandom(peers, 3);
+          peers = getRandom(peers, peers.length / 2 + 1);
           res.send({
             peers: peers,
           });
         }
       })
       .catch(err => res.status(500).send({ message: err }));
+  } catch (err) {
+    res.status(500).send({ message: err });
+  }
+});
+
+app.get("/healthcheck", async (req, res) => {
+  try {
+    res.send({ status: "ok" });
   } catch (err) {
     res.status(500).send({ message: err });
   }
