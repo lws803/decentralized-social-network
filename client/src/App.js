@@ -17,13 +17,13 @@ import AuthenticationModal from "./authModal/AuthenticationModal";
 
 export default function App() {
   var gunSession = new Gun([sessionStorage.getItem("currentPeer")]);
+  console.log("currently set peer:", sessionStorage.getItem("currentPeer"));
   var user = gunSession.user().recall({ sessionStorage: true });
   if (user.is) {
     console.log("user logged in");
   } else {
     console.log("user not logged in");
   }
-  // FIXME: Find out what's wrong with loggin in the first time when we start up everything
   return (
     <div>
       <Router>

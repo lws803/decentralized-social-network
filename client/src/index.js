@@ -37,19 +37,18 @@ async function InitiateGunPeers() {
   localStorage.setItem("peers", JSON.stringify({ peers: storedPeers }));
   sessionStorage.setItem("currentPeer", `http://${selectedPeer}:8765/gun`);
   sessionStorage.setItem("currentAPI", `http://${selectedPeer}:5000`);
-  console.log("currently set peer:", sessionStorage.getItem("currentPeer"));
 }
 
-InitiateGunPeers().then();
+InitiateGunPeers().then(() => {
+  ReactDOM.render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>,
+    document.getElementById("root")
+  );
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById("root")
-);
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+  // If you want your app to work offline and load faster, you can change
+  // unregister() to register() below. Note this comes with some pitfalls.
+  // Learn more about service workers: https://bit.ly/CRA-PWA
+  serviceWorker.unregister();
+});
