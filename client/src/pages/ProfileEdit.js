@@ -50,7 +50,7 @@ class ProfileEdit extends React.Component {
       },
     };
     let res = await axios.post(
-      process.env.REACT_APP_API_URL + "/image_upload",
+      sessionStorage.getItem("currentAPI") + "/image_upload",
       formData,
       config
     );

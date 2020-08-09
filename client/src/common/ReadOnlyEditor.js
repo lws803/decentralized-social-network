@@ -27,7 +27,7 @@ class ReadOnlyEditor extends React.Component {
               ],
             },
             simpleUpload: {
-              uploadUrl: process.env.REACT_APP_API_URL + "/image_upload",
+              uploadUrl: sessionStorage.getItem("currentAPI") + "/image_upload",
               withCredentials: false,
             },
           }}
