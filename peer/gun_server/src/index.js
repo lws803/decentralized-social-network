@@ -55,6 +55,7 @@ async function start() {
     peers = getRandom(peers, 3)
 
   console.log("initiating peers list:", peers);
+  // TODO: Requests for a list of peers to populate the list from other peers
 
   Gun({ web: config.server.listen(config.port), peers: peers });
 }
