@@ -24,13 +24,14 @@ class ProfileEdit extends React.Component {
   }
 
   componentDidMount() {
-    this.user.once(user =>
-      this.setState({
-        profilePhoto: user.photo,
-        bioContent: user.bio,
-        user: user.alias,
-      })
-    );
+    if (this.user.is)
+      this.user.once(user =>
+        this.setState({
+          profilePhoto: user.photo,
+          bioContent: user.bio,
+          user: user.alias,
+        })
+      );
   }
 
   async updateProfile() {
