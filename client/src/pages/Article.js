@@ -39,7 +39,6 @@ class Article extends React.Component {
   async getEditingStatus(authorPub) {
     if (this.user.is) {
       const pubKey = await this.user.get("pub").once();
-      console.log(pubKey === authorPub.substring(1));
       this.setState({ editAllowed: pubKey === authorPub.substring(1) });
     }
   }
