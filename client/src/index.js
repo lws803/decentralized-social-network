@@ -4,22 +4,42 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import axios from "axios";
 
-function InitiateGunPeers() {
-  const initialPeers = ["http://127.0.0.1:8765/gun"]; // TODO: We can add more here
-  if (!localStorage.getItem("peers")) {
-    localStorage.setItem("peers", JSON.stringify({ items: initialPeers }));
+async function extractValid(peers) {
+  var peerSet = new Set(peers);
+  var validPeers = [];
+  for (let peer of peerSet) {
+    try {
+      if (await axios.get(`http://${peer}:5000/healthcheck`))
+        validPeers.push(peer);
+    } catch (err) {}
   }
-  // TODO: Add the logic to request for more peers here from axios
-  const storedPeers = JSON.parse(localStorage.getItem("peers")).items;
-  const selectedPeer = storedPeers[Math.floor(Math.random() * storedPeers.length)];
-
-  // let res = await axios.get(selectedPeer + "/peers");
-  // TODO: How do I share my own address tho?
-
-  sessionStorage.setItem("currentPeer", selectedPeer);
+  return validPeers;
 }
 
-InitiateGunPeers();
+async function InitiateGunPeers() {
+  var storedPeers = ["127.0.0.1"]; // TODO: Change this to a default
+  if (localStorage.getItem["peers"])
+    storedPeers.concat(localStorage.getItem["peers"].peers);
+  var storedPeers = await extractValid(storedPeers);
+  var newPeers = [...storedPeers];
+  // If less than 10 peers in storage we will refresh and rediscover
+  if (storedPeers.length < 10)
+    for (var i = 0; i < storedPeers.length; i++) {
+      try {
+        const res = await axios.get(`http://${storedPeers[i]}:5000/peers`);
+        if (res && res.data.peers) newPeers.concat(res.data.peers);
+      } catch (err) {}
+    }
+  storedPeers.concat(await extractValid(newPeers));
+
+  const selectedPeer =
+    storedPeers[Math.floor(Math.random() * storedPeers.length)];
+  localStorage.setItem("peers", JSON.stringify({ peers: storedPeers }));
+  console.log(sessionStorage.getItem("currentPeer"));
+  sessionStorage.setItem("currentPeer", `http://${selectedPeer}:8765/gun`);
+}
+
+InitiateGunPeers().then();
 
 ReactDOM.render(
   <React.StrictMode>

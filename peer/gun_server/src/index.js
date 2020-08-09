@@ -41,12 +41,10 @@ async function extractValid(peers) {
   var peerSet = new Set(peers);
   var validPeers = [];
   for (let peer of peerSet) {
-    axios
-      .get(`http://${peer}:5000/healthcheck`)
-      .then(res => {
+    try {
+      if (await axios.get(`http://${peer}:5000/healthcheck`))
         validPeers.push(peer);
-      })
-      .catch(err => {});
+    } catch (err) {}
   }
   return validPeers;
 }
@@ -56,9 +54,12 @@ async function requestNewPeersfromExstingPeers(peers) {
   var checkedPeers = [...validParents];
   var newPeers = [];
   for (var i = 0; i < validParents.length; i++) {
-    axios.get(`http://${validParents[i]}:5000/peers`).then(res => {
-      if (res.data && res.data.peers) newPeers.concat(res.data.peers);
-    });
+    try {
+      let res = await axios.get(`http://${validParents[i]}:5000/peers`);
+      if (res && res.data.peers) {
+        newPeers.concat(res.data.peers);
+      }
+    } catch (err) {}
   }
   checkedPeers.concat(await extractValid(newPeers));
 
@@ -82,12 +83,11 @@ async function start() {
     peers = JSON.parse(parentPeersJSON).items;
   }
   var sanitizedPeers = await requestNewPeersfromExstingPeers(peers);
-  if (sanitizedPeers.length > 3)
-    sanitizedPeers = getRandom(sanitizedPeers, 3);
-  function peerToURL (peer) {
-    return `http://${peer}:8765/gun`
+  if (sanitizedPeers.length > 3) sanitizedPeers = getRandom(sanitizedPeers, 3);
+  function peerToURL(peer) {
+    return `http://${peer}:8765/gun`;
   }
-  console.log(sanitizedPeers.map(peerToURL))
+  console.log(sanitizedPeers.map(peerToURL));
   Gun({
     web: config.server.listen(config.port),
     peers: sanitizedPeers.map(peerToURL),
