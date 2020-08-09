@@ -77,19 +77,20 @@ class Article extends React.Component {
         <div style={{ marginTop: "10px" }}>
           <ReactTagInput tags={this.state.tags} readOnly />
         </div>
-        <button
-          style={{
-            marginTop: "10px",
-            marginLeft: "auto",
-            marginRight: "auto",
-          }}
-          onClick={() =>
-            this.props.history.push(this.props.location.pathname + "/edit")
-          }
-          disabled={!this.state.editAllowed}
-        >
-          Edit Post
-        </button>
+        {this.state.editAllowed && (
+          <button
+            style={{
+              marginTop: "10px",
+              marginLeft: "auto",
+              marginRight: "auto",
+            }}
+            onClick={() =>
+              this.props.history.push(this.props.location.pathname + "/edit")
+            }
+          >
+            Edit Post
+          </button>
+        )}
         {/* <div style={{ marginTop: "26px" }}>
             <Vote
               onClickUpVote={() => {}}
