@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
+import axios from "axios";
 
 function InitiateGunPeers() {
   const initialPeers = ["http://127.0.0.1:8765/gun"]; // TODO: We can add more here
@@ -11,6 +12,10 @@ function InitiateGunPeers() {
   // TODO: Add the logic to request for more peers here from axios
   const storedPeers = JSON.parse(localStorage.getItem("peers")).items;
   const selectedPeer = storedPeers[Math.floor(Math.random() * storedPeers.length)];
+
+  // let res = await axios.get(selectedPeer + "/peers");
+  // TODO: How do I share my own address tho?
+
   sessionStorage.setItem("currentPeer", selectedPeer);
 }
 
