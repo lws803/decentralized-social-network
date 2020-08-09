@@ -10,10 +10,10 @@ import { v4 as uuidv4 } from "uuid";
 import { parse } from "node-html-parser";
 import Validator from "jsonschema";
 
-import CustomCKEditor from "./common/CustomCKEditor";
-import { NewArticleSchema, TagsSchema } from "./common/Schemas";
-import AuthenticationModal from "./authModal/AuthenticationModal";
-import { Errors } from "./common/Messages";
+import CustomCKEditor from "../common/CustomCKEditor";
+import { NewArticleSchema, TagsSchema } from "../common/Schemas";
+import { Errors } from "../common/Messages";
+import { PageContainer } from "../common/CommonStyles";
 
 class PostArticle extends React.Component {
   constructor(props) {
@@ -25,10 +25,12 @@ class PostArticle extends React.Component {
       uuid: undefined,
       content: undefined,
       author: undefined,
-      title: undefined,
+      title: "",
       createdAt: undefined,
     };
+  }
 
+  componentDidMount() {
     const { articleID, path, user } = this.props.match.params;
     if (articleID && path && user && this.user.is) {
       this.user.get("pub").once(pubKey => {
@@ -48,7 +50,8 @@ class PostArticle extends React.Component {
     this.setState({
       ...article,
       tags: JSON.parse(article.tags)["items"],
-      content: `<h1>${article.title}</h1>` + article.content,
+      content: article.content,
+      title: article.title,
     });
   }
 
@@ -76,9 +79,6 @@ class PostArticle extends React.Component {
 
   extractContentMetadata() {
     var root = parse(this.state.content);
-    const title = root.querySelector("h1")
-      ? root.querySelector("h1").text
-      : undefined;
     const coverPhotoElem = root.querySelector("img");
     var coverPhoto = "";
     if (coverPhotoElem && coverPhotoElem.rawAttrs) {
@@ -92,7 +92,7 @@ class PostArticle extends React.Component {
     var elements = div.getElementsByTagName("h1");
     while (elements[0]) elements[0].parentNode.removeChild(elements[0]);
     var sanitizedContent = div.innerHTML;
-    return { coverPhoto: coverPhoto, title: title, content: sanitizedContent };
+    return { coverPhoto: coverPhoto, content: sanitizedContent };
   }
 
   async publish() {
@@ -106,6 +106,7 @@ class PostArticle extends React.Component {
         : date.toISOString(),
       updatedAt: this.state.uuid ? date.toISOString() : "",
       tags: JSON.stringify({ items: this.state.tags }),
+      title: this.state.title,
       ...this.extractContentMetadata(),
     };
 
@@ -129,48 +130,57 @@ class PostArticle extends React.Component {
 
   render() {
     return (
-      <div>
-        <AuthenticationModal
-          user={this.user}
-          reload={() => {
-            window.location.reload(false);
-          }}
+      <PageContainer>
+        <TitleInput
+          placeholder="Enter title here..."
+          onChange={event => this.setState({ title: event.target.value })}
+          value={this.state.title}
         />
-        <Container>
-          <CustomCKEditor
-            onChange={(event, editor) => {
-              this.setState({ content: editor.getData() });
-            }}
-            data={this.state.content}
-          />
+        <CustomCKEditor
+          onChange={(event, editor) => {
+            this.setState({ content: editor.getData() });
+          }}
+          data={this.state.content}
+        />
+        <ReactTagContainer>
           <ReactTagInput
             tags={this.state.tags}
             onChange={newTags => this.setState({ tags: newTags })}
             removeOnBackspace
             maxTags={10}
           />
-          <PublishButton onClick={() => this.publish().then()}>
-            Publish!
-          </PublishButton>
-        </Container>
-      </div>
+        </ReactTagContainer>
+        <PublishButton onClick={() => this.publish().then()}>
+          Publish!
+        </PublishButton>
+      </PageContainer>
     );
   }
 }
-
-const Container = styled.div`
-  width: 70%;
-  margin-left: auto;
-  margin-right: auto;
-  display: flex;
-  flex-direction: column;
-`;
 
 const PublishButton = styled.button`
   margin-top: 10px;
   margin-bottom: 50px;
   margin-left: auto;
   margin-right: auto;
+`;
+
+const TitleInput = styled.input`
+  font-size: 40px;
+  font-weight: heavy;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+  border: none;
+  text-align: center;
+  font-family: Georgia;
+  outline: none;
+`;
+
+const ReactTagContainer = styled.div`
+  margin-top: 10px;
 `;
 
 export default withRouter(PostArticle);

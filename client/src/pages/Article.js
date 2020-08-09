@@ -7,9 +7,10 @@ import "@pathofdev/react-tag-input/build/index.css";
 import styled from "styled-components";
 import moment from "moment";
 
-import { Card, LargeCard } from "./articles/ProfileCard";
+import { Card, LargeCard } from "../articles/ProfileCard";
 // import Vote from "./Vote";
-import ReadOnlyEditor from "./common/ReadOnlyEditor";
+import ReadOnlyEditor from "../common/ReadOnlyEditor";
+import { PageContainer } from "../common/CommonStyles";
 
 class Article extends React.Component {
   constructor(props) {
@@ -25,10 +26,21 @@ class Article extends React.Component {
       title: undefined,
       createdAt: undefined,
       tags: [],
+      editAllowed: false,
     };
+  }
 
+  componentDidMount() {
     const { articleID, path, user } = this.props.match.params;
     this.getContent(articleID, path, user);
+    this.getEditingStatus(user);
+  }
+
+  async getEditingStatus(authorPub) {
+    if (this.user.is) {
+      const pubKey = await this.user.get("pub").once();
+      this.setState({ editAllowed: pubKey === authorPub.substring(1) });
+    }
   }
 
   async getContent(articleID, path, user) {
@@ -43,7 +55,7 @@ class Article extends React.Component {
 
   render() {
     return (
-      <Container>
+      <PageContainer>
         <Title>{this.state.title}</Title>
         <CardContainer>
           <Card
@@ -64,18 +76,20 @@ class Article extends React.Component {
         <div style={{ marginTop: "10px" }}>
           <ReactTagInput tags={this.state.tags} readOnly />
         </div>
-        <button
-          style={{
-            marginTop: "10px",
-            marginLeft: "auto",
-            marginRight: "auto",
-          }}
-          onClick={() =>
-            this.props.history.push(this.props.location.pathname + "/edit")
-          }
-        >
-          Edit Post
-        </button>
+        {this.state.editAllowed && (
+          <button
+            style={{
+              marginTop: "10px",
+              marginLeft: "auto",
+              marginRight: "auto",
+            }}
+            onClick={() =>
+              this.props.history.push(this.props.location.pathname + "/edit")
+            }
+          >
+            Edit Post
+          </button>
+        )}
         {/* <div style={{ marginTop: "26px" }}>
             <Vote
               onClickUpVote={() => {}}
@@ -92,20 +106,10 @@ class Article extends React.Component {
             bio={this.state.authorBio}
           />
         </LargeCardContainer>
-      </Container>
+      </PageContainer>
     );
   }
 }
-
-Article.propTypes = {};
-
-const Container = styled.div`
-  margin-left: auto;
-  margin-right: auto;
-  width: 70%;
-  display: flex;
-  flex-direction: column;
-`;
 
 const Title = styled.div`
   font-size: 40px;
@@ -113,6 +117,7 @@ const Title = styled.div`
   margin-top: 20px;
   margin-left: auto;
   margin-right: auto;
+  font-family: Georgia;
 `;
 
 const CardContainer = styled.div`

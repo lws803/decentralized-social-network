@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import Validator from "jsonschema";
-import styled from "styled-components";
+import { Button, Header, Modal } from "semantic-ui-react";
 
 import ModalView from "../common/Modal";
 import { AuthSchema } from "../common/Schemas";
@@ -42,7 +42,6 @@ class AuthenticationModal extends React.Component {
       this.user.auth(this.state.name, this.state.password, ack => {
         if (ack.err) alert(ack.err);
         else {
-          this.setState({ authenticated: true });
           this.props.reload();
         }
       });
@@ -56,19 +55,18 @@ class AuthenticationModal extends React.Component {
 
   render() {
     return (
-      <ModalView {...this.props} isOpen={!this.state.authenticated}>
-        <UserForm>
-          <Field>
-            Name:
+      <Modal open={!this.state.authenticated}>
+        <Modal.Header>Login</Modal.Header>
+        <Modal.Content>
+          <Modal.Description>
+            <Header>Username</Header>
             <input
               type="text"
               value={this.state.name}
               onChange={event => this.setState({ name: event.target.value })}
               onKeyDown={e => this._handleKeyDown(e)}
             />
-          </Field>
-          <Field>
-            Password:
+            <Header>Password</Header>
             <input
               type="password"
               value={this.state.password}
@@ -77,11 +75,17 @@ class AuthenticationModal extends React.Component {
               }
               onKeyDown={e => this._handleKeyDown(e)}
             />
-          </Field>
-          <Button onClick={() => this.createUser()}>Sign up</Button>
-          <Button onClick={() => this.authUser()}>Login</Button>
-        </UserForm>
-      </ModalView>
+          </Modal.Description>
+        </Modal.Content>
+        <Modal.Actions>
+          <Button color="black" onClick={() => this.authUser()}>
+            Login
+          </Button>
+          <Button color="black" onClick={() => this.createUser()}>
+            Sign up
+          </Button>
+        </Modal.Actions>
+      </Modal>
     );
   }
 }
@@ -90,24 +94,5 @@ AuthenticationModal.propTypes = {
   user: PropTypes.any.isRequired,
   ...ModalView.propTypes,
 };
-
-const UserForm = styled.div`
-  display: flex;
-  height: 100%;
-  flex-direction: column;
-  width: 100%;
-  align-items: center;
-`;
-
-const Field = styled.div`
-  width: 20%;
-  margin-top: 10px;
-  display: flex;
-  justify-content: space-between;
-`;
-
-const Button = styled.button`
-  margin-top: 10px;
-`;
 
 export default AuthenticationModal;

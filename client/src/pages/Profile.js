@@ -4,9 +4,9 @@ import { withRouter } from "react-router-dom";
 import Gun from "gun/gun";
 import styled from "styled-components";
 
-import AuthenticationModal from "./authModal/AuthenticationModal";
-import Bio from "./profile/Bio";
-import LazyImage from "./common/LazyImage";
+import Bio from "../profile/Bio";
+import LazyImage from "../common/LazyImage";
+import { PageContainer } from "../common/CommonStyles";
 
 class Profile extends React.Component {
   constructor(props) {
@@ -21,22 +21,19 @@ class Profile extends React.Component {
   }
 
   componentDidMount() {
-    this.user.once(user =>
-      this.setState({
-        profilePhoto: user.photo,
-        bioContent: user.bio,
-        user: user.alias,
-      })
-    );
+    if (this.user.is)
+      this.user.once(user =>
+        this.setState({
+          profilePhoto: user.photo,
+          bioContent: user.bio,
+          user: user.alias,
+        })
+      );
   }
 
   render() {
     return (
-      <Container>
-        <AuthenticationModal
-          user={this.user}
-          reload={() => window.location.reload(false)}
-        />
+      <PageContainer>
         <ImageContainer>
           <LazyImage
             src={this.state.profilePhoto}
@@ -53,18 +50,10 @@ class Profile extends React.Component {
         >
           Edit
         </EditButton>
-      </Container>
+      </PageContainer>
     );
   }
 }
-
-const Container = styled.div`
-  display: flex;
-  width: 70%;
-  margin-left: auto;
-  margin-right: auto;
-  flex-direction: column;
-`;
 
 const ImageContainer = styled.div`
   margin-top: 50px;

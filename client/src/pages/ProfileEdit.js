@@ -5,10 +5,10 @@ import Gun from "gun/gun";
 import styled from "styled-components";
 import axios from "axios";
 
-import AuthenticationModal from "./authModal/AuthenticationModal";
-import ProfileImage from "./profile/ProfileImage";
-import LightCKEditor from "./common/LightCKEditor";
-import { Errors } from "./common/Messages";
+import ProfileImage from "../profile/ProfileImage";
+import LightCKEditor from "../common/LightCKEditor";
+import { Errors } from "../common/Messages";
+import { PageContainer } from "../common/CommonStyles";
 
 class ProfileEdit extends React.Component {
   constructor(props) {
@@ -24,13 +24,14 @@ class ProfileEdit extends React.Component {
   }
 
   componentDidMount() {
-    this.user.once(user =>
-      this.setState({
-        profilePhoto: user.photo,
-        bioContent: user.bio,
-        user: user.alias,
-      })
-    );
+    if (this.user.is)
+      this.user.once(user =>
+        this.setState({
+          profilePhoto: user.photo,
+          bioContent: user.bio,
+          user: user.alias,
+        })
+      );
   }
 
   async updateProfile() {
@@ -58,11 +59,7 @@ class ProfileEdit extends React.Component {
 
   render() {
     return (
-      <Container>
-        <AuthenticationModal
-          user={this.user}
-          reload={() => window.location.reload(false)}
-        />
+      <PageContainer>
         <ProfileImageContainer>
           <ProfileImage
             image={this.state.profilePhoto}
@@ -76,7 +73,11 @@ class ProfileEdit extends React.Component {
           />
         </ProfileImageContainer>
         <div
-          style={{ marginTop: "20px", fontSize: "large", textAlign: "center" }}
+          style={{
+            marginTop: "20px",
+            fontSize: "large",
+            textAlign: "center",
+          }}
         >
           {this.state.user}
         </div>
@@ -105,18 +106,10 @@ class ProfileEdit extends React.Component {
         >
           Save
         </SaveButton>
-      </Container>
+      </PageContainer>
     );
   }
 }
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 70%;
-  margin-left: auto;
-  margin-right: auto;
-`;
 
 const ProfileImageContainer = styled.div`
   margin-top: 50px;
