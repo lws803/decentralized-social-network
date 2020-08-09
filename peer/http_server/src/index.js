@@ -56,3 +56,4 @@ app.post("/image_upload", async (req, res) => {
 app.listen(process.env.PORT, () => {
   console.log(`Server started on port: ${process.env.PORT}...`);
 });
+// TODO: When server starts, it will request for a list of peers from a neighbour
