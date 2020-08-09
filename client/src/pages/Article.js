@@ -26,10 +26,22 @@ class Article extends React.Component {
       title: undefined,
       createdAt: undefined,
       tags: [],
+      editAllowed: false,
     };
+  }
 
+  componentDidMount() {
     const { articleID, path, user } = this.props.match.params;
     this.getContent(articleID, path, user);
+    this.getEditingStatus(user);
+  }
+
+  async getEditingStatus(authorPub) {
+    if (this.user.is) {
+      const pubKey = await this.user.get("pub").once();
+      console.log(pubKey === authorPub.substring(1));
+      this.setState({ editAllowed: pubKey === authorPub.substring(1) });
+    }
   }
 
   async getContent(articleID, path, user) {
@@ -74,6 +86,7 @@ class Article extends React.Component {
           onClick={() =>
             this.props.history.push(this.props.location.pathname + "/edit")
           }
+          disabled={!this.state.editAllowed}
         >
           Edit Post
         </button>

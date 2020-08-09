@@ -28,7 +28,9 @@ class PostArticle extends React.Component {
       title: "",
       createdAt: undefined,
     };
+  }
 
+  componentDidMount() {
     const { articleID, path, user } = this.props.match.params;
     if (articleID && path && user && this.user.is) {
       this.user.get("pub").once(pubKey => {
