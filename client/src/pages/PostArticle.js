@@ -142,12 +142,14 @@ class PostArticle extends React.Component {
           }}
           data={this.state.content}
         />
-        <ReactTagInput
-          tags={this.state.tags}
-          onChange={newTags => this.setState({ tags: newTags })}
-          removeOnBackspace
-          maxTags={10}
-        />
+        <ReactTagContainer>
+          <ReactTagInput
+            tags={this.state.tags}
+            onChange={newTags => this.setState({ tags: newTags })}
+            removeOnBackspace
+            maxTags={10}
+          />
+        </ReactTagContainer>
         <PublishButton onClick={() => this.publish().then()}>
           Publish!
         </PublishButton>
@@ -175,6 +177,10 @@ const TitleInput = styled.input`
   text-align: center;
   font-family: Georgia;
   outline: none;
+`;
+
+const ReactTagContainer = styled.div`
+  margin-top: 10px;
 `;
 
 export default withRouter(PostArticle);
