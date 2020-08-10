@@ -6,7 +6,7 @@ import ReactTagInput from "@pathofdev/react-tag-input";
 import "@pathofdev/react-tag-input/build/index.css";
 import styled from "styled-components";
 import moment from "moment";
-import { Divider } from "semantic-ui-react";
+import { Divider, Placeholder } from "semantic-ui-react";
 
 import { Card, LargeCard } from "../articles/ProfileCard";
 // import Vote from "./Vote";
@@ -75,7 +75,13 @@ class Article extends React.Component {
             authorName={this.state.author}
           />
         </CardContainer>
-        <ReadOnlyEditor data={this.state.content} />
+        {!this.state.content ? (
+          <PlaceholderArticle
+            style={{ width: "100%", marginLeft: "auto", marginRight: "auto" }}
+          />
+        ) : (
+          <ReadOnlyEditor data={this.state.content} />
+        )}
         <div style={{ marginTop: "10px" }}>
           <ReactTagInput tags={this.state.tags} readOnly />
         </div>
@@ -110,6 +116,27 @@ class Article extends React.Component {
     );
   }
 }
+
+const PlaceholderArticle = props => (
+  <Placeholder {...props}>
+    <Placeholder.Image />
+    <Placeholder.Paragraph>
+      <Placeholder.Line />
+      <Placeholder.Line />
+      <Placeholder.Line />
+      <Placeholder.Line />
+    </Placeholder.Paragraph>
+    <Placeholder.Header image>
+      <Placeholder.Line />
+      <Placeholder.Line />
+    </Placeholder.Header>
+    <Placeholder.Paragraph>
+      <Placeholder.Line />
+      <Placeholder.Line />
+      <Placeholder.Line />
+    </Placeholder.Paragraph>
+  </Placeholder>
+);
 
 const Title = styled.div`
   font-size: 40px;
