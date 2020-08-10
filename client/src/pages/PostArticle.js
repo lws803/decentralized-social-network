@@ -170,7 +170,7 @@ class PostArticle extends React.Component {
         </ReactTagContainer>
         <ToolButtonsContainer>
           <ToolButton onClick={() => this.publish().then()}>
-            {this.state.uuid ? "Edit" : "Publish New"}
+            {this.state.uuid ? "Save" : "Publish New"}
           </ToolButton>
           {this.state.uuid && (
             <ToolButton onClick={() => this.deleteArticle().then()}>
