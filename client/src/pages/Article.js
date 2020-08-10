@@ -6,7 +6,9 @@ import ReactTagInput from "@pathofdev/react-tag-input";
 import "@pathofdev/react-tag-input/build/index.css";
 import styled from "styled-components";
 import moment from "moment";
+import { Divider, Placeholder } from "semantic-ui-react";
 
+import history from "../utils/History";
 import { Card, LargeCard } from "../articles/ProfileCard";
 // import Vote from "./Vote";
 import ReadOnlyEditor from "../common/ReadOnlyEditor";
@@ -74,18 +76,28 @@ class Article extends React.Component {
             authorName={this.state.author}
           />
         </CardContainer>
-        <ReadOnlyEditor data={this.state.content} />
-        <div style={{ marginTop: "10px" }}>
-          <ReactTagInput tags={this.state.tags} readOnly />
-        </div>
-        {this.state.editAllowed && (
-          <EditButton
-            onClick={() =>
-              this.props.history.push(this.props.location.pathname + "/edit")
-            }
-          >
-            Edit
-          </EditButton>
+        {!this.state.content ? (
+          <PlaceholderArticle
+            style={{ width: "100%", marginLeft: "auto", marginRight: "auto" }}
+          />
+        ) : (
+          <div>
+            <ReadOnlyEditor data={this.state.content} />
+            <div style={{ marginTop: "10px" }}>
+              <ReactTagInput tags={this.state.tags} readOnly />
+            </div>
+            {this.state.editAllowed && (
+              <EditButton
+                onClick={() =>
+                  history.push(
+                    this.props.location.pathname + "/edit"
+                  )
+                }
+              >
+                Edit
+              </EditButton>
+            )}
+          </div>
         )}
         {/* <div style={{ marginTop: "26px" }}>
             <Vote
@@ -95,7 +107,9 @@ class Article extends React.Component {
               downVoteCount={0}
             />
           </div> */}
-        <Divider />
+        <Divider
+          style={{ width: "70%", marginLeft: "auto", marginRight: "auto" }}
+        />
         <LargeCardContainer>
           <LargeCard
             authorPhoto={this.state.authorPhoto}
@@ -107,6 +121,27 @@ class Article extends React.Component {
     );
   }
 }
+
+const PlaceholderArticle = props => (
+  <Placeholder {...props}>
+    <Placeholder.Image />
+    <Placeholder.Paragraph>
+      <Placeholder.Line />
+      <Placeholder.Line />
+      <Placeholder.Line />
+      <Placeholder.Line />
+    </Placeholder.Paragraph>
+    <Placeholder.Header image>
+      <Placeholder.Line />
+      <Placeholder.Line />
+    </Placeholder.Header>
+    <Placeholder.Paragraph>
+      <Placeholder.Line />
+      <Placeholder.Line />
+      <Placeholder.Line />
+    </Placeholder.Paragraph>
+  </Placeholder>
+);
 
 const Title = styled.div`
   font-size: 40px;
@@ -122,14 +157,6 @@ const CardContainer = styled.div`
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 10px;
-`;
-
-const Divider = styled.div`
-  margin-top: 57px;
-  margin-left: auto;
-  margin-right: auto;
-  width: 70%;
-  border: 1px solid black;
 `;
 
 const LargeCardContainer = styled.div`

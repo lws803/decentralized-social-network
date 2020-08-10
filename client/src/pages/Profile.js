@@ -4,6 +4,7 @@ import { withRouter } from "react-router-dom";
 import Gun from "gun/gun";
 import styled from "styled-components";
 
+import history from "../utils/History";
 import Bio from "../profile/Bio";
 import LazyImage from "../common/LazyImage";
 import { PageContainer } from "../common/CommonStyles";
@@ -46,7 +47,7 @@ class Profile extends React.Component {
           <Bio content={this.state.bioContent} />
         </BioContainer>
         <EditButton
-          onClick={() => this.props.history.push("/profile/my_profile/edit")}
+          onClick={() => history.push("/profile/my_profile/edit")}
         >
           Edit
         </EditButton>

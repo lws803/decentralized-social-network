@@ -5,6 +5,7 @@ import Gun from "gun/gun";
 import styled from "styled-components";
 import axios from "axios";
 
+import history from "../utils/History";
 import ProfileImage from "../profile/ProfileImage";
 import LightCKEditor from "../common/LightCKEditor";
 import { Errors } from "../common/Messages";
@@ -100,7 +101,7 @@ class ProfileEdit extends React.Component {
         <SaveButton
           onClick={() => {
             this.updateProfile()
-              .then(ack => this.props.history.push("/profile/my_profile"))
+              .then(ack => history.push("/profile/my_profile"))
               .catch(err => alert(err));
           }}
         >
