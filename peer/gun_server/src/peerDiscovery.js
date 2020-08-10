@@ -37,8 +37,10 @@ async function extractValid(peers) {
   var validPeers = [];
   for (let peer of peerSet) {
     try {
-      if (await axios.get(`http://${peer}:5000/healthcheck`))
+      if (await axios.get(`http://${peer}:5000/healthcheck`)) {
         validPeers.push(peer);
+        addNewKey(peer);
+      }
     } catch (err) {
       await delKey(peer);
     }
@@ -70,17 +72,15 @@ function pullFromBucket(arr) {
 }
 
 async function findSuitablePeers(peers, retries) {
-  var validPeers = [];
-  if (!peers) return validPeers;
   for (var retry = 0; retry < retries; retry++) {
+    if (!peers) return [];
     var bucket = pullFromBucket(peers);
-    var checkedPeers = await extractValid(bucket);
-    if (checkedPeers.length) {
-      validPeers = [...checkedPeers];
-      break;
+    peers = await extractValid(bucket);
+    if (peers.length) {
+      return peers;
     }
   }
-  return validPeers;
+  return [];
 }
 
 async function findPeersOfPeers(validParents) {
@@ -118,8 +118,6 @@ async function peerDiscovery() {
     }
   }
   const dedupedPeersList = Array.from(new Set(peersList));
-  for (var i = 0; i < dedupedPeersList.length; i++)
-    await addNewKey(dedupedPeersList[i]);
   // Dedupe and pull from bucket
   return pullFromBucket(dedupedPeersList);
 }
