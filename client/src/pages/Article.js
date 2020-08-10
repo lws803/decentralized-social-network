@@ -6,6 +6,7 @@ import ReactTagInput from "@pathofdev/react-tag-input";
 import "@pathofdev/react-tag-input/build/index.css";
 import styled from "styled-components";
 import moment from "moment";
+import { Divider } from "semantic-ui-react";
 
 import { Card, LargeCard } from "../articles/ProfileCard";
 // import Vote from "./Vote";
@@ -95,7 +96,9 @@ class Article extends React.Component {
               downVoteCount={0}
             />
           </div> */}
-        <Divider />
+        <Divider
+          style={{ width: "70%", marginLeft: "auto", marginRight: "auto" }}
+        />
         <LargeCardContainer>
           <LargeCard
             authorPhoto={this.state.authorPhoto}
@@ -122,14 +125,6 @@ const CardContainer = styled.div`
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 10px;
-`;
-
-const Divider = styled.div`
-  margin-top: 57px;
-  margin-left: auto;
-  margin-right: auto;
-  width: 70%;
-  border: 1px solid black;
 `;
 
 const LargeCardContainer = styled.div`
