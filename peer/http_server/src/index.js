@@ -82,7 +82,7 @@ app.get("/peers", async (req, res) => {
   try {
     getAllKeys()
       .then(peers => {
-        if (peers.length > 10)
+        if (peers.length >= 10)
           peers = getRandom(peers, Math.floor(peers.length / 2 + 1));
         res.send({ peers: peers });
       })
