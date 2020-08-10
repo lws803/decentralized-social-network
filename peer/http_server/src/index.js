@@ -8,7 +8,7 @@ const morgan = require("morgan");
 const _ = require("lodash");
 require("dotenv").config();
 
-const client = redis.createClient(process.env.REDIS_URI);
+const client = redis.createClient(process.env.REDIS_URI, { db: 1 });
 const ipfs = IpfsHttpClient(process.env.IPFS_URL);
 var app = express();
 

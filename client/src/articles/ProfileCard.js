@@ -14,7 +14,7 @@ class Card extends React.Component {
           src={this.props.authorPhoto}
           width={54}
           height={54}
-          style={{ borderRadius: "50%" }}
+          style={{ borderRadius: "50%", objectFit: "cover" }}
         />
         <ArticleDetails>
           <div>{this.props.authorName}</div>
@@ -69,7 +69,7 @@ class LargeCard extends React.Component {
           src={this.props.authorPhoto}
           width={127}
           height={127}
-          style={{ borderRadius: "50%" }}
+          style={{ borderRadius: "50%", objectFit: "cover" }}
         />
         <ProfileDetails>
           <LargeAuthorName>{this.props.authorName}</LargeAuthorName>
