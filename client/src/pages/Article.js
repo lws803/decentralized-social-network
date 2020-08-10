@@ -89,9 +89,7 @@ class Article extends React.Component {
             {this.state.editAllowed && (
               <EditButton
                 onClick={() =>
-                  history.push(
-                    this.props.location.pathname + "/edit"
-                  )
+                  history.push(this.props.location.pathname + "/edit")
                 }
               >
                 Edit

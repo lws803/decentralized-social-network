@@ -46,9 +46,7 @@ class Profile extends React.Component {
         <BioContainer>
           <Bio content={this.state.bioContent} />
         </BioContainer>
-        <EditButton
-          onClick={() => history.push("/profile/my_profile/edit")}
-        >
+        <EditButton onClick={() => history.push("/profile/my_profile/edit")}>
           Edit
         </EditButton>
       </PageContainer>

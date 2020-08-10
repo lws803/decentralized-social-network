@@ -21,7 +21,9 @@ class Card extends React.Component {
           <TimeDate>{this.props.dateCreated}</TimeDate>
         </ArticleDetails>
         <ButtonContainer>
-          <button onClick={this.props.onFollowClick} disabled>Follow</button>
+          <button onClick={this.props.onFollowClick} disabled>
+            Follow
+          </button>
         </ButtonContainer>
       </ProfileCardContainer>
     );
