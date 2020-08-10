@@ -45,12 +45,14 @@ class Article extends React.Component {
 
   async getContent(articleID, path, user) {
     const article = await this.gun.get(user).get(path).get(articleID).once();
-    this.setState({ ...article, tags: JSON.parse(article.tags)["items"] });
-    await this.gun
-      .get(user)
-      .once(user =>
-        this.setState({ authorPhoto: user.photo, authorBio: user.bio })
-      );
+    if (article !== null) {
+      this.setState({ ...article, tags: JSON.parse(article.tags)["items"] });
+      await this.gun
+        .get(user)
+        .once(user =>
+          this.setState({ authorPhoto: user.photo, authorBio: user.bio })
+        );
+    }
   }
 
   render() {
@@ -77,18 +79,13 @@ class Article extends React.Component {
           <ReactTagInput tags={this.state.tags} readOnly />
         </div>
         {this.state.editAllowed && (
-          <button
-            style={{
-              marginTop: "10px",
-              marginLeft: "auto",
-              marginRight: "auto",
-            }}
+          <EditButton
             onClick={() =>
               this.props.history.push(this.props.location.pathname + "/edit")
             }
           >
-            Edit Post
-          </button>
+            Edit
+          </EditButton>
         )}
         {/* <div style={{ marginTop: "26px" }}>
             <Vote
@@ -138,6 +135,12 @@ const Divider = styled.div`
 const LargeCardContainer = styled.div`
   margin-left: auto;
   margin-right: auto;
+`;
+
+const EditButton = styled.button`
+  margin-top: 10px;
+  margin-right: 10px;
+  align-self: flex-start;
 `;
 
 export default withRouter(Article);

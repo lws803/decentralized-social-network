@@ -47,12 +47,13 @@ class PostArticle extends React.Component {
 
   async getContent(articleID, path, user) {
     const article = await this.gun.get(user).get(path).get(articleID).once();
-    this.setState({
-      ...article,
-      tags: JSON.parse(article.tags)["items"],
-      content: article.content,
-      title: article.title,
-    });
+    if (article !== null)
+      this.setState({
+        ...article,
+        tags: JSON.parse(article.tags)["items"],
+        content: article.content,
+        title: article.title,
+      });
   }
 
   async postArticle(article) {
@@ -128,6 +129,15 @@ class PostArticle extends React.Component {
     }
   }
 
+  async deleteArticle() {
+    await this.user
+      .get("posts")
+      .get(this.state.uuid)
+      .put(null, () => {
+        this.props.history.push("/");
+      });
+  }
+
   render() {
     return (
       <PageContainer>
@@ -145,24 +155,38 @@ class PostArticle extends React.Component {
         <ReactTagContainer>
           <ReactTagInput
             tags={this.state.tags}
-            onChange={newTags => this.setState({ tags: newTags })}
+            onChange={newTags => {
+              function process(tag) {
+                var processedTag = tag.toLowerCase();
+                processedTag = processedTag.replace(/[^A-Z0-9]/ig, "");
+                console.log(processedTag);
+                return processedTag;
+              }
+              this.setState({ tags: newTags.map(process) });
+            }}
             removeOnBackspace
             maxTags={10}
           />
         </ReactTagContainer>
-        <PublishButton onClick={() => this.publish().then()}>
-          Publish!
-        </PublishButton>
+        <ToolButtonsContainer>
+          <ToolButton onClick={() => this.publish().then()}>
+            {this.state.uuid ? "Edit" : "Publish New"}
+          </ToolButton>
+          {this.state.uuid && (
+            <ToolButton onClick={() => this.deleteArticle().then()}>
+              Delete
+            </ToolButton>
+          )}
+        </ToolButtonsContainer>
       </PageContainer>
     );
   }
 }
 
-const PublishButton = styled.button`
+const ToolButton = styled.button`
   margin-top: 10px;
   margin-bottom: 50px;
-  margin-left: auto;
-  margin-right: auto;
+  margin-right: 10px;
 `;
 
 const TitleInput = styled.input`
@@ -181,6 +205,10 @@ const TitleInput = styled.input`
 
 const ReactTagContainer = styled.div`
   margin-top: 10px;
+`;
+
+const ToolButtonsContainer = styled.div`
+  display: flex;
 `;
 
 export default withRouter(PostArticle);
