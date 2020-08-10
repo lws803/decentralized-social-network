@@ -160,22 +160,22 @@ class PostArticle extends React.Component {
             maxTags={10}
           />
         </ReactTagContainer>
-        <ToolButtons>
-          <PublishButton onClick={() => this.publish().then()}>
+        <ToolButtonsContainer>
+          <ToolButton onClick={() => this.publish().then()}>
             {this.state.uuid ? "Edit" : "Publish New"}
-          </PublishButton>
+          </ToolButton>
           {this.state.uuid && (
-            <PublishButton onClick={() => this.deleteArticle().then()}>
+            <ToolButton onClick={() => this.deleteArticle().then()}>
               Delete
-            </PublishButton>
+            </ToolButton>
           )}
-        </ToolButtons>
+        </ToolButtonsContainer>
       </PageContainer>
     );
   }
 }
 
-const PublishButton = styled.button`
+const ToolButton = styled.button`
   margin-top: 10px;
   margin-bottom: 50px;
   margin-right: 10px;
@@ -199,7 +199,7 @@ const ReactTagContainer = styled.div`
   margin-top: 10px;
 `;
 
-const ToolButtons = styled.div`
+const ToolButtonsContainer = styled.div`
   display: flex;
 `;
 
