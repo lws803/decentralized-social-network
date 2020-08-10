@@ -8,6 +8,7 @@ import styled from "styled-components";
 import moment from "moment";
 import { Divider, Placeholder } from "semantic-ui-react";
 
+import history from "../common/History";
 import { Card, LargeCard } from "../articles/ProfileCard";
 // import Vote from "./Vote";
 import ReadOnlyEditor from "../common/ReadOnlyEditor";
@@ -88,7 +89,7 @@ class Article extends React.Component {
             {this.state.editAllowed && (
               <EditButton
                 onClick={() =>
-                  this.props.history.push(
+                  history.push(
                     this.props.location.pathname + "/edit"
                   )
                 }

@@ -10,6 +10,7 @@ import { v4 as uuidv4 } from "uuid";
 import { parse } from "node-html-parser";
 import Validator from "jsonschema";
 
+import history from "../common/History";
 import CustomCKEditor from "../common/CustomCKEditor";
 import { NewArticleSchema, TagsSchema } from "../common/Schemas";
 import { Errors } from "../common/Messages";
@@ -39,7 +40,7 @@ class PostArticle extends React.Component {
         } else {
           alert(Errors.no_edit_perms_article);
           const { articleID, path, user } = this.props.match.params;
-          this.props.history.push(`/article/${user}/${path}/${articleID}`);
+          history.push(`/article/${user}/${path}/${articleID}`);
         }
       });
     }
@@ -123,7 +124,7 @@ class PostArticle extends React.Component {
     if (result.valid && tagsResult.valid) {
       this.postArticle(article)
         .then(ref => {
-          this.props.history.push(`/article/${ref}`);
+          history.push(`/article/${ref}`);
         })
         .catch(err => alert(err));
     }
@@ -134,7 +135,7 @@ class PostArticle extends React.Component {
       .get("posts")
       .get(this.state.uuid)
       .put(null, () => {
-        this.props.history.push("/");
+        history.push("/");
       });
   }
 
