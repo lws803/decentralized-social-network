@@ -61,10 +61,11 @@ function getRandom(arr, n) {
 }
 
 function pullFromBucket(arr) {
+  if (!arr.length) return arr;
   if (arr.length >= 10) {
     return getRandom(arr, 3);
   } else {
-    return getRandom(arr, Math.floor(arr.length / 2));
+    return getRandom(arr, Math.floor(arr.length / 2 + 1));
   }
 }
 
@@ -88,7 +89,7 @@ async function findPeersOfPeers(validParents) {
     try {
       let res = await axios.get(`http://${validParents[i]}:5000/peers`);
       if (res && res.data.peers) {
-        newPeers = [...newPeers, ...res.data.peers]
+        newPeers = [...newPeers, ...res.data.peers];
       }
     } catch (err) {
       await delKey(validParents[i]);
@@ -103,13 +104,13 @@ async function peerDiscovery() {
   const initialPeers = ["init_peer", await publicIp.v4(), "127.0.0.1"];
   for (var retry = 0; retry < retries; retry++) {
     var peers = await getAllKeys();
-    peers = [...peers, ...initialPeers]
+    peers = [...peers, ...initialPeers];
     var validParents = await findSuitablePeers(peers, 10);
     // Decide if we should update the peers list
     if (peers && peers.length < 20) {
       var newPeers = await findPeersOfPeers(validParents);
       newPeers = await findSuitablePeers(newPeers, 10);
-      validParents = [...validParents, ...newPeers]
+      validParents = [...validParents, ...newPeers];
     }
     if (validParents.length) {
       peersList = [...validParents];

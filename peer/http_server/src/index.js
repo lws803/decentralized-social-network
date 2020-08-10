@@ -82,7 +82,7 @@ app.get("/peers", async (req, res) => {
   try {
     getAllKeys()
       .then(peers => {
-        peers = getRandom(peers, Math.floor(peers.length / 2));
+        if (peers) peers = getRandom(peers, Math.floor(peers.length / 2 + 1));
         res.send({ peers: peers });
       })
       .catch(err => res.status(500).send({ message: err }));
