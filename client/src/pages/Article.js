@@ -79,18 +79,13 @@ class Article extends React.Component {
           <ReactTagInput tags={this.state.tags} readOnly />
         </div>
         {this.state.editAllowed && (
-          <button
-            style={{
-              marginTop: "10px",
-              marginLeft: "auto",
-              marginRight: "auto",
-            }}
+          <EditButton
             onClick={() =>
               this.props.history.push(this.props.location.pathname + "/edit")
             }
           >
-            Edit Post
-          </button>
+            Edit
+          </EditButton>
         )}
         {/* <div style={{ marginTop: "26px" }}>
             <Vote
@@ -140,6 +135,12 @@ const Divider = styled.div`
 const LargeCardContainer = styled.div`
   margin-left: auto;
   margin-right: auto;
+`;
+
+const EditButton = styled.button`
+  margin-top: 10px;
+  margin-right: 10px;
+  align-self: flex-start;
 `;
 
 export default withRouter(Article);
