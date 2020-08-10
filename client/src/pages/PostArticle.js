@@ -47,12 +47,13 @@ class PostArticle extends React.Component {
 
   async getContent(articleID, path, user) {
     const article = await this.gun.get(user).get(path).get(articleID).once();
-    this.setState({
-      ...article,
-      tags: JSON.parse(article.tags)["items"],
-      content: article.content,
-      title: article.title,
-    });
+    if (article !== null)
+      this.setState({
+        ...article,
+        tags: JSON.parse(article.tags)["items"],
+        content: article.content,
+        title: article.title,
+      });
   }
 
   async postArticle(article) {
@@ -128,6 +129,15 @@ class PostArticle extends React.Component {
     }
   }
 
+  async deleteArticle() {
+    await this.user
+      .get("posts")
+      .get(this.state.uuid)
+      .put(null, () => {
+        this.props.history.push("/");
+      });
+  }
+
   render() {
     return (
       <PageContainer>
@@ -150,9 +160,16 @@ class PostArticle extends React.Component {
             maxTags={10}
           />
         </ReactTagContainer>
-        <PublishButton onClick={() => this.publish().then()}>
-          Publish!
-        </PublishButton>
+        <ToolButtons>
+          <PublishButton onClick={() => this.publish().then()}>
+            {this.state.uuid ? "Edit" : "Publish New"}
+          </PublishButton>
+          {this.state.uuid && (
+            <PublishButton onClick={() => this.deleteArticle().then()}>
+              Delete
+            </PublishButton>
+          )}
+        </ToolButtons>
       </PageContainer>
     );
   }
@@ -161,8 +178,7 @@ class PostArticle extends React.Component {
 const PublishButton = styled.button`
   margin-top: 10px;
   margin-bottom: 50px;
-  margin-left: auto;
-  margin-right: auto;
+  margin-right: 10px;
 `;
 
 const TitleInput = styled.input`
@@ -181,6 +197,10 @@ const TitleInput = styled.input`
 
 const ReactTagContainer = styled.div`
   margin-top: 10px;
+`;
+
+const ToolButtons = styled.div`
+  display: flex;
 `;
 
 export default withRouter(PostArticle);

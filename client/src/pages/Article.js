@@ -45,12 +45,14 @@ class Article extends React.Component {
 
   async getContent(articleID, path, user) {
     const article = await this.gun.get(user).get(path).get(articleID).once();
-    this.setState({ ...article, tags: JSON.parse(article.tags)["items"] });
-    await this.gun
-      .get(user)
-      .once(user =>
-        this.setState({ authorPhoto: user.photo, authorBio: user.bio })
-      );
+    if (article !== null) {
+      this.setState({ ...article, tags: JSON.parse(article.tags)["items"] });
+      await this.gun
+        .get(user)
+        .once(user =>
+          this.setState({ authorPhoto: user.photo, authorBio: user.bio })
+        );
+    }
   }
 
   render() {
