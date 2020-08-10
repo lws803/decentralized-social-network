@@ -3,24 +3,35 @@ services:
   ipfs:
     image: ipfs/go-ipfs:latest
     volumes:
-    - "./export:/export"
-    - "./data/ipfs:/data/ipfs"
+      - "./export:/export"
+      - "./data/ipfs:/data/ipfs"
     ports:
-    - "5001:5001"
-    - "4001:4001"
-    - "8080:8080"
+      - "5001:5001"
+      - "4001:4001"
+      - "8080:8080"
     restart: on-failure
+  redis:
+    image: redis
+    container_name: cache
+    ports:
+      - "6379:6379"
   http_server:
     build: ./http_server
     ports:
       - "5000:5000"
     depends_on:
       - ipfs
+      - redis
     environment:
       IPFS_URL: "http://ipfs:5001"
+      REDIS_URI: redis://cache
     restart: on-failure
   gun_server:
     build: ./gun_server
     ports:
       - "8765:8765"
     restart: on-failure
+    environment:
+      REDIS_URI: redis://cache
+    depends_on:
+      - redis

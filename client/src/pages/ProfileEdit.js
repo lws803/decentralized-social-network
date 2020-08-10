@@ -13,7 +13,7 @@ import { PageContainer } from "../common/CommonStyles";
 class ProfileEdit extends React.Component {
   constructor(props) {
     super(props);
-    this.gun = new Gun([process.env.REACT_APP_GUN_HOST_URL]);
+    this.gun = new Gun([sessionStorage.getItem("currentPeer")]);
     this.user = this.gun.user().recall({ sessionStorage: true });
     this.state = {
       user: undefined,
@@ -50,7 +50,7 @@ class ProfileEdit extends React.Component {
       },
     };
     let res = await axios.post(
-      process.env.REACT_APP_API_URL + "/image_upload",
+      sessionStorage.getItem("currentAPI") + "/image_upload",
       formData,
       config
     );

@@ -16,7 +16,8 @@ import { PageContainer } from "./common/CommonStyles";
 import AuthenticationModal from "./authModal/AuthenticationModal";
 
 export default function App() {
-  var gunSession = new Gun([process.env.REACT_APP_GUN_HOST_URL]);
+  var gunSession = new Gun([sessionStorage.getItem("currentPeer")]);
+  console.log("currently set peer:", sessionStorage.getItem("currentPeer"));
   var user = gunSession.user().recall({ sessionStorage: true });
   if (user.is) {
     console.log("user logged in");
