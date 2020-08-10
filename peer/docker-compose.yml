@@ -30,7 +30,7 @@ services:
     build: ./gun_server
     ports:
       - "8765:8765"
-    restart: on-failure
+    # restart: on-failure
     environment:
       REDIS_URI: redis://cache
     depends_on:

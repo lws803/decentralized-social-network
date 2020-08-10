@@ -8,7 +8,7 @@ const morgan = require("morgan");
 const _ = require("lodash");
 require("dotenv").config();
 
-const client = redis.createClient(process.env.REDIS_URI);
+const client = redis.createClient(process.env.REDIS_URI, { db: 1 });
 const ipfs = IpfsHttpClient(process.env.IPFS_URL);
 var app = express();
 
@@ -29,13 +29,13 @@ async function uploadFileIPFS(file) {
   return uploadedFile;
 }
 
-function getPeers() {
-  return new Promise((resolve, reject) => {
-    client.get("peers", (err, res) => {
+function getAllKeys() {
+  return new Promise((resolve, reject) =>
+    client.keys("*", (err, res) => {
       if (err) reject(err);
       else resolve(res);
-    });
-  });
+    })
+  );
 }
 
 function getRandom(arr, n) {
@@ -80,21 +80,18 @@ app.post("/image_upload", async (req, res) => {
 
 app.get("/peers", async (req, res) => {
   try {
-    getPeers()
-      .then(peersJSON => {
-        if (peersJSON) {
-          var peers = JSON.parse(peersJSON).items;
+    getAllKeys()
+      .then(peers => {
+        if (peers.length >= 10)
           peers = getRandom(peers, Math.floor(peers.length / 2 + 1));
-          res.send({
-            peers: peers,
-          });
-        }
+        res.send({ peers: peers });
       })
       .catch(err => {
         console.log(err);
         res.status(500).send({ message: err });
       });
   } catch (err) {
+    console.log(err);
     res.status(500).send({ message: err });
   }
 });
