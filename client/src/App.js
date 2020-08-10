@@ -1,10 +1,16 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+} from "react-router-dom";
 
 import Gun from "gun/gun";
 import { Dropdown } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 
+import history from "./common/History";
 import NavigationBar, { IconButton, MainLogo } from "./navBar/NavigationBar";
 import PostArticle from "./pages/PostArticle";
 import Article from "./pages/Article";
@@ -26,7 +32,7 @@ export default function App() {
   }
   return (
     <div>
-      <Router>
+      <Router history={history}>
         <PageContainer>
           <NavigationBar
             mainLogoButton={
@@ -42,9 +48,10 @@ export default function App() {
             profileDropdown={
               <Dropdown text="Profile">
                 <Dropdown.Menu>
-                  <Dropdown.Item>
-                    <Link to="/profile/my_profile">My Profile</Link>
-                  </Dropdown.Item>
+                  <Dropdown.Item
+                    text="My Profile"
+                    onClick={() => history.push("/profile/my_profile")}
+                  />
                   {/* <Dropdown.Item text="Following" onClick={() => {}} /> */}
                   {user.is && (
                     <Dropdown.Item
