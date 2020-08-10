@@ -82,11 +82,16 @@ app.get("/peers", async (req, res) => {
   try {
     getAllKeys()
       .then(peers => {
-        if (peers) peers = getRandom(peers, Math.floor(peers.length / 2 + 1));
+        if (peers.length > 10)
+          peers = getRandom(peers, Math.floor(peers.length / 2 + 1));
         res.send({ peers: peers });
       })
-      .catch(err => res.status(500).send({ message: err }));
+      .catch(err => {
+        console.log(err);
+        res.status(500).send({ message: err });
+      });
   } catch (err) {
+    console.log(err);
     res.status(500).send({ message: err });
   }
 });
