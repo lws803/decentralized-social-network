@@ -4,7 +4,7 @@ import { withRouter } from "react-router-dom";
 import Gun from "gun/gun";
 import styled from "styled-components";
 
-import history from "../common/History";
+import history from "../utils/History";
 import Bio from "../profile/Bio";
 import LazyImage from "../common/LazyImage";
 import { PageContainer } from "../common/CommonStyles";

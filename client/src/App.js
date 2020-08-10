@@ -10,7 +10,7 @@ import Gun from "gun/gun";
 import { Dropdown } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 
-import history from "./common/History";
+import history from "./utils/History";
 import NavigationBar, { IconButton, MainLogo } from "./navBar/NavigationBar";
 import PostArticle from "./pages/PostArticle";
 import Article from "./pages/Article";

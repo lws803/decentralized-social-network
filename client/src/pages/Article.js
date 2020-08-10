@@ -8,7 +8,7 @@ import styled from "styled-components";
 import moment from "moment";
 import { Divider, Placeholder } from "semantic-ui-react";
 
-import history from "../common/History";
+import history from "../utils/History";
 import { Card, LargeCard } from "../articles/ProfileCard";
 // import Vote from "./Vote";
 import ReadOnlyEditor from "../common/ReadOnlyEditor";

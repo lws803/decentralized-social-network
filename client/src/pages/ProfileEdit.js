@@ -5,7 +5,7 @@ import Gun from "gun/gun";
 import styled from "styled-components";
 import axios from "axios";
 
-import history from "../common/History";
+import history from "../utils/History";
 import ProfileImage from "../profile/ProfileImage";
 import LightCKEditor from "../common/LightCKEditor";
 import { Errors } from "../common/Messages";

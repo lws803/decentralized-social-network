@@ -10,7 +10,7 @@ import { v4 as uuidv4 } from "uuid";
 import { parse } from "node-html-parser";
 import Validator from "jsonschema";
 
-import history from "../common/History";
+import history from "../utils/History";
 import CustomCKEditor from "../common/CustomCKEditor";
 import { NewArticleSchema, TagsSchema } from "../common/Schemas";
 import { Errors } from "../common/Messages";
