@@ -29,13 +29,13 @@ async function uploadFileIPFS(file) {
   return uploadedFile;
 }
 
-function getPeers() {
-  return new Promise((resolve, reject) => {
-    client.get("peers", (err, res) => {
+function getAllKeys() {
+  return new Promise((resolve, reject) =>
+    client.keys("*", (err, res) => {
       if (err) reject(err);
       else resolve(res);
-    });
-  });
+    })
+  );
 }
 
 function getRandom(arr, n) {
@@ -80,20 +80,12 @@ app.post("/image_upload", async (req, res) => {
 
 app.get("/peers", async (req, res) => {
   try {
-    getPeers()
-      .then(peersJSON => {
-        if (peersJSON) {
-          var peers = JSON.parse(peersJSON).items;
-          peers = getRandom(peers, Math.floor(peers.length / 2 + 1));
-          res.send({
-            peers: peers,
-          });
-        }
+    getAllKeys()
+      .then(peers => {
+        peers = getRandom(peers, Math.floor(peers.length / 2));
+        res.send({ peers: peers });
       })
-      .catch(err => {
-        console.log(err);
-        res.status(500).send({ message: err });
-      });
+      .catch(err => res.status(500).send({ message: err }));
   } catch (err) {
     res.status(500).send({ message: err });
   }
