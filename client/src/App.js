@@ -12,6 +12,7 @@ import Main from "./pages/Main";
 import ProfileEdit from "./pages/ProfileEdit";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
+import Settings from "./pages/Settings";
 import { PageContainer } from "./common/CommonStyles";
 import AuthenticationModal from "./authModal/AuthenticationModal";
 
@@ -46,7 +47,9 @@ export default function App() {
                     <Link to="/profile/my_profile">My Profile</Link>
                   </Dropdown.Item>
                   {/* <Dropdown.Item text="Following" onClick={() => {}} /> */}
-                  <Dropdown.Item text="Settings" onClick={() => {}} />
+                  <Dropdown.Item>
+                    <Link to="/profile/settings">Settings</Link>
+                  </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
             }
@@ -86,6 +89,13 @@ export default function App() {
               reload={() => window.location.reload(false)}
             />
             <ProfileEdit />
+          </Route>
+          <Route exact path="/profile/settings">
+            <AuthenticationModal
+              user={user}
+              reload={() => window.location.reload(false)}
+            />
+            <Settings />
           </Route>
           <Route component={NotFound}></Route>
         </Switch>
