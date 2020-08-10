@@ -27,9 +27,9 @@ export const TagsSchema = {
   type: "array",
   minItems: 1,
   maxItems: 10,
+  uniqueItems: true,
   items: {
     type: "string",
-    uniqueItems: true,
     maxLength: 10,
     minLength: 1,
   },

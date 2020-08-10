@@ -155,7 +155,15 @@ class PostArticle extends React.Component {
         <ReactTagContainer>
           <ReactTagInput
             tags={this.state.tags}
-            onChange={newTags => this.setState({ tags: newTags })}
+            onChange={newTags => {
+              function process(tag) {
+                var processedTag = tag.toLowerCase();
+                processedTag = processedTag.replace(/[^A-Z0-9]/ig, "");
+                console.log(processedTag);
+                return processedTag;
+              }
+              this.setState({ tags: newTags.map(process) });
+            }}
             removeOnBackspace
             maxTags={10}
           />
