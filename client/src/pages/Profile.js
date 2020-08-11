@@ -53,7 +53,7 @@ class Profile extends React.Component {
           {this.state.user}
         </div>
         <BioContainer>
-          <Segment style={{height: "100%"}}>{this.state.bioContent}</Segment>
+          <Segment style={{ height: "100%" }}>{this.state.bioContent}</Segment>
         </BioContainer>
         <ToolsContainer>
           <EditButton onClick={() => history.push("/profile/my_profile/edit")}>

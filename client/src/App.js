@@ -33,8 +33,11 @@ export default function App() {
           <NavigationBar
             mainLogoButton={
               <Link to="/">
-                {/* <MainLogo>Main Logo</MainLogo> */}
-                <Image src={PenyetLogo} size="tiny" style={{marginLeft: "4px"}}/>
+                <Image
+                  src={PenyetLogo}
+                  size="tiny"
+                  style={{ marginLeft: "4px" }}
+                />
               </Link>
             }
             articleButton={
@@ -43,7 +46,7 @@ export default function App() {
               </Link>
             }
             profileDropdown={
-              <Dropdown text="Profile" style={{marginRight: "4px"}}>
+              <Dropdown text="Profile" style={{ marginRight: "4px" }}>
                 <Dropdown.Menu>
                   <Dropdown.Item
                     text="My Profile"
