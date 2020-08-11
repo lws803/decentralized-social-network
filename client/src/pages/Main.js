@@ -13,7 +13,7 @@ export default function Main(props) {
       <LogoContainer>
         <Image src={PenyetImage} fluid />
       </LogoContainer>
-      <ReactFitText compressor={6} style={{ width: "100%" }}>
+      <ReactFitText compressor={6} style={{ width: "100%" }} minFontSize={15}>
         <TaglineContainer>Inclusivity and openness</TaglineContainer>
       </ReactFitText>
     </PageContainer>
