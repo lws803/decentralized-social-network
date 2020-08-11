@@ -80,8 +80,8 @@ class ProfileEdit extends React.Component {
         <BioEditor>
           <textarea
             style={{ width: "100%", padding: "5px" }}
-            rows="10"
-            cols="30"
+            rows="3"
+            cols="20"
             onChange={e => {
               console.log(e.target.value);
               this.setState({ bioContent: e.target.value });
