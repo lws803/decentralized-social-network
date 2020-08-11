@@ -7,6 +7,7 @@ import "@pathofdev/react-tag-input/build/index.css";
 import styled from "styled-components";
 import moment from "moment";
 import { Divider, Placeholder } from "semantic-ui-react";
+import ReactFitText from "react-fittext";
 
 import history from "../utils/History";
 import { Card, LargeCard } from "../articles/ProfileCard";
@@ -60,7 +61,15 @@ class Article extends React.Component {
   render() {
     return (
       <PageContainer>
-        <Title>{this.state.title}</Title>
+        <ReactFitText
+          compressor={2.5}
+          style={{ width: "100%" }}
+          maxFontSize={40}
+          minFontSize={25}
+        >
+          <Title>{this.state.title}</Title>
+        </ReactFitText>
+        {/* <Title>{this.state.title}</Title> */}
         <CardContainer>
           <Card
             authorPhoto={this.state.authorPhoto}
@@ -144,11 +153,10 @@ const PlaceholderArticle = props => (
 );
 
 const Title = styled.div`
-  font-size: 40px;
-  height: 40px;
+  font-weight: heavy;
   margin-top: 20px;
-  margin-left: auto;
-  margin-right: auto;
+  height: 40px;
+  text-align: center;
   font-family: Georgia;
 `;
 

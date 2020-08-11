@@ -9,6 +9,7 @@ import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 import { parse } from "node-html-parser";
 import Validator from "jsonschema";
+import ReactFitText from "react-fittext";
 
 import history from "../utils/History";
 import CustomCKEditor from "../common/CustomCKEditor";
@@ -146,11 +147,18 @@ class PostArticle extends React.Component {
   render() {
     return (
       <PageContainer>
-        <TitleInput
-          placeholder="Enter title here..."
-          onChange={event => this.setState({ title: event.target.value })}
-          value={this.state.title}
-        />
+        <ReactFitText
+          compressor={2.5}
+          style={{ width: "100%" }}
+          maxFontSize={40}
+          minFontSize={25}
+        >
+          <TitleInput
+            placeholder="Enter title here..."
+            onChange={event => this.setState({ title: event.target.value })}
+            value={this.state.title}
+          />
+        </ReactFitText>
         <CustomCKEditor
           onChange={(event, editor) => {
             this.setState({ content: editor.getData() });
@@ -189,13 +197,9 @@ class PostArticle extends React.Component {
 }
 
 const TitleInput = styled.input`
-  font-size: 40px;
   font-weight: heavy;
   margin-top: 10px;
   margin-bottom: 10px;
-  width: 70%;
-  margin-left: auto;
-  margin-right: auto;
   border: none;
   text-align: center;
   font-family: Georgia;
