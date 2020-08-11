@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import Validator from "jsonschema";
 import { Button, Header, Modal } from "semantic-ui-react";
 
+import history from "../utils/History";
 import ModalView from "../common/Modal";
 import { AuthSchema } from "../common/Schemas";
 
@@ -55,7 +56,7 @@ class AuthenticationModal extends React.Component {
 
   render() {
     return (
-      <Modal open={!this.state.authenticated}>
+      <Modal open={!this.state.authenticated} onClose={() => history.goBack()}>
         <Modal.Header>Login</Modal.Header>
         <Modal.Content>
           <Modal.Description>
