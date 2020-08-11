@@ -42,6 +42,15 @@ class Profile extends React.Component {
             style={{ borderRadius: "50%", objectFit: "cover" }}
           />
         </ImageContainer>
+        <div
+          style={{
+            marginTop: "20px",
+            fontSize: "large",
+            textAlign: "center",
+          }}
+        >
+          {this.state.user}
+        </div>
         <BioContainer>{this.state.bioContent}</BioContainer>
         <ToolsContainer>
           <EditButton onClick={() => history.push("/profile/my_profile/edit")}>
