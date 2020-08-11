@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { Router, Switch, Route, Link } from "react-router-dom";
 
 import Gun from "gun/gun";
 import { Dropdown, Image } from "semantic-ui-react";
@@ -15,7 +15,7 @@ import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 import { PageContainer } from "./common/CommonStyles";
 import AuthenticationModal from "./authModal/AuthenticationModal";
-import PenyetLogo from "./res/penyet.png";
+import PenyetLogo from "./res/penyet_small.png";
 
 export default function App() {
   var gunSession = new Gun([sessionStorage.getItem("currentPeer")]);
@@ -31,6 +31,7 @@ export default function App() {
       <Router history={history}>
         <PageContainer>
           <NavigationBar
+            user={user}
             mainLogoButton={
               <Link to="/">
                 <Image
@@ -39,31 +40,6 @@ export default function App() {
                   style={{ marginLeft: "4px" }}
                 />
               </Link>
-            }
-            articleButton={
-              <Link to="/article/new">
-                <IconButton>New Story</IconButton>
-              </Link>
-            }
-            profileDropdown={
-              <Dropdown text="Profile" style={{ marginRight: "4px" }}>
-                <Dropdown.Menu>
-                  <Dropdown.Item
-                    text="My Profile"
-                    onClick={() => history.push("/profile/my_profile")}
-                  />
-                  {/* <Dropdown.Item text="Following" onClick={() => {}} /> */}
-                  {user.is && (
-                    <Dropdown.Item
-                      text="Logout"
-                      onClick={() => {
-                        user.leave();
-                        window.location.reload(false);
-                      }}
-                    />
-                  )}
-                </Dropdown.Menu>
-              </Dropdown>
             }
           />
         </PageContainer>
