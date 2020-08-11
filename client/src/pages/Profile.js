@@ -5,7 +5,6 @@ import Gun from "gun/gun";
 import styled from "styled-components";
 
 import history from "../utils/History";
-import Bio from "../profile/Bio";
 import LazyImage from "../common/LazyImage";
 import { PageContainer, EditButton } from "../common/CommonStyles";
 
