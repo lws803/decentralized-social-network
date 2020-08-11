@@ -15,7 +15,11 @@ import history from "../utils/History";
 import CustomCKEditor from "../common/CustomCKEditor";
 import { NewArticleSchema, TagsSchema } from "../common/Schemas";
 import { Errors } from "../common/Messages";
-import { PageContainer } from "../common/CommonStyles";
+import {
+  PageContainer,
+  EditButton,
+  DeleteButton,
+} from "../common/CommonStyles";
 
 class PostArticle extends React.Component {
   constructor(props) {
@@ -171,21 +175,13 @@ class PostArticle extends React.Component {
           />
         </ReactTagContainer>
         <ToolButtonsContainer>
-          <Button
-            size="tiny"
-            color="blue"
-            onClick={() => this.publish().then()}
-          >
+          <EditButton onClick={() => this.publish().then()}>
             {this.state.uuid ? "Save" : "Publish New"}
-          </Button>
+          </EditButton>
           {this.state.uuid && (
-            <Button
-              size="tiny"
-              negative
-              onClick={() => this.deleteArticle().then()}
-            >
+            <DeleteButton onClick={() => this.deleteArticle().then()}>
               Delete
-            </Button>
+            </DeleteButton>
           )}{" "}
         </ToolButtonsContainer>
       </PageContainer>

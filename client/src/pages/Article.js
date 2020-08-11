@@ -12,7 +12,7 @@ import history from "../utils/History";
 import { Card, LargeCard } from "../articles/ProfileCard";
 // import Vote from "./Vote";
 import ReadOnlyEditor from "../common/ReadOnlyEditor";
-import { PageContainer } from "../common/CommonStyles";
+import { PageContainer, EditButton } from "../common/CommonStyles";
 
 class Article extends React.Component {
   constructor(props) {
@@ -86,15 +86,17 @@ class Article extends React.Component {
             <div style={{ marginTop: "10px" }}>
               <ReactTagInput tags={this.state.tags} readOnly />
             </div>
-            {this.state.editAllowed && (
-              <EditButton
-                onClick={() =>
-                  history.push(this.props.location.pathname + "/edit")
-                }
-              >
-                Edit
-              </EditButton>
-            )}
+            <ToolButtonsContainer>
+              {this.state.editAllowed && (
+                <EditButton
+                  onClick={() =>
+                    history.push(this.props.location.pathname + "/edit")
+                  }
+                >
+                  Edit
+                </EditButton>
+              )}
+            </ToolButtonsContainer>
           </div>
         )}
         {/* <div style={{ marginTop: "26px" }}>
@@ -162,10 +164,8 @@ const LargeCardContainer = styled.div`
   margin-right: auto;
 `;
 
-const EditButton = styled.button`
+const ToolButtonsContainer = styled.div`
   margin-top: 10px;
-  margin-right: 10px;
-  align-self: flex-start;
 `;
 
 export default withRouter(Article);
