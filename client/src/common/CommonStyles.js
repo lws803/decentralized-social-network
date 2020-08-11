@@ -9,6 +9,7 @@ export const PageContainer = styled.div`
   width: 70%;
   display: flex;
   flex-direction: column;
+  margin-bottom: 20px;
 `;
 
 export const Input = styled.input`
