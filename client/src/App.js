@@ -1,5 +1,5 @@
 import React from "react";
-import { Router, Switch, Route, Link } from "react-router-dom";
+import { Router, Switch, Route } from "react-router-dom";
 
 import Gun from "gun/gun";
 import "semantic-ui-css/semantic.min.css";
