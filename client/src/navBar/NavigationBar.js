@@ -1,16 +1,22 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import { Image } from "semantic-ui-react";
+import { Link } from "react-router-dom";
 import { Button, Dropdown } from "semantic-ui-react";
 import styled from "styled-components";
 
+import PenyetLogo from "../res/penyet_small.png";
 import history from "../utils/History";
 
 class NavigationBar extends React.Component {
   render() {
     return (
       <NavContainer>
-        {this.props.mainLogoButton}
+        <Link to="/">
+          <Image src={PenyetLogo} size="tiny" style={{ marginLeft: "4px" }} />
+        </Link>
+
         <ButtonsContainer>
           {/* <IconButton onClick={this.props.onSearchClick}>Search</IconButton>
           <IconButton onClick={this.props.onBookmarksClick}>

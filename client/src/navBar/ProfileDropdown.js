@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import { Dropdown } from "semantic-ui-react";
-import "semantic-ui-css/semantic.min.css";
 
 class ProfileDropdown extends React.Component {
   render() {
