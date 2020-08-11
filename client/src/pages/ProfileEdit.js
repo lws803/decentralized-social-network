@@ -16,7 +16,7 @@ class ProfileEdit extends React.Component {
     this.user = this.gun.user().recall({ sessionStorage: true });
     this.state = {
       user: undefined,
-      bioContent: undefined,
+      bioContent: "",
       profilePhoto: undefined,
     };
   }
@@ -80,15 +80,18 @@ class ProfileEdit extends React.Component {
         <BioEditor>
           <textarea
             style={{ width: "100%", padding: "5px" }}
-            rows="3"
-            cols="20"
+            rows="10"
+            cols="30"
             onChange={e => {
-              console.log(e.target.value);
-              this.setState({ bioContent: e.target.value });
+              if (e.target.value.length < 200)
+                this.setState({ bioContent: e.target.value });
             }}
             value={this.state.bioContent}
           />
         </BioEditor>
+        <CharacterCount>
+          Characters left: {200 - this.state.bioContent.length}
+        </CharacterCount>
         <ButtonToolsContainer>
           <EditButton
             onClick={() => {
@@ -124,6 +127,12 @@ const ButtonToolsContainer = styled.div`
   margin-left: auto;
   margin-right: auto;
   margin-top: 10px;
+`;
+
+const CharacterCount = styled.div`
+  margin-top: 10px;
+  margin-right: auto;
+  margin-left: auto;
 `;
 
 export default withRouter(ProfileEdit);
