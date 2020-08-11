@@ -28,11 +28,12 @@ export default function NotFound() {
 const NotFoundTitle = styled.div`
   margin-top: 40px;
   text-align: center;
+  font-family: Georgia;
 `;
 
 const ImageContainer = styled.div`
   width: 60%;
-  margin-top: 20px;
+  margin-top: 10px;
   margin-left: auto;
   margin-right: auto;
 `;
