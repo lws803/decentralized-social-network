@@ -7,8 +7,6 @@ import axios from "axios";
 
 import history from "../utils/History";
 import ProfileImage from "../profile/ProfileImage";
-import LightCKEditor from "../common/LightCKEditor";
-import { Errors } from "../common/Messages";
 import { PageContainer, EditButton } from "../common/CommonStyles";
 
 class ProfileEdit extends React.Component {
@@ -19,7 +17,6 @@ class ProfileEdit extends React.Component {
     this.state = {
       user: undefined,
       bioContent: undefined,
-      bioCharacters: undefined,
       profilePhoto: undefined,
     };
   }
@@ -36,8 +33,6 @@ class ProfileEdit extends React.Component {
   }
 
   async updateProfile() {
-    if (this.state.bioCharacters > 100)
-      throw new Error(Errors.bio_character_limit);
     await this.user.get("photo").put(this.state.profilePhoto);
     await this.user.get("bio").put(this.state.bioContent);
   }
@@ -83,19 +78,15 @@ class ProfileEdit extends React.Component {
           {this.state.user}
         </div>
         <BioEditor>
-          <LightCKEditor
-            onInit={editor => {
-              const wordCountPlugin = editor.plugins.get("WordCount");
-              wordCountPlugin.on("update", (evt, data) => {
-                this.setState({
-                  bioCharacters: data.characters,
-                });
-              });
+          <textarea
+            style={{ width: "100%", padding: "5px" }}
+            rows="10"
+            cols="30"
+            onChange={e => {
+              console.log(e.target.value);
+              this.setState({ bioContent: e.target.value });
             }}
-            onChange={(event, editor) => {
-              this.setState({ bioContent: editor.getData() });
-            }}
-            data={this.state.bioContent}
+            value={this.state.bioContent}
           />
         </BioEditor>
         <ButtonToolsContainer>

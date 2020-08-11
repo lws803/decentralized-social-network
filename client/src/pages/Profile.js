@@ -43,9 +43,7 @@ class Profile extends React.Component {
             style={{ borderRadius: "50%", objectFit: "cover" }}
           />
         </ImageContainer>
-        <BioContainer>
-          <Bio content={this.state.bioContent} />
-        </BioContainer>
+        <BioContainer>{this.state.bioContent}</BioContainer>
         <ToolsContainer>
           <EditButton onClick={() => history.push("/profile/my_profile/edit")}>
             Edit
@@ -65,11 +63,12 @@ const ImageContainer = styled.div`
 const BioContainer = styled.div`
   margin-top: 20px;
   width: 60%;
-  height: 167px;
+  height: 200px;
   margin-left: auto;
   margin-right: auto;
   border-style: solid;
   overflow: hidden;
+  padding: 5px;
 `;
 
 const ToolsContainer = styled.div`
