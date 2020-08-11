@@ -2,11 +2,11 @@ import React from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 import Gun from "gun/gun";
-import { Dropdown } from "semantic-ui-react";
+import { Dropdown, Image } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 
 import history from "./utils/History";
-import NavigationBar, { IconButton, MainLogo } from "./navBar/NavigationBar";
+import NavigationBar, { IconButton } from "./navBar/NavigationBar";
 import PostArticle from "./pages/PostArticle";
 import Article from "./pages/Article";
 import Main from "./pages/Main";
@@ -15,6 +15,7 @@ import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 import { PageContainer } from "./common/CommonStyles";
 import AuthenticationModal from "./authModal/AuthenticationModal";
+import PenyetLogo from "./res/penyet.png";
 
 export default function App() {
   var gunSession = new Gun([sessionStorage.getItem("currentPeer")]);
@@ -32,7 +33,8 @@ export default function App() {
           <NavigationBar
             mainLogoButton={
               <Link to="/">
-                <MainLogo>Main Logo</MainLogo>
+                {/* <MainLogo>Main Logo</MainLogo> */}
+                <Image src={PenyetLogo} size="tiny" />
               </Link>
             }
             articleButton={
