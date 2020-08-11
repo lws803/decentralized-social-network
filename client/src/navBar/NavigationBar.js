@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import { Button } from "semantic-ui-react";
 import styled from "styled-components";
 
 class NavigationBar extends React.Component {
@@ -39,13 +40,12 @@ const NavContainer = styled.div`
 const ButtonsContainer = styled.div`
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
+  align-items: center;
 `;
 
-const IconButton = styled.button`
-  margin-left: 4px;
-  margin-right: 4px;
-`;
+const IconButton = props => (
+  <Button size="tiny" styled={{ marginRight: "4px" }} {...props}></Button>
+);
 
 const MainLogo = styled.button`
   margin-left: 4px;
