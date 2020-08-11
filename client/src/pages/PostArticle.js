@@ -1,5 +1,6 @@
 import React from "react";
 
+import { Button } from "semantic-ui-react";
 import { withRouter } from "react-router-dom";
 import Gun from "gun/gun";
 import SEA from "gun/sea";
@@ -170,25 +171,27 @@ class PostArticle extends React.Component {
           />
         </ReactTagContainer>
         <ToolButtonsContainer>
-          <ToolButton onClick={() => this.publish().then()}>
+          <Button
+            size="tiny"
+            color="blue"
+            onClick={() => this.publish().then()}
+          >
             {this.state.uuid ? "Save" : "Publish New"}
-          </ToolButton>
+          </Button>
           {this.state.uuid && (
-            <ToolButton onClick={() => this.deleteArticle().then()}>
+            <Button
+              size="tiny"
+              negative
+              onClick={() => this.deleteArticle().then()}
+            >
               Delete
-            </ToolButton>
-          )}
+            </Button>
+          )}{" "}
         </ToolButtonsContainer>
       </PageContainer>
     );
   }
 }
-
-const ToolButton = styled.button`
-  margin-top: 10px;
-  margin-bottom: 50px;
-  margin-right: 10px;
-`;
 
 const TitleInput = styled.input`
   font-size: 40px;
@@ -209,7 +212,7 @@ const ReactTagContainer = styled.div`
 `;
 
 const ToolButtonsContainer = styled.div`
-  display: flex;
+  margin-top: 10px;
 `;
 
 export default withRouter(PostArticle);
