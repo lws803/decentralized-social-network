@@ -90,11 +90,9 @@ LargeCard.propTypes = {
 };
 
 const LargeCardContainer = styled.div`
-  width: 694px;
-  height: 167px;
   display: flex;
   align-items: center;
-  overflow: hidden;
+  justify-content: space-between;
 `;
 
 const ProfileDetails = styled.div`
