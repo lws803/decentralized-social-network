@@ -9,7 +9,7 @@ import history from "../utils/History";
 import ProfileImage from "../profile/ProfileImage";
 import LightCKEditor from "../common/LightCKEditor";
 import { Errors } from "../common/Messages";
-import { PageContainer } from "../common/CommonStyles";
+import { PageContainer, EditButton } from "../common/CommonStyles";
 
 class ProfileEdit extends React.Component {
   constructor(props) {
@@ -98,15 +98,17 @@ class ProfileEdit extends React.Component {
             data={this.state.bioContent}
           />
         </BioEditor>
-        <SaveButton
-          onClick={() => {
-            this.updateProfile()
-              .then(ack => history.push("/profile/my_profile"))
-              .catch(err => alert(err));
-          }}
-        >
-          Save
-        </SaveButton>
+        <ButtonToolsContainer>
+          <EditButton
+            onClick={() => {
+              this.updateProfile()
+                .then(ack => history.push("/profile/my_profile"))
+                .catch(err => alert(err));
+            }}
+          >
+            Save
+          </EditButton>
+        </ButtonToolsContainer>
       </PageContainer>
     );
   }
@@ -122,9 +124,12 @@ const ProfileImageContainer = styled.div`
 
 const BioEditor = styled.div`
   margin-top: 20px;
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
 `;
 
-const SaveButton = styled.button`
+const ButtonToolsContainer = styled.div`
   margin-left: auto;
   margin-right: auto;
   margin-top: 10px;

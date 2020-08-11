@@ -7,7 +7,7 @@ import styled from "styled-components";
 import history from "../utils/History";
 import Bio from "../profile/Bio";
 import LazyImage from "../common/LazyImage";
-import { PageContainer } from "../common/CommonStyles";
+import { PageContainer, EditButton } from "../common/CommonStyles";
 
 class Profile extends React.Component {
   constructor(props) {
@@ -46,9 +46,11 @@ class Profile extends React.Component {
         <BioContainer>
           <Bio content={this.state.bioContent} />
         </BioContainer>
-        <EditButton onClick={() => history.push("/profile/my_profile/edit")}>
-          Edit
-        </EditButton>
+        <ToolsContainer>
+          <EditButton onClick={() => history.push("/profile/my_profile/edit")}>
+            Edit
+          </EditButton>
+        </ToolsContainer>
       </PageContainer>
     );
   }
@@ -62,7 +64,7 @@ const ImageContainer = styled.div`
 
 const BioContainer = styled.div`
   margin-top: 20px;
-  width: 694px;
+  width: 60%;
   height: 167px;
   margin-left: auto;
   margin-right: auto;
@@ -70,10 +72,10 @@ const BioContainer = styled.div`
   overflow: hidden;
 `;
 
-const EditButton = styled.button`
+const ToolsContainer = styled.div`
+  margin-top: 10px;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 10px;
 `;
 
 export default withRouter(Profile);
