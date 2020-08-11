@@ -6,8 +6,8 @@ import styled from "styled-components";
 import axios from "axios";
 
 import history from "../utils/History";
-import ProfileImage from "../profile/ProfileImage";
 import { PageContainer, EditButton } from "../common/CommonStyles";
+import LazyImage from "../common/LazyImage";
 
 class ProfileEdit extends React.Component {
   constructor(props) {
@@ -53,19 +53,40 @@ class ProfileEdit extends React.Component {
     return res.data.url;
   }
 
+  onChangeFile(event) {
+    event.stopPropagation();
+    event.preventDefault();
+    var file = event.target.files[0];
+    this.uploadPhoto(file)
+      .then(url => {
+        this.setState({ profilePhoto: url });
+      })
+      .catch(err => alert(err));
+  }
+
   render() {
     return (
       <PageContainer>
         <ProfileImageContainer>
-          <ProfileImage
-            image={this.state.profilePhoto}
-            onImageSelect={props => {
-              this.uploadPhoto(props.imageFile)
-                .then(url => {
-                  this.setState({ profilePhoto: url });
-                })
-                .catch(err => alert(err));
+          <input
+            id="myInput"
+            type="file"
+            ref={ref => (this.upload = ref)}
+            style={{ display: "none" }}
+            onChange={this.onChangeFile.bind(this)}
+          />
+          <LazyImage
+            src={this.state.profilePhoto}
+            width={100}
+            height={100}
+            style={{
+              borderRadius: "50%",
+              objectFit: "cover",
+              borderStyle: "dashed",
+              borderWidth: 2,
+              borderColor: "grey",
             }}
+            onClick={() => this.upload.click()}
           />
         </ProfileImageContainer>
         <div

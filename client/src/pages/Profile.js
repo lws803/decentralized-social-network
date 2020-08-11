@@ -3,6 +3,7 @@ import React from "react";
 import { withRouter } from "react-router-dom";
 import Gun from "gun/gun";
 import styled from "styled-components";
+import { Segment } from "semantic-ui-react";
 
 import history from "../utils/History";
 import LazyImage from "../common/LazyImage";
@@ -51,7 +52,9 @@ class Profile extends React.Component {
         >
           {this.state.user}
         </div>
-        <BioContainer>{this.state.bioContent}</BioContainer>
+        <BioContainer>
+          <Segment style={{height: "100%"}}>{this.state.bioContent}</Segment>
+        </BioContainer>
         <ToolsContainer>
           <EditButton onClick={() => history.push("/profile/my_profile/edit")}>
             Edit
@@ -74,9 +77,7 @@ const BioContainer = styled.div`
   height: 200px;
   margin-left: auto;
   margin-right: auto;
-  border-style: solid;
   overflow: hidden;
-  padding: 5px;
 `;
 
 const ToolsContainer = styled.div`
