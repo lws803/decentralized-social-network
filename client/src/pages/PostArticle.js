@@ -1,6 +1,5 @@
 import React from "react";
 
-import { Button } from "semantic-ui-react";
 import { withRouter } from "react-router-dom";
 import Gun from "gun/gun";
 import SEA from "gun/sea";
