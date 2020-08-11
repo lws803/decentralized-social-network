@@ -1,3 +1,6 @@
+import React from "react";
+
+import { Button } from "semantic-ui-react";
 import styled from "styled-components";
 
 export const PageContainer = styled.div`
@@ -10,12 +13,23 @@ export const PageContainer = styled.div`
 
 export const Input = styled.input`
   font-family: Georgia;
-`
-
-export const Button = styled.button`
-`
+`;
 
 export const ArticleBox = styled.div`
   font-size: 15px;
   font-family: Georgia;
 `;
+
+export const EditButton = props => {
+  return (
+    <Button {...props} size="tiny" color="blue">
+      {props.children}
+    </Button>
+  );
+};
+
+export const DeleteButton = props => (
+  <Button {...props} size="tiny" negative>
+    {props.children}
+  </Button>
+);

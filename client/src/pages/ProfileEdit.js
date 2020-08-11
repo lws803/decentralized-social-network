@@ -6,10 +6,8 @@ import styled from "styled-components";
 import axios from "axios";
 
 import history from "../utils/History";
-import ProfileImage from "../profile/ProfileImage";
-import LightCKEditor from "../common/LightCKEditor";
-import { Errors } from "../common/Messages";
-import { PageContainer } from "../common/CommonStyles";
+import { PageContainer, EditButton } from "../common/CommonStyles";
+import LazyImage from "../common/LazyImage";
 
 class ProfileEdit extends React.Component {
   constructor(props) {
@@ -18,8 +16,7 @@ class ProfileEdit extends React.Component {
     this.user = this.gun.user().recall({ sessionStorage: true });
     this.state = {
       user: undefined,
-      bioContent: undefined,
-      bioCharacters: undefined,
+      bioContent: "",
       profilePhoto: undefined,
     };
   }
@@ -36,8 +33,6 @@ class ProfileEdit extends React.Component {
   }
 
   async updateProfile() {
-    if (this.state.bioCharacters > 100)
-      throw new Error(Errors.bio_character_limit);
     await this.user.get("photo").put(this.state.profilePhoto);
     await this.user.get("bio").put(this.state.bioContent);
   }
@@ -58,19 +53,40 @@ class ProfileEdit extends React.Component {
     return res.data.url;
   }
 
+  onChangeFile(event) {
+    event.stopPropagation();
+    event.preventDefault();
+    var file = event.target.files[0];
+    this.uploadPhoto(file)
+      .then(url => {
+        this.setState({ profilePhoto: url });
+      })
+      .catch(err => alert(err));
+  }
+
   render() {
     return (
       <PageContainer>
         <ProfileImageContainer>
-          <ProfileImage
-            image={this.state.profilePhoto}
-            onImageSelect={props => {
-              this.uploadPhoto(props.imageFile)
-                .then(url => {
-                  this.setState({ profilePhoto: url });
-                })
-                .catch(err => alert(err));
+          <input
+            id="myInput"
+            type="file"
+            ref={ref => (this.upload = ref)}
+            style={{ display: "none" }}
+            onChange={this.onChangeFile.bind(this)}
+          />
+          <LazyImage
+            src={this.state.profilePhoto}
+            width={100}
+            height={100}
+            style={{
+              borderRadius: "50%",
+              objectFit: "cover",
+              borderStyle: "dashed",
+              borderWidth: 2,
+              borderColor: "grey",
             }}
+            onClick={() => this.upload.click()}
           />
         </ProfileImageContainer>
         <div
@@ -83,30 +99,31 @@ class ProfileEdit extends React.Component {
           {this.state.user}
         </div>
         <BioEditor>
-          <LightCKEditor
-            onInit={editor => {
-              const wordCountPlugin = editor.plugins.get("WordCount");
-              wordCountPlugin.on("update", (evt, data) => {
-                this.setState({
-                  bioCharacters: data.characters,
-                });
-              });
+          <textarea
+            style={{ width: "100%", padding: "5px" }}
+            rows="10"
+            cols="30"
+            onChange={e => {
+              if (e.target.value.length < 200)
+                this.setState({ bioContent: e.target.value });
             }}
-            onChange={(event, editor) => {
-              this.setState({ bioContent: editor.getData() });
-            }}
-            data={this.state.bioContent}
+            value={this.state.bioContent}
           />
         </BioEditor>
-        <SaveButton
-          onClick={() => {
-            this.updateProfile()
-              .then(ack => history.push("/profile/my_profile"))
-              .catch(err => alert(err));
-          }}
-        >
-          Save
-        </SaveButton>
+        <CharacterCount>
+          Characters left: {200 - this.state.bioContent.length}
+        </CharacterCount>
+        <ButtonToolsContainer>
+          <EditButton
+            onClick={() => {
+              this.updateProfile()
+                .then(ack => history.push("/profile/my_profile"))
+                .catch(err => alert(err));
+            }}
+          >
+            Save
+          </EditButton>
+        </ButtonToolsContainer>
       </PageContainer>
     );
   }
@@ -122,12 +139,21 @@ const ProfileImageContainer = styled.div`
 
 const BioEditor = styled.div`
   margin-top: 20px;
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
 `;
 
-const SaveButton = styled.button`
+const ButtonToolsContainer = styled.div`
   margin-left: auto;
   margin-right: auto;
   margin-top: 10px;
+`;
+
+const CharacterCount = styled.div`
+  margin-top: 10px;
+  margin-right: auto;
+  margin-left: auto;
 `;
 
 export default withRouter(ProfileEdit);

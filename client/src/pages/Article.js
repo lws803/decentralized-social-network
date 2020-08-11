@@ -7,12 +7,13 @@ import "@pathofdev/react-tag-input/build/index.css";
 import styled from "styled-components";
 import moment from "moment";
 import { Divider, Placeholder } from "semantic-ui-react";
+import ReactFitText from "react-fittext";
 
 import history from "../utils/History";
 import { Card, LargeCard } from "../articles/ProfileCard";
 // import Vote from "./Vote";
 import ReadOnlyEditor from "../common/ReadOnlyEditor";
-import { PageContainer } from "../common/CommonStyles";
+import { PageContainer, EditButton } from "../common/CommonStyles";
 
 class Article extends React.Component {
   constructor(props) {
@@ -60,7 +61,15 @@ class Article extends React.Component {
   render() {
     return (
       <PageContainer>
-        <Title>{this.state.title}</Title>
+        <ReactFitText
+          compressor={2.5}
+          style={{ width: "100%" }}
+          maxFontSize={40}
+          minFontSize={25}
+        >
+          <Title>{this.state.title}</Title>
+        </ReactFitText>
+        {/* <Title>{this.state.title}</Title> */}
         <CardContainer>
           <Card
             authorPhoto={this.state.authorPhoto}
@@ -86,15 +95,17 @@ class Article extends React.Component {
             <div style={{ marginTop: "10px" }}>
               <ReactTagInput tags={this.state.tags} readOnly />
             </div>
-            {this.state.editAllowed && (
-              <EditButton
-                onClick={() =>
-                  history.push(this.props.location.pathname + "/edit")
-                }
-              >
-                Edit
-              </EditButton>
-            )}
+            <ToolButtonsContainer>
+              {this.state.editAllowed && (
+                <EditButton
+                  onClick={() =>
+                    history.push(this.props.location.pathname + "/edit")
+                  }
+                >
+                  Edit
+                </EditButton>
+              )}
+            </ToolButtonsContainer>
           </div>
         )}
         {/* <div style={{ marginTop: "26px" }}>
@@ -142,11 +153,10 @@ const PlaceholderArticle = props => (
 );
 
 const Title = styled.div`
-  font-size: 40px;
-  height: 40px;
+  font-weight: heavy;
   margin-top: 20px;
-  margin-left: auto;
-  margin-right: auto;
+  height: 40px;
+  text-align: center;
   font-family: Georgia;
 `;
 
@@ -162,10 +172,8 @@ const LargeCardContainer = styled.div`
   margin-right: auto;
 `;
 
-const EditButton = styled.button`
+const ToolButtonsContainer = styled.div`
   margin-top: 10px;
-  margin-right: 10px;
-  align-self: flex-start;
 `;
 
 export default withRouter(Article);

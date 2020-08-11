@@ -3,11 +3,11 @@ import React from "react";
 import { withRouter } from "react-router-dom";
 import Gun from "gun/gun";
 import styled from "styled-components";
+import { Segment } from "semantic-ui-react";
 
 import history from "../utils/History";
-import Bio from "../profile/Bio";
 import LazyImage from "../common/LazyImage";
-import { PageContainer } from "../common/CommonStyles";
+import { PageContainer, EditButton } from "../common/CommonStyles";
 
 class Profile extends React.Component {
   constructor(props) {
@@ -43,12 +43,23 @@ class Profile extends React.Component {
             style={{ borderRadius: "50%", objectFit: "cover" }}
           />
         </ImageContainer>
+        <div
+          style={{
+            marginTop: "20px",
+            fontSize: "large",
+            textAlign: "center",
+          }}
+        >
+          {this.state.user}
+        </div>
         <BioContainer>
-          <Bio content={this.state.bioContent} />
+          <Segment style={{ height: "100%" }}>{this.state.bioContent}</Segment>
         </BioContainer>
-        <EditButton onClick={() => history.push("/profile/my_profile/edit")}>
-          Edit
-        </EditButton>
+        <ToolsContainer>
+          <EditButton onClick={() => history.push("/profile/my_profile/edit")}>
+            Edit
+          </EditButton>
+        </ToolsContainer>
       </PageContainer>
     );
   }
@@ -62,18 +73,17 @@ const ImageContainer = styled.div`
 
 const BioContainer = styled.div`
   margin-top: 20px;
-  width: 694px;
-  height: 167px;
+  width: 60%;
+  height: 200px;
   margin-left: auto;
   margin-right: auto;
-  border-style: solid;
   overflow: hidden;
 `;
 
-const EditButton = styled.button`
+const ToolsContainer = styled.div`
+  margin-top: 10px;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 10px;
 `;
 
 export default withRouter(Profile);

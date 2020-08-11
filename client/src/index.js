@@ -20,7 +20,7 @@ async function InitiateGunPeers() {
   var storedPeers = ["127.0.0.1"]; // TODO: Change this to a default
   if (localStorage.getItem["peers"])
     storedPeers.concat(localStorage.getItem["peers"].peers);
-  var storedPeers = await extractValid(storedPeers);
+  storedPeers = await extractValid(storedPeers);
   var newPeers = [...storedPeers];
   // If less than 10 peers in storage we will refresh and rediscover
   if (storedPeers.length < 10)
