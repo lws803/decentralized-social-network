@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 import InfiniteScroll from "react-infinite-scroll-component";
 import styled from "styled-components";
+import { GridLayout } from "@egjs/react-infinitegrid";
 
 import Pod from "../articles/Pod";
 import SanFran from "../res/sanfrancisco.jpg";
@@ -65,11 +66,74 @@ export const PodListView = () => {
             "
             author="lws803"
             time={`${index} Aug, 2020`}
-            upVoteCount={index*1000}
+            upVoteCount={index * 1000}
             downVoteCount={index}
           />
         </PodContainer>
       ))}
     </InfiniteScroll>
+  );
+};
+
+export const StaggeredGrid = () => {
+  const Pod = props => (
+    <div>
+      <img
+        src={props.coverPhoto}
+        style={{ height: "100px", width: "200px", objectFit: "cover" }}
+      />
+      <div>{props.title}</div>
+    </div>
+  );
+
+  const loadItems = (groupKey, start) => {
+    const items = [];
+
+    for (let i = 0; i < 20; ++i) {
+      items.push(
+        <Pod
+          groupKey={groupKey}
+          key={start + i}
+          coverPhoto={SanFran}
+          title="Hello World"
+        />
+      );
+    }
+    return items;
+  };
+
+  const [ourList, setList] = useState(loadItems(0, 0));
+  const onAppend = ({ groupKey, startLoading }) => {
+    const list = ourList;
+    const start = list.length;
+    const items = loadItems(groupKey + 1, start);
+
+    startLoading();
+    setList(list.concat(items));
+  };
+  const onLayoutComplete = ({ isLayout, endLoading }) => {
+    !isLayout && endLoading();
+  };
+  return (
+    <GridLayout
+      useFirstRender={false}
+      onAppend={onAppend}
+      onLayoutComplete={onLayoutComplete}
+      loading={<div className="loading">Loading... append</div>}
+      options={{
+        threshold: 100,
+        isOverflowScroll: false,
+        isEqualSize: false,
+        isConstantSize: false,
+        useFit: false,
+        useRecycle: false,
+        horizontal: false,
+      }}
+      layoutOptions={{
+        align: "justify",
+      }}
+    >
+      {ourList}
+    </GridLayout>
   );
 };
