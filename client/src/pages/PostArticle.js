@@ -72,10 +72,9 @@ class PostArticle extends React.Component {
         if (ack.err) errors.push(ack.err);
       });
     let tree = new DateTree(this.user.get("date_tree"), "second");
-    await tree.get(article.createdAt).put(article.uuid);
-    // await this.user.get("post_uuids").set(article.uuid, ack => {
-    //   if (ack.err) errors.push(ack.err);
-    // });
+    await tree.get(article.createdAt).put(article.uuid, ack => {
+      if (!ack.err) errors.push(ack.err);
+    });
     const ref = post["_"]["#"];
     var hash = await SEA.work(ref, null, null, { name: "SHA-256" });
     await this.gun
