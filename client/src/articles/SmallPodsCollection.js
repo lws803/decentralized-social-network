@@ -16,17 +16,13 @@ class SmallPodsCollection extends React.Component {
   }
 
   componentDidMount() {
-    this.getContent(this.props.pubKey, this.props.path);
+    this.getContent(this.props.pubKey, this.props.path).then();
     // TODO: We need a better way to index
   }
 
-  getContent(user, path) {
-    this.gunSession
-      .get(user)
-      .get(path)
-      // .get({ ".": { "*": path }, "%": this.state.byteLimit })
-      .map()
-      .once(console.log); // TODO: Verify if this gets everything
+  async getContent(user, path) {
+    let posts = await this.gunSession.get(user).get("date_post").once();
+    console.log(posts);
   }
 
   loadItems = (groupKey, start) => {

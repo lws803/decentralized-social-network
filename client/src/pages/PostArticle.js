@@ -70,6 +70,12 @@ class PostArticle extends React.Component {
       .put(article, ack => {
         if (ack.err) errors.push(ack.err);
       });
+    await this.user
+      .get("date_post")
+      .get(`${article.createdAt}:${article.uuid}`)
+      .put(article.uuid, ack => {
+        if (ack.err) errors.push(ack.err);
+      });
     const ref = post["_"]["#"];
     var hash = await SEA.work(ref, null, null, { name: "SHA-256" });
     await this.gun
