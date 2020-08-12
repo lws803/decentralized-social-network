@@ -10,7 +10,7 @@ export default function SmallPod(props) {
         width: `${props.size.width}px`,
       }}
     >
-      <CoverPhoto src={props.coverPhoto} />
+      {props.coverPhoto && <CoverPhoto src={props.coverPhoto} />}
       <Title>{props.title}</Title>
     </PodContainer>
   );

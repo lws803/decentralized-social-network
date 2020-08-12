@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import styled from "styled-components";
 import { GridLayout } from "@egjs/react-infinitegrid";
-import ReactFitText from "react-fittext";
 import { action } from "@storybook/addon-actions";
 
 import Pod from "../articles/Pod";
