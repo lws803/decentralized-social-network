@@ -1,12 +1,11 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { Router, Switch, Route } from "react-router-dom";
 
 import Gun from "gun/gun";
-import { Dropdown, Image } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 
 import history from "./utils/History";
-import NavigationBar, { IconButton } from "./navBar/NavigationBar";
+import NavigationBar from "./navBar/NavigationBar";
 import PostArticle from "./pages/PostArticle";
 import Article from "./pages/Article";
 import Main from "./pages/Main";
@@ -15,7 +14,6 @@ import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 import { PageContainer } from "./common/CommonStyles";
 import AuthenticationModal from "./authModal/AuthenticationModal";
-import PenyetLogo from "./res/penyet.png";
 
 export default function App() {
   var gunSession = new Gun([sessionStorage.getItem("currentPeer")]);
@@ -30,42 +28,7 @@ export default function App() {
     <div>
       <Router history={history}>
         <PageContainer>
-          <NavigationBar
-            mainLogoButton={
-              <Link to="/">
-                <Image
-                  src={PenyetLogo}
-                  size="tiny"
-                  style={{ marginLeft: "4px" }}
-                />
-              </Link>
-            }
-            articleButton={
-              <Link to="/article/new">
-                <IconButton>New Story</IconButton>
-              </Link>
-            }
-            profileDropdown={
-              <Dropdown text="Profile" style={{ marginRight: "4px" }}>
-                <Dropdown.Menu>
-                  <Dropdown.Item
-                    text="My Profile"
-                    onClick={() => history.push("/profile/my_profile")}
-                  />
-                  {/* <Dropdown.Item text="Following" onClick={() => {}} /> */}
-                  {user.is && (
-                    <Dropdown.Item
-                      text="Logout"
-                      onClick={() => {
-                        user.leave();
-                        window.location.reload(false);
-                      }}
-                    />
-                  )}
-                </Dropdown.Menu>
-              </Dropdown>
-            }
-          />
+          <NavigationBar user={user} />
         </PageContainer>
         <Switch>
           <Route exact path="/" component={Main} />

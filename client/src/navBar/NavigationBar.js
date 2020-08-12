@@ -1,21 +1,48 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { Button } from "semantic-ui-react";
+import { Image } from "semantic-ui-react";
+import { Link } from "react-router-dom";
+import { Button, Dropdown } from "semantic-ui-react";
 import styled from "styled-components";
+
+import PenyetLogo from "../res/penyet_small.png";
+import history from "../utils/History";
 
 class NavigationBar extends React.Component {
   render() {
     return (
       <NavContainer>
-        {this.props.mainLogoButton}
+        <Link to="/">
+          <Image src={PenyetLogo} size="tiny" style={{ marginLeft: "4px" }} />
+        </Link>
+
         <ButtonsContainer>
           {/* <IconButton onClick={this.props.onSearchClick}>Search</IconButton>
           <IconButton onClick={this.props.onBookmarksClick}>
             Bookmarks
           </IconButton> */}
-          {this.props.profileDropdown}
-          {this.props.articleButton}
+          <Dropdown text="Profile" style={{ marginRight: "4px" }}>
+            <Dropdown.Menu>
+              <Dropdown.Item
+                text="My Profile"
+                onClick={() => history.push("/profile/my_profile")}
+              />
+              {/* <Dropdown.Item text="Following" onClick={() => {}} /> */}
+              {this.props.user.is && (
+                <Dropdown.Item
+                  text="Logout"
+                  onClick={() => {
+                    this.props.user.leave();
+                    window.location.reload(false);
+                  }}
+                />
+              )}
+            </Dropdown.Menu>
+          </Dropdown>
+          <IconButton onClick={() => history.push("/article/new")}>
+            New Story
+          </IconButton>
         </ButtonsContainer>
       </NavContainer>
     );
@@ -24,10 +51,7 @@ class NavigationBar extends React.Component {
 
 NavigationBar.propTypes = {
   mainLogoButton: PropTypes.element,
-  profileDropdown: PropTypes.element,
-  onSearchClick: PropTypes.func,
-  onBookmarksClick: PropTypes.func,
-  articleButton: PropTypes.element,
+  user: PropTypes.object,
 };
 
 const NavContainer = styled.div`

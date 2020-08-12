@@ -46,15 +46,25 @@ class Article extends React.Component {
     }
   }
 
+  getAuthorInfo(user) {
+    return new Promise((resolve, reject) => {
+      this.gun.get(user).once(ack => {
+        if (ack.err) reject(ack.err);
+        else resolve(ack);
+      });
+    });
+  }
+
   async getContent(articleID, path, user) {
     const article = await this.gun.get(user).get(path).get(articleID).once();
     if (article !== null) {
-      this.setState({ ...article, tags: JSON.parse(article.tags)["items"] });
-      await this.gun
-        .get(user)
-        .once(user =>
-          this.setState({ authorPhoto: user.photo, authorBio: user.bio })
-        );
+      let author = await this.getAuthorInfo(user);
+      this.setState({
+        ...article,
+        tags: JSON.parse(article.tags)["items"],
+        authorBio: author.bio,
+        authorPhoto: author.photo,
+      });
     }
   }
 

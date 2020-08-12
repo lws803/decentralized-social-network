@@ -172,7 +172,6 @@ class PostArticle extends React.Component {
               function process(tag) {
                 var processedTag = tag.toLowerCase();
                 processedTag = processedTag.replace(/[^A-Z0-9]/gi, "");
-                console.log(processedTag);
                 return processedTag;
               }
               this.setState({ tags: newTags.map(process) });
