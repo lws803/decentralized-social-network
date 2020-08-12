@@ -4,6 +4,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import styled from "styled-components";
 import { GridLayout } from "@egjs/react-infinitegrid";
 import ReactFitText from "react-fittext";
+import { action } from "@storybook/addon-actions";
 
 import Pod from "../articles/Pod";
 import SanFran from "../res/sanfrancisco.jpg";
@@ -80,6 +81,7 @@ export const PodListView = () => {
 export const NewPodView = () => {
   return (
     <SmallPod
+      onClick={action("clicked")}
       coverPhoto={SanFran}
       title="Hello wonderful world, the quick recap, lorem ipsum some long title"
       size={{ width: 200 }}

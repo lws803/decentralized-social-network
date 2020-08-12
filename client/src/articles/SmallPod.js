@@ -5,6 +5,7 @@ import styled from "styled-components";
 export default function SmallPod(props) {
   return (
     <PodContainer
+      onClick={props.onClick}
       style={{
         width: `${props.size.width}px`,
       }}
@@ -30,6 +31,7 @@ const PodContainer = styled.div`
   height: auto;
   clear: both;
   display: inline-block;
+  cursor: pointer;
 `;
 
 const CoverPhoto = styled.img`
