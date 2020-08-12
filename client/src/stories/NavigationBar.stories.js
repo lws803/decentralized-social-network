@@ -1,11 +1,11 @@
 import React from "react";
 
+import { Router } from "react-router-dom";
 import { action } from "@storybook/addon-actions";
-import { Image } from "semantic-ui-react";
 
-import NavigationBar, { IconButton } from "../navBar/NavigationBar";
-import ProfileDropdown from "../navBar/ProfileDropdown";
-import PenyetLogo from "../res/penyet.png";
+import NavigationBar from "../navBar/NavigationBar";
+import history from "../utils/History";
+import { PageContainer } from "../common/CommonStyles";
 
 export default {
   title: "Navigation Bar",
@@ -20,5 +20,11 @@ export const Default = () => {
     leave: action("logout"),
     is: true,
   };
-  return <NavigationBar user={mockUser} />;
+  return (
+    <Router history={history}>
+      <PageContainer>
+        <NavigationBar user={mockUser} />
+      </PageContainer>
+    </Router>
+  );
 };
