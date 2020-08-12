@@ -80,7 +80,11 @@ export const StaggeredGrid = () => {
     <div>
       <img
         src={props.coverPhoto}
-        style={{ height: "100px", width: "200px", objectFit: "cover" }}
+        style={{
+          objectFit: "cover",
+          height: props.size.height,
+          width: props.size.width,
+        }}
       />
       <div>{props.title}</div>
     </div>
@@ -90,12 +94,14 @@ export const StaggeredGrid = () => {
     const items = [];
 
     for (let i = 0; i < 20; ++i) {
+      const randomNumber = Math.floor(Math.random() * 200) + 50;
       items.push(
         <Pod
           groupKey={groupKey}
           key={start + i}
           coverPhoto={SanFran}
           title="Hello World"
+          size={{ height: `${randomNumber}px`, width: "300px" }}
         />
       );
     }
