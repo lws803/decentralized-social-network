@@ -90,44 +90,6 @@ export const NewPodView = () => {
 };
 
 export const StaggeredGrid = () => {
-  const Title = styled.div`
-    font-weight: heavy;
-    margin-top: 10px;
-    height: 40px;
-    text-align: center;
-    font-family: Georgia;
-    word-wrap: break-word;
-    line-height: 1.35em;
-  `;
-
-  const PodContainer = styled.div`
-    border: solid;
-  `;
-  const Pod = props => (
-    <PodContainer
-      style={{
-        height: `${props.size.height + 200}px`,
-        width: `${props.size.width}px`,
-      }}
-    >
-      <img
-        src={props.coverPhoto}
-        style={{
-          objectFit: "cover",
-          width: "100%",
-        }}
-      />
-      <ReactFitText
-        compressor={6}
-        style={{ width: "100%", height: `${props.size.height}px` }}
-        maxFontSize={40}
-        minFontSize={25}
-      >
-        <Title>{props.title}</Title>
-      </ReactFitText>
-    </PodContainer>
-  );
-
   const loadItems = (groupKey, start) => {
     const items = [];
     const titles = [
@@ -136,14 +98,14 @@ export const StaggeredGrid = () => {
     ];
 
     for (let i = 0; i < 20; ++i) {
-      const randomNumber = Math.floor(Math.random() * 200) + 50;
       items.push(
-        <Pod
+        <SmallPod
           groupKey={groupKey}
           key={start + i}
           coverPhoto={SanFran}
           title={titles[Math.floor(Math.random() * 2)]}
-          size={{ height: randomNumber, width: 300 }}
+          size={{ width: 200 }}
+          onClick={action("clicked")}
         />
       );
     }
