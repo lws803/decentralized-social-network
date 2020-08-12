@@ -7,6 +7,7 @@ import ReactFitText from "react-fittext";
 
 import Pod from "../articles/Pod";
 import SanFran from "../res/sanfrancisco.jpg";
+import SmallPod from "../articles/SmallPod";
 
 export default {
   title: "Article Pod",
@@ -73,6 +74,16 @@ export const PodListView = () => {
         </PodContainer>
       ))}
     </InfiniteScroll>
+  );
+};
+
+export const NewPodView = () => {
+  return (
+    <SmallPod
+      coverPhoto={SanFran}
+      title="Hello wonderful world, the quick recap, lorem ipsum some long title"
+      size={{ width: 200 }}
+    />
   );
 };
 
