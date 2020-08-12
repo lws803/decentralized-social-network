@@ -1,6 +1,7 @@
 import React from "react";
 
 import styled from "styled-components";
+import { DateTree } from "gun-util";
 import { GridLayout } from "@egjs/react-infinitegrid";
 
 import SmallPod from "./SmallPod";
@@ -11,22 +12,31 @@ class SmallPodsCollection extends React.Component {
     this.gunSession = props.gunSession;
     this.state = {
       items: this.loadItems(0, 0),
-      byteLimit: 5000,
+      posts: [],
     };
   }
 
   componentDidMount() {
-    this.getContent(this.props.pubKey, this.props.path).then();
-    // TODO: We need a better way to index
+    this.getContent(this.props.pubKey).then();
   }
 
-  async getContent(user, path) {
-    let posts = await this.gunSession.get(user).get("date_post").once();
-    console.log(posts);
+  async getContent(user) {
+    let tree = new DateTree(
+      this.gunSession.get(user).get("date_tree"),
+      "second"
+    );
+    (async () => {
+      for await (let [ref, date] of tree.iterate({ order: -1 })) {
+        let uuid = await ref.then();
+        this.setState({ posts: [...this.state.posts, uuid] });
+      }
+    })();
   }
 
   loadItems = (groupKey, start) => {
     const items = [];
+    const maxItems = 20;
+
     const titles = [
       "hello world",
       "the quick brown fox jumped over the rainbow",

@@ -11,11 +11,9 @@ class Author extends React.Component {
   }
 
   render() {
-    const { path, user } = this.props.match.params;
+    const { user } = this.props.match.params;
 
-    return (
-      <SmallPodsCollection gunSession={this.gun} path={path} pubKey={user} />
-    );
+    return <SmallPodsCollection gunSession={this.gun} pubKey={user} />;
   }
 }
 
