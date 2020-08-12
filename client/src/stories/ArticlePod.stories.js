@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import styled from "styled-components";
 import { GridLayout } from "@egjs/react-infinitegrid";
+import ReactFitText from "react-fittext";
 
 import Pod from "../articles/Pod";
 import SanFran from "../res/sanfrancisco.jpg";
@@ -76,22 +77,50 @@ export const PodListView = () => {
 };
 
 export const StaggeredGrid = () => {
+  const Title = styled.div`
+    font-weight: heavy;
+    margin-top: 10px;
+    height: 40px;
+    text-align: center;
+    font-family: Georgia;
+    word-wrap: break-word;
+    line-height: 1.35em;
+  `;
+
+  const PodContainer = styled.div`
+    border: solid;
+  `;
   const Pod = props => (
-    <div>
+    <PodContainer
+      style={{
+        height: `${props.size.height + 200}px`,
+        width: `${props.size.width}px`,
+      }}
+    >
       <img
         src={props.coverPhoto}
         style={{
           objectFit: "cover",
-          height: props.size.height,
-          width: props.size.width,
+          width: "100%",
         }}
       />
-      <div>{props.title}</div>
-    </div>
+      <ReactFitText
+        compressor={6}
+        style={{ width: "100%", height: `${props.size.height}px` }}
+        maxFontSize={40}
+        minFontSize={25}
+      >
+        <Title>{props.title}</Title>
+      </ReactFitText>
+    </PodContainer>
   );
 
   const loadItems = (groupKey, start) => {
     const items = [];
+    const titles = [
+      "hello world",
+      "the quick brown fox jumped over the rainbow",
+    ];
 
     for (let i = 0; i < 20; ++i) {
       const randomNumber = Math.floor(Math.random() * 200) + 50;
@@ -100,8 +129,8 @@ export const StaggeredGrid = () => {
           groupKey={groupKey}
           key={start + i}
           coverPhoto={SanFran}
-          title="Hello World"
-          size={{ height: `${randomNumber}px`, width: "300px" }}
+          title={titles[Math.floor(Math.random() * 2)]}
+          size={{ height: randomNumber, width: 300 }}
         />
       );
     }
@@ -125,7 +154,6 @@ export const StaggeredGrid = () => {
       useFirstRender={false}
       onAppend={onAppend}
       onLayoutComplete={onLayoutComplete}
-      loading={<div className="loading">Loading... append</div>}
       options={{
         threshold: 100,
         isOverflowScroll: false,
@@ -137,6 +165,7 @@ export const StaggeredGrid = () => {
       }}
       layoutOptions={{
         align: "justify",
+        margin: 10,
       }}
     >
       {ourList}
