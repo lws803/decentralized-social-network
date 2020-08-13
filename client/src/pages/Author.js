@@ -27,11 +27,12 @@ class Author extends React.Component {
   getAuthorInfo() {
     const { user } = this.props.match.params;
     this.gun.get(user).once(user => {
-      this.setState({
-        author: user.alias,
-        authorPhoto: user.photo,
-        authorBio: user.bio,
-      });
+      if (user)
+        this.setState({
+          author: user.alias,
+          authorPhoto: user.photo,
+          authorBio: user.bio,
+        });
     });
   }
 
@@ -48,9 +49,11 @@ class Author extends React.Component {
             onProfileClick={() => history.push(`/profile/author/${user}`)}
           />
         </LargeCardContainer>
-        <CollectionViewContainer>
-          <SmallPodsCollection gunSession={this.gun} pubKey={user} />
-        </CollectionViewContainer>
+        {this.state.author && (
+          <CollectionViewContainer>
+            <SmallPodsCollection gunSession={this.gun} pubKey={user} />
+          </CollectionViewContainer>
+        )}
       </PageContainer>
     );
   }
