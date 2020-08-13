@@ -13,51 +13,46 @@ class SmallPodsCollection extends React.Component {
     this.gunSession = props.gunSession;
     this.state = {
       items: [],
-      start: 1,
     };
   }
 
   componentDidMount() {
-    this.getContent(this.props.pubKey, 0, 0).then();
+    this.getContent(this.props.pubKey).then();
   }
 
-  async getContent(pubKey, start, groupKey) {
+  async getContent(pubKey) {
     let tree = new DateTree(
       this.gunSession.get(pubKey).get("date_tree"),
       "second"
     );
     var i = 0;
     for await (let [ref, date] of tree.iterate({ order: -1 })) {
-      if (i >= start && i < start + this.maxItems) {
-        let refPath = await ref.then();
+      let refPath = await ref.then();
+      let node = await this.gunSession.get(refPath).once();
+      if (node) {
         let post = (
           <SmallPod
-            groupKey={groupKey}
-            key={start + i}
-            coverPhoto={undefined}
-            title={refPath}
+            key={i}
+            coverPhoto={node.coverPhoto}
+            title={node.title}
             size={{ width: 200 }}
             onClick={() => console.log("test")}
           />
         );
         this.setState({ items: [...this.state.items, post] });
+        i += 1;
       }
-      i += 1;
     }
   }
 
   render() {
-    const onAppend = ({ groupKey, startLoading }) => {
-      startLoading();
-      // this.getContent(this.props.pubKey, 0, groupKey);
-    };
+    // TODO: Implement proper pagination in the future using the onAppend method
     const onLayoutComplete = ({ isLayout, endLoading }) => {
       !isLayout && endLoading();
     };
     return (
       <GridLayout
         useFirstRender={false}
-        onAppend={onAppend}
         onLayoutComplete={onLayoutComplete}
         options={{
           threshold: 100,
