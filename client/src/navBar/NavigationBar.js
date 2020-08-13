@@ -31,18 +31,18 @@ class NavigationBar extends React.Component {
               {/* <Dropdown.Item text="Following" onClick={() => {}} /> */}
               {this.props.user.is && (
                 <Dropdown.Item
-                  text="Logout"
+                  text="My Articles"
                   onClick={() => {
-                    this.props.user.leave();
-                    window.location.reload(false);
+                    history.push(`/profile/author/~${this.props.user.is.pub}`);
                   }}
                 />
               )}
               {this.props.user.is && (
                 <Dropdown.Item
-                  text="My Articles"
+                  text="Logout"
                   onClick={() => {
-                    history.push(`/profile/author/~${this.props.user.is.pub}`)
+                    this.props.user.leave();
+                    window.location.reload(false);
                   }}
                 />
               )}
