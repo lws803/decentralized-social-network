@@ -2,6 +2,7 @@ import React from "react";
 
 import { withRouter } from "react-router-dom";
 import Gun from "gun/gun";
+import { DateTree } from "gun-util";
 import SEA from "gun/sea";
 import ReactTagInput from "@pathofdev/react-tag-input";
 import "@pathofdev/react-tag-input/build/index.css";
@@ -70,7 +71,11 @@ class PostArticle extends React.Component {
       .put(article, ack => {
         if (ack.err) errors.push(ack.err);
       });
+    let tree = new DateTree(this.user.get("date_tree"), "second");
     const ref = post["_"]["#"];
+    await tree.get(article.createdAt).put(ref, ack => {
+      if (!ack.err) errors.push(ack.err);
+    });
     var hash = await SEA.work(ref, null, null, { name: "SHA-256" });
     await this.gun
       .get("#posts")

@@ -68,6 +68,11 @@ class Article extends React.Component {
     }
   }
 
+  goToProfile() {
+    const { user } = this.props.match.params;
+    history.push(`/profile/${user}`);
+  }
+
   render() {
     return (
       <PageContainer>
@@ -93,6 +98,7 @@ class Article extends React.Component {
                 : undefined
             }
             authorName={this.state.author}
+            onProfileClick={() => this.goToProfile()}
           />
         </CardContainer>
         {!this.state.content ? (
@@ -134,6 +140,7 @@ class Article extends React.Component {
             authorPhoto={this.state.authorPhoto}
             authorName={this.state.author}
             bio={this.state.authorBio}
+            onProfileClick={() => this.goToProfile()}
           />
         </LargeCardContainer>
       </PageContainer>

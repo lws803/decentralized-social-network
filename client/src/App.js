@@ -14,6 +14,7 @@ import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 import { PageContainer } from "./common/CommonStyles";
 import AuthenticationModal from "./authModal/AuthenticationModal";
+import Author from "./pages/Author";
 
 export default function App() {
   var gunSession = new Gun([sessionStorage.getItem("currentPeer")]);
@@ -51,6 +52,7 @@ export default function App() {
             path="/article/:user/:path/:articleID"
             component={Article}
           />
+          <Route exact path="/profile/:user" component={Author} />
           <Route exact path="/profile/my_profile">
             <AuthenticationModal
               user={user}
