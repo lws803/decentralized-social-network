@@ -25,7 +25,6 @@ class SmallPodsCollection extends React.Component {
       this.gunSession.get(pubKey).get("date_tree"),
       "second"
     );
-    var i = 0;
     for await (let [ref, date] of tree.iterate({ order: -1 })) {
       let refPath = await ref.then();
       try {
@@ -33,7 +32,6 @@ class SmallPodsCollection extends React.Component {
           if (node && !node.err) {
             let post = (
               <SmallPod
-                key={i}
                 coverPhoto={node.coverPhoto}
                 title={node.title}
                 size={{ width: 200 }}
@@ -41,7 +39,6 @@ class SmallPodsCollection extends React.Component {
               />
             );
             this.setState({ items: [...this.state.items, post] });
-            i += 1;
           }
         });
       } catch (err) {
