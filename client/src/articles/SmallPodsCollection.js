@@ -28,19 +28,24 @@ class SmallPodsCollection extends React.Component {
     var i = 0;
     for await (let [ref, date] of tree.iterate({ order: -1 })) {
       let refPath = await ref.then();
-      let node = await this.gunSession.get(refPath).once();
-      if (node) {
-        let post = (
-          <SmallPod
-            key={i}
-            coverPhoto={node.coverPhoto}
-            title={node.title}
-            size={{ width: 200 }}
-            onClick={() => history.push(`/article/${refPath}`)}
-          />
-        );
-        this.setState({ items: [...this.state.items, post] });
-        i += 1;
+      try {
+        this.gunSession.get(refPath).once(node => {
+          if (node && !node.err) {
+            let post = (
+              <SmallPod
+                key={i}
+                coverPhoto={node.coverPhoto}
+                title={node.title}
+                size={{ width: 200 }}
+                onClick={() => history.push(`/article/${refPath}`)}
+              />
+            );
+            this.setState({ items: [...this.state.items, post] });
+            i += 1;
+          }
+        });
+      } catch (err) {
+        console.log(err);
       }
     }
   }
@@ -54,6 +59,7 @@ class SmallPodsCollection extends React.Component {
       <GridLayout
         useFirstRender={false}
         onLayoutComplete={onLayoutComplete}
+        onAppend={() => {}}
         options={{
           threshold: 100,
           isOverflowScroll: false,
