@@ -38,6 +38,14 @@ class NavigationBar extends React.Component {
                   }}
                 />
               )}
+              {this.props.user.is && (
+                <Dropdown.Item
+                  text="My Articles"
+                  onClick={() => {
+                    history.push(`/profile/author/~${this.props.user.is.pub}`)
+                  }}
+                />
+              )}
             </Dropdown.Menu>
           </Dropdown>
           <IconButton onClick={() => history.push("/article/new")}>

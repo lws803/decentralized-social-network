@@ -18,7 +18,6 @@ class Profile extends React.Component {
       user: undefined,
       bioContent: undefined,
       profilePhoto: undefined,
-      pubKey: undefined,
     };
   }
 
@@ -29,7 +28,6 @@ class Profile extends React.Component {
           profilePhoto: user.photo,
           bioContent: user.bio,
           user: user.alias,
-          pubKey: user.pub,
         });
       });
   }
@@ -46,7 +44,7 @@ class Profile extends React.Component {
           />
         </ImageContainer>
         <UserName
-          onClick={() => history.push(`/profile/author/~${this.state.pubKey}`)}
+          onClick={() => history.push(`/profile/author/~${this.user.is.pub}`)}
         >
           {this.state.user}
         </UserName>
