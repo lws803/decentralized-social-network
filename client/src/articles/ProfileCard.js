@@ -17,7 +17,9 @@ class Card extends React.Component {
           style={{ borderRadius: "50%", objectFit: "cover" }}
         />
         <ArticleDetails>
-          <div>{this.props.authorName}</div>
+          <AuthorName onClick={this.props.onProfileClick}>
+            {this.props.authorName}
+          </AuthorName>
           <TimeDate>{this.props.dateCreated}</TimeDate>
         </ArticleDetails>
         <ButtonContainer>
@@ -35,6 +37,7 @@ Card.propTypes = {
   authorName: PropTypes.string,
   dateCreated: PropTypes.string,
   onFollowClick: PropTypes.func,
+  onProfileClick: PropTypes.func,
 };
 
 const ProfileCardContainer = styled.div`
@@ -61,6 +64,13 @@ const ButtonContainer = styled.div`
   padding-top: 10px;
 `;
 
+const AuthorName = styled.div`
+  cursor: pointer;
+  :hover {
+    text-decoration: underline;
+  }
+`;
+
 class LargeCard extends React.Component {
   render() {
     return (
@@ -72,7 +82,9 @@ class LargeCard extends React.Component {
           style={{ borderRadius: "50%", objectFit: "cover" }}
         />
         <ProfileDetails>
-          <LargeAuthorName>{this.props.authorName}</LargeAuthorName>
+          <LargeAuthorName onClick={this.props.onProfileClick}>
+            {this.props.authorName}
+          </LargeAuthorName>
           <BioContainer>
             <Bio content={this.props.bio} />
           </BioContainer>
@@ -87,6 +99,7 @@ LargeCard.propTypes = {
   authorName: PropTypes.string,
   dateCreated: PropTypes.string,
   bio: PropTypes.string,
+  onProfileClick: PropTypes.func,
 };
 
 const LargeCardContainer = styled.div`
@@ -104,6 +117,10 @@ const ProfileDetails = styled.div`
 const LargeAuthorName = styled.div`
   font-weight: bold;
   font-size: 20px;
+  cursor: pointer;
+  :hover {
+    text-decoration: underline;
+  }
 `;
 
 const BioContainer = styled.div`
