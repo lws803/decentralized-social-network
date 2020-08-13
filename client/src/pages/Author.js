@@ -56,7 +56,6 @@ class Author extends React.Component {
 
 const LargeCardContainer = styled.div`
   margin-top: 20px;
-  width: 70%;
   margin-left: auto;
   margin-right: auto;
 `;
