@@ -4,6 +4,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import styled from "styled-components";
 import { GridLayout } from "@egjs/react-infinitegrid";
 import { action } from "@storybook/addon-actions";
+import Masonry from "react-masonry-component";
 
 import Pod from "../articles/Pod";
 import SanFran from "../res/sanfrancisco.jpg";
@@ -89,6 +90,35 @@ export const NewPodView = () => {
 };
 
 export const StaggeredGrid = () => {
+  const masonryOptions = {
+    transitionDuration: 0,
+    fitWidth: true,
+  };
+  const titles = ["hello world", "the quick brown fox jumped over the rainbow"];
+
+  const items = [];
+  for (let i = 0; i < 10; i++) {
+    items.push(
+      <SmallPod
+        coverPhoto={SanFran}
+        title={titles[Math.floor(Math.random() * 2)]}
+        size={{ width: 200 }}
+        onClick={action("clicked")}
+      />
+    );
+  }
+  return (
+    <Masonry
+      options={masonryOptions}
+      disableImagesLoaded={false}
+      updateOnEachImageLoad={false}
+    >
+      {items}
+    </Masonry>
+  );
+};
+
+export const StaggeredGridOptimized = () => {
   const loadItems = (groupKey, start) => {
     const items = [];
     const titles = [

@@ -2,6 +2,8 @@ import React from "react";
 
 import styled from "styled-components";
 
+import LazyImage from "../common/LazyImage";
+
 export default function SmallPod(props) {
   return (
     <PodContainer
@@ -11,7 +13,12 @@ export default function SmallPod(props) {
       }}
       isLoaded
     >
-      {props.coverPhoto && <CoverPhoto src={props.coverPhoto} />}
+      {props.coverPhoto && (
+        <LazyImage
+          src={props.coverPhoto}
+          style={{ objectFit: "cover", width: "100%" }}
+        />
+      )}
       <Title>{props.title}</Title>
     </PodContainer>
   );
@@ -42,9 +49,4 @@ const PodContainer = styled.div`
   display: inline-block;
   cursor: pointer;
   animation: 0.25s ease-in-out 0s 1 slowlyAppear;
-`;
-
-const CoverPhoto = styled.img`
-  object-fit: cover;
-  width: 100%;
 `;

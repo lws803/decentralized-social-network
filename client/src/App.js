@@ -2,7 +2,6 @@ import React from "react";
 import { Router, Switch, Route } from "react-router-dom";
 
 import Gun from "gun/gun";
-import "semantic-ui-css/semantic.min.css";
 
 import history from "./utils/History";
 import NavigationBar from "./navBar/NavigationBar";

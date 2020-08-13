@@ -3,6 +3,8 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import axios from "axios";
+import "gun/sea";
+import "semantic-ui-css/semantic.min.css";
 
 async function extractValid(peers) {
   var peerSet = new Set(peers);
