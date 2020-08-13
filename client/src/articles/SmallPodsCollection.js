@@ -7,64 +7,49 @@ import { GridLayout } from "@egjs/react-infinitegrid";
 import SmallPod from "./SmallPod";
 
 class SmallPodsCollection extends React.Component {
+  maxItems = 20;
   constructor(props) {
     super(props);
     this.gunSession = props.gunSession;
     this.state = {
-      items: this.loadItems(0, 0),
-      posts: [],
+      items: [],
+      start: 1,
     };
   }
 
   componentDidMount() {
-    this.getContent(this.props.pubKey).then();
+    this.getContent(this.props.pubKey, 0, 0).then();
   }
 
-  async getContent(user) {
+  async getContent(pubKey, start, groupKey) {
     let tree = new DateTree(
-      this.gunSession.get(user).get("date_tree"),
+      this.gunSession.get(pubKey).get("date_tree"),
       "second"
     );
-    (async () => {
-      for await (let [ref, date] of tree.iterate({ order: -1 })) {
-        let uuid = await ref.then();
-        this.setState({ posts: [...this.state.posts, uuid] });
+    var i = 0;
+    for await (let [ref, date] of tree.iterate({ order: -1 })) {
+      if (i >= start && i < start + this.maxItems) {
+        let refPath = await ref.then();
+        let post = (
+          <SmallPod
+            groupKey={groupKey}
+            key={start + i}
+            coverPhoto={undefined}
+            title={refPath}
+            size={{ width: 200 }}
+            onClick={() => console.log("test")}
+          />
+        );
+        this.setState({ items: [...this.state.items, post] });
       }
-    })();
-  }
-
-  loadItems = (groupKey, start) => {
-    const items = [];
-    const maxItems = 20;
-
-    const titles = [
-      "hello world",
-      "the quick brown fox jumped over the rainbow",
-    ];
-
-    for (let i = 0; i < 20; ++i) {
-      items.push(
-        <SmallPod
-          groupKey={groupKey}
-          key={start + i}
-          coverPhoto={undefined}
-          title={titles[Math.floor(Math.random() * 2)]}
-          size={{ width: 200 }}
-          onClick={() => console.log("test")}
-        />
-      );
+      i += 1;
     }
-    return items;
-  };
+  }
 
   render() {
     const onAppend = ({ groupKey, startLoading }) => {
-      const list = this.state.items;
-      const start = list.length;
-      const items = this.loadItems(groupKey + 1, start);
-
       startLoading();
-      this.setState({ items: list.concat(items) });
+      // this.getContent(this.props.pubKey, 0, groupKey);
     };
     const onLayoutComplete = ({ isLayout, endLoading }) => {
       !isLayout && endLoading();

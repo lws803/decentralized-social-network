@@ -2,7 +2,9 @@ import React from "react";
 
 import { withRouter } from "react-router-dom";
 import Gun from "gun/gun";
+
 import SmallPodsCollection from "../articles/SmallPodsCollection";
+import { PageContainer } from "../common/CommonStyles";
 
 class Author extends React.Component {
   constructor(props) {
@@ -13,7 +15,11 @@ class Author extends React.Component {
   render() {
     const { user } = this.props.match.params;
 
-    return <SmallPodsCollection gunSession={this.gun} pubKey={user} />;
+    return (
+      <PageContainer>
+        <SmallPodsCollection gunSession={this.gun} pubKey={user} />
+      </PageContainer>
+    );
   }
 }
 
