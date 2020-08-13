@@ -26,21 +26,27 @@ class SmallPodsCollection extends React.Component {
       "second"
     );
     for await (let [ref, date] of tree.iterate({ order: -1 })) {
-      let refPath = await ref.then();
+      let uuid = await ref.then();
       try {
-        this.gunSession.get(refPath).once(node => {
-          if (node && !node.err) {
-            let post = (
-              <SmallPod
-                coverPhoto={node.coverPhoto}
-                title={node.title}
-                size={{ width: 200 }}
-                onClick={() => history.push(`/article/${refPath}`)}
-              />
-            );
-            this.setState({ items: [...this.state.items, post] });
-          }
-        });
+        this.gunSession
+          .get(pubKey)
+          .get("posts")
+          .get(uuid)
+          .once(node => {
+            if (node && !node.err) {
+              let ref = node["_"]["#"];
+              let post = (
+                <SmallPod
+                  key={date}
+                  coverPhoto={node.coverPhoto}
+                  title={node.title}
+                  size={{ width: 200 }}
+                  onClick={() => history.push(`/article/${ref}`)}
+                />
+              );
+              this.setState({ items: [...this.state.items, post] });
+            }
+          });
       } catch (err) {
         console.log(err);
       }

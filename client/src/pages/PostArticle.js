@@ -73,16 +73,16 @@ class PostArticle extends React.Component {
       });
     let tree = new DateTree(this.user.get("date_tree"), "second");
     const ref = post["_"]["#"];
-    await tree.get(article.createdAt).put(ref, ack => {
+    await tree.get(article.createdAt).put(article.uuid, ack => {
       if (!ack.err) errors.push(ack.err);
     });
-    var hash = await SEA.work(ref, null, null, { name: "SHA-256" });
-    await this.gun
-      .get("#posts")
-      .get(hash)
-      .put(ref, ack => {
-        if (ack.err) errors.push(ack.err);
-      });
+    // var hash = await SEA.work(ref, null, null, { name: "SHA-256" });
+    // await this.gun
+    //   .get("#posts")
+    //   .get(hash)
+    //   .put(ref, ack => {
+    //     if (ack.err) errors.push(ack.err);
+    //   });
     if (errors.length > 0) {
       throw new Error(errors);
     }
