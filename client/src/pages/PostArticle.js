@@ -145,7 +145,7 @@ class PostArticle extends React.Component {
       .get("posts")
       .get(this.state.uuid)
       .put(null, () => {
-        history.push("/");
+        history.push(`/profile/author/~${this.user.is.pub}`);
       });
   }
 
