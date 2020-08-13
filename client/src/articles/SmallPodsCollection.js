@@ -47,7 +47,6 @@ class SmallPodsCollection extends React.Component {
 
   render() {
     // TODO: Implement proper pagination in the future using the onAppend method
-    // TODO: Maybe spawn all the elements together so they do not slowly spawn out
     const onLayoutComplete = ({ isLayout, endLoading }) => {
       !isLayout && endLoading();
     };
