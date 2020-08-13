@@ -52,7 +52,7 @@ export default function App() {
             path="/article/:user/:path/:articleID"
             component={Article}
           />
-          <Route exact path="/profile/:user" component={Author} />
+          <Route exact path="/profile/author/:user" component={Author} />
           <Route exact path="/profile/my_profile">
             <AuthenticationModal
               user={user}

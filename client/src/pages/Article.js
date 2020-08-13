@@ -70,7 +70,7 @@ class Article extends React.Component {
 
   goToProfile() {
     const { user } = this.props.match.params;
-    history.push(`/profile/${user}`);
+    history.push(`/profile/author/${user}`);
   }
 
   render() {

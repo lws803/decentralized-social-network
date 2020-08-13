@@ -18,18 +18,20 @@ class Profile extends React.Component {
       user: undefined,
       bioContent: undefined,
       profilePhoto: undefined,
+      pubKey: undefined,
     };
   }
 
   componentDidMount() {
     if (this.user.is)
-      this.user.once(user =>
+      this.user.once(user => {
         this.setState({
           profilePhoto: user.photo,
           bioContent: user.bio,
           user: user.alias,
-        })
-      );
+          pubKey: user.pub,
+        });
+      });
   }
 
   render() {
@@ -43,15 +45,11 @@ class Profile extends React.Component {
             style={{ borderRadius: "50%", objectFit: "cover" }}
           />
         </ImageContainer>
-        <div
-          style={{
-            marginTop: "20px",
-            fontSize: "large",
-            textAlign: "center",
-          }}
+        <UserName
+          onClick={() => history.push(`/profile/author/~${this.state.pubKey}`)}
         >
           {this.state.user}
-        </div>
+        </UserName>
         <BioContainer>
           <Segment style={{ height: "100%" }}>{this.state.bioContent}</Segment>
         </BioContainer>
@@ -84,6 +82,16 @@ const ToolsContainer = styled.div`
   margin-top: 10px;
   margin-left: auto;
   margin-right: auto;
+`;
+
+const UserName = styled.div`
+  margin-top: 20px;
+  font-size: large;
+  text-align: center;
+  cursor: pointer;
+  :hover {
+    text-decoration: underline;
+  }
 `;
 
 export default withRouter(Profile);
