@@ -1,9 +1,9 @@
 import React from "react";
 
-import styled from "styled-components";
 import { DateTree } from "gun-util";
 import { GridLayout } from "@egjs/react-infinitegrid";
 
+import history from "../utils/History";
 import SmallPod from "./SmallPod";
 
 class SmallPodsCollection extends React.Component {
@@ -36,7 +36,7 @@ class SmallPodsCollection extends React.Component {
             coverPhoto={node.coverPhoto}
             title={node.title}
             size={{ width: 200 }}
-            onClick={() => console.log("test")}
+            onClick={() => history.push(`/article/${refPath}`)}
           />
         );
         this.setState({ items: [...this.state.items, post] });
@@ -47,6 +47,7 @@ class SmallPodsCollection extends React.Component {
 
   render() {
     // TODO: Implement proper pagination in the future using the onAppend method
+    // TODO: Maybe spawn all the elements together so they do not slowly spawn out
     const onLayoutComplete = ({ isLayout, endLoading }) => {
       !isLayout && endLoading();
     };
