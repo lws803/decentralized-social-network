@@ -3,7 +3,6 @@ import React from "react";
 import { withRouter } from "react-router-dom";
 import Gun from "gun/gun";
 import { DateTree } from "gun-util";
-import SEA from "gun/sea";
 import ReactTagInput from "@pathofdev/react-tag-input";
 import "@pathofdev/react-tag-input/build/index.css";
 import styled from "styled-components";
