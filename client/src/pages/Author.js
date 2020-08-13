@@ -61,7 +61,11 @@ const LargeCardContainer = styled.div`
 `;
 
 const CollectionViewContainer = styled.div`
+  display: flex;
+  flex-direction: column;
   margin-top: 20px;
+  align-items: center;
+  width: 100%;
 `;
 
 export default withRouter(Author);

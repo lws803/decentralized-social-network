@@ -36,7 +36,7 @@ const PodContainer = styled.div`
       opacity: 1;
     }
   }
-
+  margin: 10px;
   border: solid;
   height: auto;
   display: inline-block;

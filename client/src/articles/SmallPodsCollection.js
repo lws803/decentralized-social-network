@@ -1,7 +1,7 @@
 import React from "react";
 
 import { DateTree } from "gun-util";
-import { GridLayout } from "@egjs/react-infinitegrid";
+import Masonry from "react-masonry-component";
 
 import history from "../utils/History";
 import SmallPod from "./SmallPod";
@@ -52,30 +52,18 @@ class SmallPodsCollection extends React.Component {
 
   render() {
     // TODO: Implement proper pagination in the future using the onAppend method
-    const onLayoutComplete = ({ isLayout, endLoading }) => {
-      !isLayout && endLoading();
+    const masonryOptions = {
+      transitionDuration: 0,
+      fitWidth: true,
     };
     return (
-      <GridLayout
-        useFirstRender={false}
-        onLayoutComplete={onLayoutComplete}
-        onAppend={() => {}}
-        options={{
-          threshold: 100,
-          isOverflowScroll: false,
-          isEqualSize: false,
-          isConstantSize: false,
-          useFit: false,
-          useRecycle: false,
-          horizontal: false,
-        }}
-        layoutOptions={{
-          align: "justify",
-          margin: 10,
-        }}
+      <Masonry
+        options={masonryOptions}
+        disableImagesLoaded={false}
+        updateOnEachImageLoad={false}
       >
         {this.state.items}
-      </GridLayout>
+      </Masonry>
     );
   }
 }
