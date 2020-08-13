@@ -9,6 +9,7 @@ export default function SmallPod(props) {
       style={{
         width: `${props.size.width}px`,
       }}
+      isLoaded
     >
       {props.coverPhoto && <CoverPhoto src={props.coverPhoto} />}
       <Title>{props.title}</Title>
@@ -27,11 +28,20 @@ const Title = styled.div`
 `;
 
 const PodContainer = styled.div`
+  @keyframes slowlyAppear {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
   border: solid;
   height: auto;
-  clear: both;
   display: inline-block;
   cursor: pointer;
+  animation: 0.25s ease-in-out 0s 1 slowlyAppear;
 `;
 
 const CoverPhoto = styled.img`
