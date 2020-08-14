@@ -14,6 +14,7 @@ import NotFound from "./pages/NotFound";
 import { PageContainer } from "./common/CommonStyles";
 import AuthenticationModal from "./authModal/AuthenticationModal";
 import Author from "./pages/Author";
+import Settings from "./pages/Settings";
 
 export default function App() {
   var gunSession = new Gun([sessionStorage.getItem("currentPeer")]);
@@ -65,6 +66,13 @@ export default function App() {
               reload={() => window.location.reload(false)}
             />
             <ProfileEdit />
+          </Route>
+          <Route exact path="/profile/settings">
+            <AuthenticationModal
+              user={user}
+              reload={() => window.location.reload(false)}
+            />
+            <Settings />
           </Route>
           <Route component={NotFound}></Route>
         </Switch>

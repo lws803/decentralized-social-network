@@ -39,6 +39,14 @@ class NavigationBar extends React.Component {
               )}
               {this.props.user.is && (
                 <Dropdown.Item
+                  text="Settings"
+                  onClick={() => {
+                    history.push("/profile/settings");
+                  }}
+                />
+              )}
+              {this.props.user.is && (
+                <Dropdown.Item
                   text="Logout"
                   onClick={() => {
                     this.props.user.leave();
