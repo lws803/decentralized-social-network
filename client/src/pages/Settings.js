@@ -2,10 +2,19 @@ import React from "react";
 
 import { Accordion, Icon } from "semantic-ui-react";
 
+import Gun from "gun/gun";
 import { PageContainer } from "../common/CommonStyles";
+import PasswordReset from "../settings/PasswordReset";
 
 class Settings extends React.Component {
-  state = { activeIndex: 0 };
+  constructor(props) {
+    super(props);
+    this.state = {
+      activeIndex: 0,
+    };
+    this.gun = new Gun([sessionStorage.getItem("currentPeer")]);
+    this.user = this.gun.user().recall({ sessionStorage: true });
+  }
 
   handleClick = (e, titleProps) => {
     const { index } = titleProps;
@@ -31,11 +40,7 @@ class Settings extends React.Component {
             Reset password
           </Accordion.Title>
           <Accordion.Content active={activeIndex === 0}>
-            <p>
-              A dog is a type of domesticated animal. Known for its loyalty and
-              faithfulness, it can be found as a welcome guest in many
-              households across the world.
-            </p>
+            <PasswordReset user={this.user} gun={this.gun}/>
           </Accordion.Content>
 
           <Accordion.Title
