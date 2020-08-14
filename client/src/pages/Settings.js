@@ -1,8 +1,9 @@
 import React from "react";
 
-import { Accordion, Icon } from "semantic-ui-react";
-
+import { Accordion, Icon, Button } from "semantic-ui-react";
+import history from "../utils/History";
 import Gun from "gun/gun";
+
 import { PageContainer } from "../common/CommonStyles";
 import PasswordReset from "../settings/PasswordReset";
 
@@ -52,12 +53,15 @@ class Settings extends React.Component {
             Logout
           </Accordion.Title>
           <Accordion.Content active={activeIndex === 1}>
-            <p>
-              There are many breeds of dogs. Each breed varies in size and
-              temperament. Owners often select a breed of dog that they find to
-              be compatible with their own lifestyle and desires from a
-              companion.
-            </p>
+            <Button
+              negative
+              size="small"
+              content="Logout"
+              onClick={() => {
+                this.user.leave();
+                history.push("/");
+              }}
+            />
           </Accordion.Content>
         </Accordion>
       </PageContainer>
