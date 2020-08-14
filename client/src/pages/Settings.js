@@ -40,7 +40,7 @@ class Settings extends React.Component {
             Reset password
           </Accordion.Title>
           <Accordion.Content active={activeIndex === 0}>
-            <PasswordReset user={this.user} gun={this.gun}/>
+            <PasswordReset user={this.user} gun={this.gun} />
           </Accordion.Content>
 
           <Accordion.Title
