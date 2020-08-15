@@ -15,3 +15,12 @@ Please follow readme in `peer` directory before running the following
 ```bash
 npm run start
 ```
+
+## Deploy docker container
+
+1. Setup env variables in `docker-compose.yml` for `REACT_INIT_PEER`
+2. Run docker compose
+    ```bash
+    # From client directory
+    docker-compose up -d
+    ```
