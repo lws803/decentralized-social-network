@@ -1,6 +1,6 @@
 # Peer Node
 
-## Setup
+## Deploy docker container
 
 1. Edit the `docker-compose.yml` file and set `INIT_PEER`, `MY_ADDRESS` env variables
 
@@ -23,3 +23,10 @@
 # From peer directory
 docker-compose up -d
 ```
+
+### Build for all platforms
+1. Enable buildx support https://www.docker.com/blog/multi-arch-images/
+2. Build for multiple platforms
+    ```bash
+    docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 .
+    ```
