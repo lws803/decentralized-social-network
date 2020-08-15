@@ -105,7 +105,7 @@ class ProfileEdit extends React.Component {
             cols="30"
             onChange={e => {
               if (e.target.value.length < 200)
-                this.setState({ bioContent: e.target.value });
+                this.setState({ bioContent: e.target.value || "" });
             }}
             value={this.state.bioContent}
           />
