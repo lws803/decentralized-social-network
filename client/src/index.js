@@ -19,7 +19,7 @@ async function extractValid(peers) {
 }
 
 async function InitiateGunPeers() {
-  var storedPeers = ["127.0.0.1"]; // TODO: Change this to a default
+  var storedPeers = ["127.0.0.1", process.env.REACT_INIT_PEER];
   if (localStorage.getItem["peers"])
     storedPeers.concat(localStorage.getItem["peers"].peers);
   storedPeers = await extractValid(storedPeers);
