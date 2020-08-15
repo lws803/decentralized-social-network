@@ -1,8 +1,8 @@
 export const PasswordSchema = {
   id: "/Password",
   type: "string",
-  minLength: 4,
-  maxLength: 128,
+  minLength: 8,
+  maxLength: 15,
   required: true,
 };
 
@@ -14,7 +14,6 @@ export const AuthSchema = {
     password: PasswordSchema,
   },
 };
-// TODO: See if we can include special character checks as well for password
 
 export const NewArticleSchema = {
   id: "/Article",
