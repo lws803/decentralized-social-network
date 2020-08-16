@@ -28,7 +28,7 @@
     "ckeditor5-for-code-and-image": "^0.0.2",
     "css-loader": "3.4.2",
     "dompurify": "^2.0.12",
-    "dotenv": "8.2.0",
+    "dotenv": "^8.2.0",
     "dotenv-expand": "5.1.0",
     "draft-js": "^0.10.5",
     "draftail": "^1.3.0",

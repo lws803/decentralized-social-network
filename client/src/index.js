@@ -5,6 +5,7 @@ import * as serviceWorker from "./serviceWorker";
 import axios from "axios";
 import "gun/sea";
 import "semantic-ui-css/semantic.min.css";
+require('dotenv').config()
 
 async function extractValid(peers) {
   var peerSet = new Set(peers);
@@ -19,7 +20,7 @@ async function extractValid(peers) {
 }
 
 async function InitiateGunPeers() {
-  var storedPeers = ["127.0.0.1", process.env.REACT_INIT_PEER];
+  var storedPeers = [process.env.REACT_APP_INIT_PEER, "127.0.0.1"];
   if (localStorage.getItem["peers"])
     storedPeers.concat(localStorage.getItem["peers"].peers);
   storedPeers = await extractValid(storedPeers);
