@@ -105,13 +105,14 @@ class ProfileEdit extends React.Component {
             cols="30"
             onChange={e => {
               if (e.target.value.length < 200)
-                this.setState({ bioContent: e.target.value || "" });
+                this.setState({ bioContent: e.target.value });
             }}
             value={this.state.bioContent}
           />
         </BioEditor>
         <CharacterCount>
-          Characters left: {200 - this.state.bioContent.length}
+          Characters left:{" "}
+          {this.state.bioContent ? 200 - this.state.bioContent.length : 200}
         </CharacterCount>
         <ButtonToolsContainer>
           <EditButton

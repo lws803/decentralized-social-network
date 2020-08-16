@@ -101,7 +101,10 @@ async function findPeersOfPeers(validParents) {
 async function peerDiscovery() {
   var peersList = [];
   const retries = 20;
-  const initialPeers = ["init_peer", await publicIp.v4(), "127.0.0.1"];
+  const myAddr = process.env.MY_ADDRESS
+    ? process.env.MY_ADDRESS
+    : await publicIp.v4();
+  const initialPeers = [process.env.INIT_PEER, myAddr, "127.0.0.1"];
   for (var retry = 0; retry < retries; retry++) {
     var peers = await getAllKeys();
     peers = [...peers, ...initialPeers];

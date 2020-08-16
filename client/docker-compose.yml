@@ -1,0 +1,10 @@
+version: "3"
+services:
+  web:
+    build: ./
+    ports:
+      - 80:80
+    environment:
+      - NODE_ENV=production
+      - REACT_INIT_PEER="127.0.0.1"
+      - GENERATE_SOURCEMAP=false
