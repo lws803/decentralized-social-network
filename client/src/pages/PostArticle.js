@@ -56,7 +56,7 @@ class PostArticle extends React.Component {
     if (article !== null)
       this.setState({
         ...article,
-        tags: JSON.parse(article.tags)["items"],
+        tags: article.tags ? JSON.parse(article.tags)["items"] : [],
         content: article.content,
         title: article.title,
       });

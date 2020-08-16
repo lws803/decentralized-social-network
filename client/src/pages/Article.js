@@ -61,7 +61,7 @@ class Article extends React.Component {
       let author = await this.getAuthorInfo(user);
       this.setState({
         ...article,
-        tags: JSON.parse(article.tags)["items"],
+        tags: article.tags ? JSON.parse(article.tags)["items"] : [],
         authorBio: author.bio,
         authorPhoto: author.photo,
       });
