@@ -1,4 +1,5 @@
 # Penyet
+![License: MIT](https://img.shields.io/badge/License-MIT-red.svg)
 
 A decentralized platform for the independent journalists
 
