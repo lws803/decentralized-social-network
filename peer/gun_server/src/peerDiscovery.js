@@ -116,7 +116,7 @@ async function peerDiscovery() {
       validParents = [...validParents, ...newPeers];
     }
     if (validParents.length) {
-      peersList = [...validParents];
+      peersList = [...validParents, process.env.INIT_PEER];
       break;
     }
   }
