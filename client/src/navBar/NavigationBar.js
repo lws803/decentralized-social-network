@@ -18,17 +18,12 @@ class NavigationBar extends React.Component {
         </Link>
 
         <ButtonsContainer>
-          {/* <IconButton onClick={this.props.onSearchClick}>Search</IconButton>
-          <IconButton onClick={this.props.onBookmarksClick}>
-            Bookmarks
-          </IconButton> */}
           <Dropdown text="Profile" style={{ marginRight: "4px" }}>
             <Dropdown.Menu>
               <Dropdown.Item
                 text="My Profile"
                 onClick={() => history.push("/profile/my_profile")}
               />
-              {/* <Dropdown.Item text="Following" onClick={() => {}} /> */}
               {this.props.user.is && (
                 <Dropdown.Item
                   text="My Articles"
