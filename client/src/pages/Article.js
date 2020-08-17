@@ -9,6 +9,7 @@ import moment from "moment";
 import { Divider, Placeholder } from "semantic-ui-react";
 import ReactFitText from "react-fittext";
 import SyntaxHighlighter from "react-syntax-highlighter";
+import monokai from "react-syntax-highlighter/dist/esm/styles/hljs/monokai";
 import Interweave from "interweave";
 
 import history from "../utils/History";
@@ -65,7 +66,6 @@ class Article extends React.Component {
         authorBio: author.bio,
         authorPhoto: author.photo,
       });
-      // Prism.highlightAll();
     }
   }
 
@@ -76,15 +76,18 @@ class Article extends React.Component {
 
   render() {
     function transformCodeBlocks(node, children) {
-      if (node.tagName === "CODE") {
-        return (
-          <SyntaxHighlighter
-            language={node.getAttribute("language")}
-            showLineNumbers
-          >
-            {children}
-          </SyntaxHighlighter>
-        );
+      if (node.tagName === "PRE" && children.length) {
+        if (children[0].props.tagName === "code") {
+          return (
+            <SyntaxHighlighter
+              language={node.getAttribute("language")}
+              showLineNumbers
+              style={monokai}
+            >
+              {children[0].props.children}
+            </SyntaxHighlighter>
+          );
+        }
       }
     }
 
@@ -98,7 +101,6 @@ class Article extends React.Component {
         >
           <Title>{this.state.title}</Title>
         </ReactFitText>
-        {/* <Title>{this.state.title}</Title> */}
         <CardContainer>
           <Card
             authorPhoto={this.state.authorPhoto}
@@ -143,14 +145,6 @@ class Article extends React.Component {
             </ToolButtonsContainer>
           </div>
         )}
-        {/* <div style={{ marginTop: "26px" }}>
-            <Vote
-              onClickUpVote={() => {}}
-              onClickDownVote={() => {}}
-              upVoteCount={0}
-              downVoteCount={0}
-            />
-          </div> */}
         <Divider
           style={{ width: "70%", marginLeft: "auto", marginRight: "auto" }}
         />
