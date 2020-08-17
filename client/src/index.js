@@ -5,6 +5,8 @@ import * as serviceWorker from "./serviceWorker";
 import axios from "axios";
 import "gun/sea";
 import "semantic-ui-css/semantic.min.css";
+import "./common/css/prism.css";
+import "./common/css/content-styles.css";
 require('dotenv').config()
 
 async function extractValid(peers) {
