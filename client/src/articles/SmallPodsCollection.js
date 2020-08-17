@@ -33,7 +33,7 @@ class SmallPodsCollection extends React.Component {
           .get("posts")
           .get(uuid)
           .once(node => {
-            if (node && !node.err) {
+            if (node && !node.err && node.title) {
               let ref = node["_"]["#"];
               let post = (
                 <SmallPod

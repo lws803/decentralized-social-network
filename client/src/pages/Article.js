@@ -8,11 +8,12 @@ import styled from "styled-components";
 import moment from "moment";
 import { Divider, Placeholder } from "semantic-ui-react";
 import ReactFitText from "react-fittext";
+import SyntaxHighlighter from "react-syntax-highlighter";
+import monokai from "react-syntax-highlighter/dist/esm/styles/hljs/monokai";
+import Interweave from "interweave";
 
 import history from "../utils/History";
 import { Card, LargeCard } from "../articles/ProfileCard";
-// import Vote from "./Vote";
-import ReadOnlyEditor from "../common/ReadOnlyEditor";
 import { PageContainer, EditButton } from "../common/CommonStyles";
 
 class Article extends React.Component {
@@ -61,7 +62,7 @@ class Article extends React.Component {
       let author = await this.getAuthorInfo(user);
       this.setState({
         ...article,
-        tags: JSON.parse(article.tags)["items"],
+        tags: article.tags ? JSON.parse(article.tags)["items"] : [],
         authorBio: author.bio,
         authorPhoto: author.photo,
       });
@@ -74,6 +75,22 @@ class Article extends React.Component {
   }
 
   render() {
+    function transformCodeBlocks(node, children) {
+      if (node.tagName === "PRE" && children.length) {
+        if (children[0].props.tagName === "code") {
+          return (
+            <SyntaxHighlighter
+              language={node.getAttribute("language")}
+              showLineNumbers
+              style={monokai}
+            >
+              {children[0].props.children}
+            </SyntaxHighlighter>
+          );
+        }
+      }
+    }
+
     return (
       <PageContainer>
         <ReactFitText
@@ -84,7 +101,6 @@ class Article extends React.Component {
         >
           <Title>{this.state.title}</Title>
         </ReactFitText>
-        {/* <Title>{this.state.title}</Title> */}
         <CardContainer>
           <Card
             authorPhoto={this.state.authorPhoto}
@@ -107,7 +123,12 @@ class Article extends React.Component {
           />
         ) : (
           <div>
-            <ReadOnlyEditor data={this.state.content} />
+            <div className="ck-content" style={{ fontFamily: "Georgia" }}>
+              <Interweave
+                content={this.state.content}
+                transform={transformCodeBlocks}
+              />
+            </div>
             <div style={{ marginTop: "10px" }}>
               <ReactTagInput tags={this.state.tags} readOnly />
             </div>
@@ -124,14 +145,6 @@ class Article extends React.Component {
             </ToolButtonsContainer>
           </div>
         )}
-        {/* <div style={{ marginTop: "26px" }}>
-            <Vote
-              onClickUpVote={() => {}}
-              onClickDownVote={() => {}}
-              upVoteCount={0}
-              downVoteCount={0}
-            />
-          </div> */}
         <Divider
           style={{ width: "70%", marginLeft: "auto", marginRight: "auto" }}
         />
