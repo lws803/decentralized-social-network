@@ -8,12 +8,11 @@ import styled from "styled-components";
 import moment from "moment";
 import { Divider, Placeholder } from "semantic-ui-react";
 import ReactFitText from "react-fittext";
-import Prism from "prismjs";
+import SyntaxHighlighter from "react-syntax-highlighter";
+import Interweave from "interweave";
 
 import history from "../utils/History";
 import { Card, LargeCard } from "../articles/ProfileCard";
-// import Vote from "./Vote";
-// import ReadOnlyEditor from "../common/ReadOnlyEditor";
 import { PageContainer, EditButton } from "../common/CommonStyles";
 
 class Article extends React.Component {
@@ -66,7 +65,7 @@ class Article extends React.Component {
         authorBio: author.bio,
         authorPhoto: author.photo,
       });
-      Prism.highlightAll();
+      // Prism.highlightAll();
     }
   }
 
@@ -76,6 +75,19 @@ class Article extends React.Component {
   }
 
   render() {
+    function transformCodeBlocks(node, children) {
+      if (node.tagName === "CODE") {
+        return (
+          <SyntaxHighlighter
+            language={node.getAttribute("language")}
+            showLineNumbers
+          >
+            {children}
+          </SyntaxHighlighter>
+        );
+      }
+    }
+
     return (
       <PageContainer>
         <ReactFitText
@@ -109,11 +121,12 @@ class Article extends React.Component {
           />
         ) : (
           <div>
-            <div
-              dangerouslySetInnerHTML={{ __html: this.state.content }}
-              className="ck-content"
-              style={{ fontFamily: "Georgia" }}
-            />
+            <div className="ck-content" style={{ fontFamily: "Georgia" }}>
+              <Interweave
+                content={this.state.content}
+                transform={transformCodeBlocks}
+              />
+            </div>
             <div style={{ marginTop: "10px" }}>
               <ReactTagInput tags={this.state.tags} readOnly />
             </div>
