@@ -61,10 +61,13 @@ async function InitiateGunPeers() {
     "peers",
     JSON.stringify({ peers: [...storedPeers, ...newPeers] })
   );
-  var bucketPeers = [
-    ...storedPeers,
-    ...(await extractValid(pullFromBucket(newPeers))),
-  ];
+  var bucketPeers = Array.from(
+    new Set([
+      ...storedPeers,
+      ...(await extractValid(pullFromBucket(newPeers))),
+      process.env.REACT_APP_INIT_PEER,
+    ])
+  );
   const selectedPeer =
     bucketPeers[Math.floor(Math.random() * bucketPeers.length)];
 
@@ -74,7 +77,9 @@ async function InitiateGunPeers() {
 
   sessionStorage.setItem(
     "currentPeers",
-    JSON.stringify({ items: bucketPeers.map(peerToGunURL) })
+    JSON.stringify({
+      items: bucketPeers.map(peerToGunURL),
+    })
   );
   sessionStorage.setItem("currentPeer", `http://${selectedPeer}:8765/gun`);
   sessionStorage.setItem("currentAPI", `http://${selectedPeer}:5000`);
