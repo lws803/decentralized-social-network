@@ -44,45 +44,50 @@ async function extractValid(peers) {
 }
 
 async function InitiateGunPeers() {
-  var storedPeers = [process.env.REACT_APP_INIT_PEER, "127.0.0.1"];
-  if (localStorage.getItem["peers"])
-    storedPeers.concat(localStorage.getItem["peers"].peers);
-  storedPeers = await extractValid(pullFromBucket(storedPeers));
-  var newPeers = [];
-  // If less than 10 peers in storage we will refresh and rediscover
-  if (storedPeers.length < 10)
-    for (var i = 0; i < storedPeers.length; i++) {
-      try {
-        const res = await axios.get(`http://${storedPeers[i]}:5000/peers`);
-        if (res && res.data.peers) newPeers.concat(res.data.peers);
-      } catch (err) {}
+  if (
+    !sessionStorage.getItem("currentPeers") ||
+    !sessionStorage.getItem("currentAPI")
+  ) {
+    var storedPeers = [process.env.REACT_APP_INIT_PEER, "127.0.0.1"];
+    if (localStorage.getItem["peers"])
+      storedPeers.concat(localStorage.getItem["peers"].peers);
+    storedPeers = await extractValid(pullFromBucket(storedPeers));
+    var newPeers = [];
+    // If less than 10 peers in storage we will refresh and rediscover
+    if (storedPeers.length < 10)
+      for (var i = 0; i < storedPeers.length; i++) {
+        try {
+          const res = await axios.get(`http://${storedPeers[i]}:5000/peers`);
+          if (res && res.data.peers) newPeers.concat(res.data.peers);
+        } catch (err) {}
+      }
+    localStorage.setItem(
+      "peers",
+      JSON.stringify({ peers: [...storedPeers, ...newPeers] })
+    );
+    var bucketPeers = Array.from(
+      new Set([
+        ...storedPeers,
+        ...(await extractValid(pullFromBucket(newPeers))),
+        process.env.REACT_APP_INIT_PEER,
+      ])
+    );
+    const selectedPeer =
+      bucketPeers[Math.floor(Math.random() * bucketPeers.length)];
+
+    function peerToGunURL(peer) {
+      return `http://${peer}:8765/gun`;
     }
-  localStorage.setItem(
-    "peers",
-    JSON.stringify({ peers: [...storedPeers, ...newPeers] })
-  );
-  var bucketPeers = Array.from(
-    new Set([
-      ...storedPeers,
-      ...(await extractValid(pullFromBucket(newPeers))),
-      process.env.REACT_APP_INIT_PEER,
-    ])
-  );
-  const selectedPeer =
-    bucketPeers[Math.floor(Math.random() * bucketPeers.length)];
 
-  function peerToGunURL(peer) {
-    return `http://${peer}:8765/gun`;
+    sessionStorage.setItem(
+      "currentPeers",
+      JSON.stringify({
+        items: bucketPeers.map(peerToGunURL),
+      })
+    );
+    sessionStorage.setItem("currentPeer", `http://${selectedPeer}:8765/gun`);
+    sessionStorage.setItem("currentAPI", `http://${selectedPeer}:5000`);
   }
-
-  sessionStorage.setItem(
-    "currentPeers",
-    JSON.stringify({
-      items: bucketPeers.map(peerToGunURL),
-    })
-  );
-  sessionStorage.setItem("currentPeer", `http://${selectedPeer}:8765/gun`);
-  sessionStorage.setItem("currentAPI", `http://${selectedPeer}:5000`);
 }
 
 InitiateGunPeers().then(() => {
