@@ -12,7 +12,9 @@ import { PageContainer, EditButton } from "../common/CommonStyles";
 class Profile extends React.Component {
   constructor(props) {
     super(props);
-    this.gun = new Gun([sessionStorage.getItem("currentPeer")]);
+    this.gun = new Gun(
+      JSON.parse(sessionStorage.getItem("currentPeers")).items
+    );
     this.user = this.gun.user().recall({ sessionStorage: true });
     this.state = {
       user: undefined,

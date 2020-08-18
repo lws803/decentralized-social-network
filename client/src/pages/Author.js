@@ -12,7 +12,9 @@ import { LargeCard } from "../articles/ProfileCard";
 class Author extends React.Component {
   constructor(props) {
     super(props);
-    this.gun = new Gun([sessionStorage.getItem("currentPeer")]);
+    this.gun = new Gun(
+      JSON.parse(sessionStorage.getItem("currentPeers")).items
+    );
     this.state = {
       author: undefined,
       authorPhoto: undefined,

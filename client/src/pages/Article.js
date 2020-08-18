@@ -19,7 +19,9 @@ import { PageContainer, EditButton, ArticleBox } from "../common/CommonStyles";
 class Article extends React.Component {
   constructor(props) {
     super(props);
-    this.gun = new Gun([sessionStorage.getItem("currentPeer")]);
+    this.gun = new Gun(
+      JSON.parse(sessionStorage.getItem("currentPeers")).items
+    );
     this.user = this.gun.user().recall({ sessionStorage: true });
     this.state = {
       authorPhoto: undefined,
@@ -124,10 +126,10 @@ class Article extends React.Component {
         ) : (
           <div>
             <ArticleBox className="ck-content">
-                <Interweave
-                  content={this.state.content}
-                  transform={transformCodeBlocks}
-                />
+              <Interweave
+                content={this.state.content}
+                transform={transformCodeBlocks}
+              />
             </ArticleBox>
             <div style={{ marginTop: "10px" }}>
               <ReactTagInput tags={this.state.tags} readOnly />
