@@ -8,11 +8,15 @@ import axios from "axios";
 import history from "../utils/History";
 import { PageContainer, EditButton } from "../common/CommonStyles";
 import LazyImage from "../common/LazyImage";
+import Placeholder from "../res/profile_placeholder.png";
+import { Errors } from "../common/Messages";
 
 class ProfileEdit extends React.Component {
   constructor(props) {
     super(props);
-    this.gun = new Gun([sessionStorage.getItem("currentPeer")]);
+    this.gun = new Gun(
+      JSON.parse(sessionStorage.getItem("currentPeers")).items
+    );
     this.user = this.gun.user().recall({ sessionStorage: true });
     this.state = {
       user: undefined,
@@ -61,22 +65,17 @@ class ProfileEdit extends React.Component {
       .then(url => {
         this.setState({ profilePhoto: url });
       })
-      .catch(err => alert(err));
+      .catch(() => {
+        alert(Errors.incorrect_image_file_upload);
+      });
   }
 
   render() {
-    return (
-      <PageContainer>
-        <ProfileImageContainer>
-          <input
-            id="myInput"
-            type="file"
-            ref={ref => (this.upload = ref)}
-            style={{ display: "none" }}
-            onChange={this.onChangeFile.bind(this)}
-          />
+    const RenderProfileImage = props => {
+      if (props.profilePhoto) {
+        return (
           <LazyImage
-            src={this.state.profilePhoto}
+            src={props.profilePhoto}
             width={100}
             height={100}
             style={{
@@ -88,6 +87,28 @@ class ProfileEdit extends React.Component {
             }}
             onClick={() => this.upload.click()}
           />
+        );
+      }
+      return (
+        <img
+          alt=""
+          src={Placeholder}
+          style={{
+            borderRadius: "50%",
+            objectFit: "cover",
+            borderStyle: "dashed",
+            borderWidth: 2,
+            borderColor: "grey",
+          }}
+          onClick={() => this.upload.click()}
+        />
+      );
+    };
+
+    return (
+      <PageContainer>
+        <ProfileImageContainer>
+          <RenderProfileImage profilePhoto={this.state.profilePhoto} />
         </ProfileImageContainer>
         <div
           style={{
@@ -118,13 +139,21 @@ class ProfileEdit extends React.Component {
           <EditButton
             onClick={() => {
               this.updateProfile()
-                .then(ack => history.push("/profile/my_profile"))
+                .then(() => history.push("/profile/my_profile"))
                 .catch(err => alert(err));
             }}
           >
             Save
           </EditButton>
         </ButtonToolsContainer>
+        {/* Phantom input component */}
+        <input
+          id="myInput"
+          type="file"
+          ref={ref => (this.upload = ref)}
+          style={{ display: "none" }}
+          onChange={this.onChangeFile.bind(this)}
+        />
       </PageContainer>
     );
   }

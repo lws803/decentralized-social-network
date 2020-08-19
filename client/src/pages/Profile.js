@@ -6,13 +6,15 @@ import styled from "styled-components";
 import { Segment } from "semantic-ui-react";
 
 import history from "../utils/History";
-import LazyImage from "../common/LazyImage";
 import { PageContainer, EditButton } from "../common/CommonStyles";
+import ProfileImage from "../profile/ProfileImage";
 
 class Profile extends React.Component {
   constructor(props) {
     super(props);
-    this.gun = new Gun([sessionStorage.getItem("currentPeer")]);
+    this.gun = new Gun(
+      JSON.parse(sessionStorage.getItem("currentPeers")).items
+    );
     this.user = this.gun.user().recall({ sessionStorage: true });
     this.state = {
       user: undefined,
@@ -36,11 +38,10 @@ class Profile extends React.Component {
     return (
       <PageContainer>
         <ImageContainer>
-          <LazyImage
-            src={this.state.profilePhoto}
+          <ProfileImage
+            profilePhoto={this.state.profilePhoto}
             width={100}
             height={100}
-            style={{ borderRadius: "50%", objectFit: "cover" }}
           />
         </ImageContainer>
         <UserName

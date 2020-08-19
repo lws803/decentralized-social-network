@@ -4,17 +4,16 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 
 import Bio from "../profile/Bio";
-import LazyImage from "../common/LazyImage";
+import ProfileImage from "../profile/ProfileImage";
 
 class Card extends React.Component {
   render() {
     return (
       <ProfileCardContainer>
-        <LazyImage
-          src={this.props.authorPhoto}
+        <ProfileImage
+          profilePhoto={this.props.authorPhoto}
           width={54}
           height={54}
-          style={{ borderRadius: "50%", objectFit: "cover" }}
         />
         <ArticleDetails>
           <AuthorName onClick={this.props.onProfileClick}>
@@ -75,11 +74,10 @@ class LargeCard extends React.Component {
   render() {
     return (
       <LargeCardContainer>
-        <LazyImage
-          src={this.props.authorPhoto}
+        <ProfileImage
+          profilePhoto={this.props.authorPhoto}
           width={127}
           height={127}
-          style={{ borderRadius: "50%", objectFit: "cover" }}
         />
         <ProfileDetails>
           <LargeAuthorName onClick={this.props.onProfileClick}>

@@ -6,8 +6,12 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const _ = require("lodash");
+const FileType = require("file-type");
 require("dotenv").config();
 
+const Errors = require("./common/messages");
+
+const supportedMimeTypes = new Set(["image/jpeg", "image/png", "image/bmp"]);
 const client = redis.createClient(process.env.REDIS_URI, { db: 1 });
 const ipfs = IpfsHttpClient(process.env.IPFS_URL);
 var app = express();
@@ -54,27 +58,27 @@ function getRandom(arr, n) {
 
 app.post("/image_upload", async (req, res) => {
   try {
-    if (!req.files) {
+    if (!req.files || !req.files.upload) {
       res.send({
         status: false,
         message: "No file uploaded",
       });
     } else {
       let file = req.files.upload;
-      uploadFileIPFS(file.data)
-        .then(uploadedFile => {
-          const url = `http://ipfs.io/ipfs/${uploadedFile.path}`;
-          console.log(url);
-          res.send({
-            url: url,
-          });
-        })
-        .catch(err => {
-          res.status(500).send({ message: err });
+      let mimeType = (await FileType.fromBuffer(file.data)).mime;
+      if (supportedMimeTypes.has(mimeType)) {
+        let uploadedFile = await uploadFileIPFS(file.data);
+        const url = `http://ipfs.io/ipfs/${uploadedFile.path}`;
+        console.log(url);
+        res.send({
+          url: url,
         });
+      } else {
+        res.status(400).send({ message: Errors.incorrect_file_type });
+      }
     }
   } catch (err) {
-    res.status(500).send({ message: err });
+    res.status(400).send({ message: err });
   }
 });
 
@@ -88,11 +92,11 @@ app.get("/peers", async (req, res) => {
       })
       .catch(err => {
         console.log(err);
-        res.status(500).send({ message: err });
+        res.status(400).send({ message: err });
       });
   } catch (err) {
     console.log(err);
-    res.status(500).send({ message: err });
+    res.status(400).send({ message: err });
   }
 });
 
@@ -100,7 +104,7 @@ app.get("/healthcheck", async (req, res) => {
   try {
     res.send({ status: "ok" });
   } catch (err) {
-    res.status(500).send({ message: err });
+    res.status(400).send({ message: err });
   }
 });
 

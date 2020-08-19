@@ -18,11 +18,10 @@ import Settings from "./pages/Settings";
 import { Errors } from "./common/Messages";
 
 export default function App() {
-  console.log(sessionStorage.getItem("currentPeer"))
-  if (sessionStorage.getItem("currentPeer") === "http://undefined:8765/gun")
-    alert(Errors.no_connection_to_gun_instance);
-  var gunSession = new Gun([sessionStorage.getItem("currentPeer")]);
-  console.log("currently set peer:", sessionStorage.getItem("currentPeer"));
+  var peers = JSON.parse(sessionStorage.getItem("currentPeers")).items;
+  if (!peers.length) alert(Errors.no_connection_to_gun_instance);
+  var gunSession = new Gun(peers);
+  console.log("currently set peers:", peers);
   var user = gunSession.user().recall({ sessionStorage: true });
   if (user.is) {
     console.log("user logged in");
