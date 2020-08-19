@@ -88,6 +88,7 @@ class ProfileEdit extends React.Component {
       }
       return (
         <img
+          alt=""
           src={Placeholder}
           style={{
             borderRadius: "50%",
@@ -104,13 +105,6 @@ class ProfileEdit extends React.Component {
     return (
       <PageContainer>
         <ProfileImageContainer>
-          <input
-            id="myInput"
-            type="file"
-            ref={ref => (this.upload = ref)}
-            style={{ display: "none" }}
-            onChange={this.onChangeFile.bind(this)}
-          />
           <RenderProfileImage profilePhoto={this.state.profilePhoto} />
         </ProfileImageContainer>
         <div
@@ -149,6 +143,14 @@ class ProfileEdit extends React.Component {
             Save
           </EditButton>
         </ButtonToolsContainer>
+        {/* Phantom input component */}
+        <input
+          id="myInput"
+          type="file"
+          ref={ref => (this.upload = ref)}
+          style={{ display: "none" }}
+          onChange={this.onChangeFile.bind(this)}
+        />
       </PageContainer>
     );
   }

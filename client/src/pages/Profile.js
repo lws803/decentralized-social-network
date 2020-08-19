@@ -47,7 +47,7 @@ class Profile extends React.Component {
           />
         );
       }
-      return <img src={Placeholder} />;
+      return <img src={Placeholder} alt="" />;
     };
     return (
       <PageContainer>
