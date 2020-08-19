@@ -10,4 +10,4 @@ export const Errors = {
 
 export const Info = {
   password_changed: "Password successfully changed!",
-}
+};
