@@ -8,7 +8,7 @@ import { Segment } from "semantic-ui-react";
 import history from "../utils/History";
 import LazyImage from "../common/LazyImage";
 import { PageContainer, EditButton } from "../common/CommonStyles";
-import Placeholder from "../res/placeholder.png";
+import Placeholder from "../res/profile_placeholder.png";
 
 class Profile extends React.Component {
   constructor(props) {

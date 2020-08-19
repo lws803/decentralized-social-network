@@ -8,7 +8,7 @@ import axios from "axios";
 import history from "../utils/History";
 import { PageContainer, EditButton } from "../common/CommonStyles";
 import LazyImage from "../common/LazyImage";
-import Placeholder from "../res/placeholder.png";
+import Placeholder from "../res/profile_placeholder.png";
 
 class ProfileEdit extends React.Component {
   constructor(props) {
