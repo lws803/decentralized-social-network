@@ -67,7 +67,7 @@ app.post("/image_upload", async (req, res) => {
       let file = req.files.upload;
       let mimeType = (await FileType.fromBuffer(file.data)).mime;
       if (supportedMimeTypes.has(mimeType)) {
-        let uploadedFile = await uploadFileIPFS(file.data)
+        let uploadedFile = await uploadFileIPFS(file.data);
         const url = `http://ipfs.io/ipfs/${uploadedFile.path}`;
         console.log(url);
         res.send({
