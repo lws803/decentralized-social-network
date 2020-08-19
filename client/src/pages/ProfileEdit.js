@@ -120,7 +120,7 @@ class ProfileEdit extends React.Component {
           <EditButton
             onClick={() => {
               this.updateProfile()
-                .then(ack => history.push("/profile/my_profile"))
+                .then(() => history.push("/profile/my_profile"))
                 .catch(err => alert(err));
             }}
           >
