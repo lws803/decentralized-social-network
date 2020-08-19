@@ -125,24 +125,16 @@ class PostArticle extends React.Component {
       propertyName: "tags",
     });
     var validationErrors = result.errors.concat(tagsResult.errors);
-    if (validationErrors.length) alert(validationErrors.join("\n"));
+    if (validationErrors.length) throw new Error(validationErrors.join("\n"));
 
     if (result.valid && tagsResult.valid) {
-      this.postArticle(article)
-        .then(ref => {
-          history.push(`/article/${ref}`);
-        })
-        .catch(err => alert(err));
+      const ref = await this.postArticle(article);
+      return ref;
     }
   }
 
   async deleteArticle() {
-    await this.user
-      .get("posts")
-      .get(this.state.uuid)
-      .put(null, () => {
-        history.push(`/profile/author/~${this.user.is.pub}`);
-      });
+    await this.user.get("posts").get(this.state.uuid).put(null);
   }
 
   render() {
@@ -182,11 +174,27 @@ class PostArticle extends React.Component {
           />
         </ReactTagContainer>
         <ToolButtonsContainer>
-          <EditButton onClick={() => this.publish().then()}>
+          <EditButton
+            onClick={() =>
+              this.publish()
+                .then(ref => history.push(`/article/${ref}`))
+                .catch(err => alert(err))
+            }
+          >
             {this.state.uuid ? "Save" : "Publish New"}
           </EditButton>
           {this.state.uuid && (
-            <DeleteButton onClick={() => this.deleteArticle().then()}>
+            <DeleteButton
+              onClick={() =>
+                this.deleteArticle()
+                  .then(() =>
+                    history.push(`/profile/author/~${this.user.is.pub}`)
+                  )
+                  .catch(err => {
+                    alert(err);
+                  })
+              }
+            >
               Delete
             </DeleteButton>
           )}{" "}
