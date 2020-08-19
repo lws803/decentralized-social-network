@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import styled from "styled-components";
 import LazyImage from "../common/LazyImage";
 
 import Placeholder from "../res/profile_placeholder.png";
