@@ -9,10 +9,8 @@ export default {
   component: ProfileImage,
 };
 
-export const Default = () => (
-  <ProfileImage onImageSelect={action("file selected")} />
-);
+export const Default = () => <ProfileImage width={100} height={100} />;
 
 export const WithImage = () => (
-  <ProfileImage image={profileImage} onImageSelect={action("file selected")} />
+  <ProfileImage profilePhoto={profileImage} width={100} height={100} />
 );

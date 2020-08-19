@@ -6,9 +6,8 @@ import styled from "styled-components";
 import { Segment } from "semantic-ui-react";
 
 import history from "../utils/History";
-import LazyImage from "../common/LazyImage";
 import { PageContainer, EditButton } from "../common/CommonStyles";
-import Placeholder from "../res/profile_placeholder.png";
+import ProfileImage from "../profile/ProfileImage";
 
 class Profile extends React.Component {
   constructor(props) {
@@ -36,23 +35,14 @@ class Profile extends React.Component {
   }
 
   render() {
-    const RenderProfileImage = props => {
-      if (props.profilePhoto) {
-        return (
-          <LazyImage
-            src={props.profilePhoto}
-            width={100}
-            height={100}
-            style={{ borderRadius: "50%", objectFit: "cover" }}
-          />
-        );
-      }
-      return <img src={Placeholder} alt="" />;
-    };
     return (
       <PageContainer>
         <ImageContainer>
-          <RenderProfileImage profilePhoto={this.state.profilePhoto} />
+          <ProfileImage
+            profilePhoto={this.state.profilePhoto}
+            width={100}
+            height={100}
+          />
         </ImageContainer>
         <UserName
           onClick={() => history.push(`/profile/author/~${this.user.is.pub}`)}
@@ -76,9 +66,6 @@ const ImageContainer = styled.div`
   margin-top: 50px;
   margin-left: auto;
   margin-right: auto;
-  border-radius: 50%;
-  width: 100px;
-  height: 100px;
 `;
 
 const BioContainer = styled.div`
