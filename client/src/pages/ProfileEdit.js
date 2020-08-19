@@ -8,6 +8,7 @@ import axios from "axios";
 import history from "../utils/History";
 import { PageContainer, EditButton } from "../common/CommonStyles";
 import LazyImage from "../common/LazyImage";
+import Placeholder from "../res/placeholder.png";
 
 class ProfileEdit extends React.Component {
   constructor(props) {
@@ -67,18 +68,11 @@ class ProfileEdit extends React.Component {
   }
 
   render() {
-    return (
-      <PageContainer>
-        <ProfileImageContainer>
-          <input
-            id="myInput"
-            type="file"
-            ref={ref => (this.upload = ref)}
-            style={{ display: "none" }}
-            onChange={this.onChangeFile.bind(this)}
-          />
+    const RenderProfileImage = props => {
+      if (props.profilePhoto) {
+        return (
           <LazyImage
-            src={this.state.profilePhoto}
+            src={props.profilePhoto}
             width={100}
             height={100}
             style={{
@@ -90,6 +84,34 @@ class ProfileEdit extends React.Component {
             }}
             onClick={() => this.upload.click()}
           />
+        );
+      }
+      return (
+        <img
+          src={Placeholder}
+          style={{
+            borderRadius: "50%",
+            objectFit: "cover",
+            borderStyle: "dashed",
+            borderWidth: 2,
+            borderColor: "grey",
+          }}
+          onClick={() => this.upload.click()}
+        />
+      );
+    };
+
+    return (
+      <PageContainer>
+        <ProfileImageContainer>
+          <input
+            id="myInput"
+            type="file"
+            ref={ref => (this.upload = ref)}
+            style={{ display: "none" }}
+            onChange={this.onChangeFile.bind(this)}
+          />
+          <RenderProfileImage profilePhoto={this.state.profilePhoto} />
         </ProfileImageContainer>
         <div
           style={{
