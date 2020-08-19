@@ -9,6 +9,7 @@ import history from "../utils/History";
 import { PageContainer, EditButton } from "../common/CommonStyles";
 import LazyImage from "../common/LazyImage";
 import Placeholder from "../res/profile_placeholder.png";
+import { Errors } from "../common/Messages";
 
 class ProfileEdit extends React.Component {
   constructor(props) {
@@ -64,7 +65,9 @@ class ProfileEdit extends React.Component {
       .then(url => {
         this.setState({ profilePhoto: url });
       })
-      .catch(err => alert(err));
+      .catch(() => {
+        alert(Errors.incorrect_image_file_upload);
+      });
   }
 
   render() {
