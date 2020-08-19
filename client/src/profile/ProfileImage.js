@@ -37,8 +37,3 @@ ProfileImage.propTypes = {
   width: PropTypes.number,
   height: PropTypes.number,
 };
-
-// const PlaceholderImg = styled.img`
-//   object-fit: cover;
-//   border-radius: 50%;
-// `;
