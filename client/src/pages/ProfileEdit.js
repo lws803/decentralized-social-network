@@ -4,10 +4,10 @@ import { withRouter } from "react-router-dom";
 import Gun from "gun/gun";
 import styled from "styled-components";
 import axios from "axios";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 import history from "../utils/History";
 import { PageContainer, EditButton } from "../common/CommonStyles";
-import LazyImage from "../common/LazyImage";
 import Placeholder from "../res/profile_placeholder.png";
 import { Errors } from "../common/Messages";
 
@@ -71,11 +71,12 @@ class ProfileEdit extends React.Component {
   }
 
   render() {
-    const RenderProfileImage = props => {
-      if (props.profilePhoto) {
-        return (
-          <LazyImage
-            src={props.profilePhoto}
+    return (
+      <PageContainer>
+        <ProfileImageContainer>
+          <LazyLoadImage
+            src={this.state.profilePhoto}
+            placeholderSrc={Placeholder}
             width={100}
             height={100}
             style={{
@@ -87,28 +88,6 @@ class ProfileEdit extends React.Component {
             }}
             onClick={() => this.upload.click()}
           />
-        );
-      }
-      return (
-        <img
-          alt=""
-          src={Placeholder}
-          style={{
-            borderRadius: "50%",
-            objectFit: "cover",
-            borderStyle: "dashed",
-            borderWidth: 2,
-            borderColor: "grey",
-          }}
-          onClick={() => this.upload.click()}
-        />
-      );
-    };
-
-    return (
-      <PageContainer>
-        <ProfileImageContainer>
-          <RenderProfileImage profilePhoto={this.state.profilePhoto} />
         </ProfileImageContainer>
         <div
           style={{
