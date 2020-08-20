@@ -6,7 +6,6 @@ import LazyImage from "../common/LazyImage";
 import Placeholder from "../res/profile_placeholder.png";
 
 export default function ProfileImage(props) {
-  console.log(props);
   if (props.profilePhoto) {
     return (
       <LazyImage
