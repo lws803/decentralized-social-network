@@ -8,10 +8,9 @@ import styled from "styled-components";
 import moment from "moment";
 import { Divider, Placeholder } from "semantic-ui-react";
 import ReactFitText from "react-fittext";
-import SyntaxHighlighter from "react-syntax-highlighter";
-import monokai from "react-syntax-highlighter/dist/esm/styles/hljs/monokai";
 import Interweave from "interweave";
 
+import { transform } from "../articles/Embeddings";
 import history from "../utils/History";
 import { Card, LargeCard } from "../articles/ProfileCard";
 import { PageContainer, EditButton, ArticleBox } from "../common/CommonStyles";
@@ -77,22 +76,6 @@ class Article extends React.Component {
   }
 
   render() {
-    function transformCodeBlocks(node, children) {
-      if (node.tagName === "PRE" && children.length) {
-        if (children[0].props.tagName === "code") {
-          return (
-            <SyntaxHighlighter
-              language={node.getAttribute("language")}
-              showLineNumbers
-              style={monokai}
-            >
-              {children[0].props.children}
-            </SyntaxHighlighter>
-          );
-        }
-      }
-    }
-
     return (
       <PageContainer>
         <ReactFitText
@@ -126,10 +109,7 @@ class Article extends React.Component {
         ) : (
           <div>
             <ArticleBox className="ck-content">
-              <Interweave
-                content={this.state.content}
-                transform={transformCodeBlocks}
-              />
+              <Interweave content={this.state.content} transform={transform} />
             </ArticleBox>
             <div style={{ marginTop: "10px" }}>
               <ReactTagInput tags={this.state.tags} readOnly />

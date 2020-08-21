@@ -75,6 +75,7 @@
     "react-lazy-load-image-component": "^1.5.0",
     "react-masonry-component": "^6.2.1",
     "react-modal": "^3.11.2",
+    "react-player": "^2.6.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.1",
     "react-syntax-highlighter": "^13.4.0",
