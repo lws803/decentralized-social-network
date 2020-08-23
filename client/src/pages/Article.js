@@ -1,3 +1,5 @@
+/** @jsx jsx */
+
 import React from "react";
 
 import Gun from "gun/gun";
@@ -9,6 +11,7 @@ import moment from "moment";
 import { Divider, Placeholder } from "semantic-ui-react";
 import ReactFitText from "react-fittext";
 import Interweave from "interweave";
+import { css, jsx } from "@emotion/core";
 
 import { transform } from "../articles/Embeddings";
 import history from "../utils/History";
@@ -80,7 +83,9 @@ class Article extends React.Component {
       <PageContainer>
         <ReactFitText
           compressor={2.5}
-          style={{ width: "100%" }}
+          css={css`
+            width: 100%;
+          `}
           maxFontSize={40}
           minFontSize={25}
         >
@@ -104,14 +109,22 @@ class Article extends React.Component {
         </CardContainer>
         {!this.state.content ? (
           <PlaceholderArticle
-            style={{ width: "100%", marginLeft: "auto", marginRight: "auto" }}
+            css={css`
+              width: 100%;
+              margin-left: auto;
+              margin-right: auto;
+            `}
           />
         ) : (
           <div>
             <ArticleBox className="ck-content">
               <Interweave content={this.state.content} transform={transform} />
             </ArticleBox>
-            <div style={{ marginTop: "10px" }}>
+            <div
+              css={css`
+                margin-top: 10px;
+              `}
+            >
               <ReactTagInput tags={this.state.tags} readOnly />
             </div>
             <ToolButtonsContainer>
@@ -128,7 +141,11 @@ class Article extends React.Component {
           </div>
         )}
         <Divider
-          style={{ width: "70%", marginLeft: "auto", marginRight: "auto" }}
+          css={css`
+            width: 70%;
+            margin-left: auto;
+            margin-right: auto;
+          `}
         />
         <LargeCardContainer>
           <LargeCard

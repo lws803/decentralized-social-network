@@ -1,28 +1,32 @@
-import React from "react";
+/** @jsx jsx */
 
 import styled from "styled-components";
+import { css, jsx } from "@emotion/core";
 
 import LazyImage from "../common/LazyImage";
 
-export default function SmallPod(props) {
+const SmallPod = props => {
   return (
     <PodContainer
       onClick={props.onClick}
-      style={{
-        width: `${props.size.width}px`,
-      }}
+      css={css`
+        width: ${props.size.width}px;
+      `}
       isLoaded
     >
       {props.coverPhoto && (
         <LazyImage
           src={props.coverPhoto}
-          style={{ objectFit: "cover", width: "100%" }}
+          css={css`
+            object-fit: cover;
+            width: 100%;
+          `}
         />
       )}
       <Title>{props.title}</Title>
     </PodContainer>
   );
-}
+};
 
 const Title = styled.div`
   font-weight: heavy;
@@ -50,3 +54,5 @@ const PodContainer = styled.div`
   cursor: pointer;
   animation: 0.25s ease-in-out 0s 1 slowlyAppear;
 `;
+
+export default SmallPod;

@@ -1,9 +1,12 @@
+/** @jsx jsx */
+
 import React from "react";
 
 import { withRouter } from "react-router-dom";
 import Gun from "gun/gun";
 import styled from "styled-components";
 import { Segment } from "semantic-ui-react";
+import { css, jsx } from "@emotion/core";
 
 import history from "../utils/History";
 import { PageContainer, EditButton } from "../common/CommonStyles";
@@ -50,7 +53,13 @@ class Profile extends React.Component {
           {this.state.user}
         </UserName>
         <BioContainer>
-          <Segment style={{ height: "100%" }}>{this.state.bioContent}</Segment>
+          <Segment
+            css={css`
+              height: 100%;
+            `}
+          >
+            {this.state.bioContent}
+          </Segment>
         </BioContainer>
         <ToolsContainer>
           <EditButton onClick={() => history.push("/profile/my_profile/edit")}>

@@ -1,3 +1,5 @@
+/** @jsx jsx */
+
 import React from "react";
 
 import { withRouter } from "react-router-dom";
@@ -10,6 +12,7 @@ import { v4 as uuidv4 } from "uuid";
 import { parse } from "node-html-parser";
 import Validator from "jsonschema";
 import ReactFitText from "react-fittext";
+import { css, jsx } from "@emotion/core";
 
 import history from "../utils/History";
 import CustomCKEditor from "../common/CustomCKEditor";
@@ -142,7 +145,9 @@ class PostArticle extends React.Component {
       <PageContainer>
         <ReactFitText
           compressor={2.5}
-          style={{ width: "100%" }}
+          css={css`
+            width: 100%;
+          `}
           maxFontSize={40}
           minFontSize={25}
         >

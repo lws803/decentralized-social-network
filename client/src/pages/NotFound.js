@@ -1,18 +1,21 @@
-import React from "react";
+/** @jsx jsx */
 
 import styled from "styled-components";
 import ReactFitText from "react-fittext";
 import { Image } from "semantic-ui-react";
+import { css, jsx } from "@emotion/core";
 
 import { PageContainer } from "../common/CommonStyles";
 import NotFoundImage from "../res/not_found.png";
 
-export default function NotFound() {
+const NotFound = () => {
   return (
     <PageContainer>
       <ReactFitText
         compressor={2.5}
-        style={{ width: "100%" }}
+        css={css`
+          width: 100%;
+        `}
         maxFontSize={40}
         minFontSize={25}
       >
@@ -23,7 +26,7 @@ export default function NotFound() {
       </ImageContainer>
     </PageContainer>
   );
-}
+};
 
 const NotFoundTitle = styled.div`
   margin-top: 40px;
@@ -37,3 +40,5 @@ const ImageContainer = styled.div`
   margin-left: auto;
   margin-right: auto;
 `;
+
+export default NotFound;

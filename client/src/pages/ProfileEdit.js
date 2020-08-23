@@ -1,3 +1,5 @@
+/** @jsx jsx */
+
 import React from "react";
 
 import { withRouter } from "react-router-dom";
@@ -5,6 +7,7 @@ import Gun from "gun/gun";
 import styled from "styled-components";
 import axios from "axios";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import { css, jsx } from "@emotion/core";
 
 import history from "../utils/History";
 import { PageContainer, EditButton } from "../common/CommonStyles";
@@ -79,28 +82,31 @@ class ProfileEdit extends React.Component {
             placeholderSrc={Placeholder}
             width={100}
             height={100}
-            style={{
-              borderRadius: "50%",
-              objectFit: "cover",
-              borderStyle: "dashed",
-              borderWidth: 2,
-              borderColor: "grey",
-            }}
+            css={css`
+              border-radius: 50%;
+              object-fit: cover;
+              border-style: dashed;
+              border-width: 2;
+              border-color: grey;
+            `}
             onClick={() => this.upload.click()}
           />
         </ProfileImageContainer>
         <div
-          style={{
-            marginTop: "20px",
-            fontSize: "large",
-            textAlign: "center",
-          }}
+          css={css`
+            margin-top: 20px;
+            font-size: large;
+            text-align: center;
+          `}
         >
           {this.state.user}
         </div>
         <BioEditor>
           <textarea
-            style={{ width: "100%", padding: "5px" }}
+            css={css`
+              width: 100%;
+              padding: 5px;
+            `}
             rows="10"
             cols="30"
             onChange={e => {
@@ -130,7 +136,9 @@ class ProfileEdit extends React.Component {
           id="myInput"
           type="file"
           ref={ref => (this.upload = ref)}
-          style={{ display: "none" }}
+          css={css`
+            display: none;
+          `}
           onChange={this.onChangeFile.bind(this)}
         />
       </PageContainer>

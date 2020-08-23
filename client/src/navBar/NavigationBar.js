@@ -1,3 +1,5 @@
+/** @jsx jsx */
+
 import React from "react";
 import PropTypes from "prop-types";
 
@@ -5,6 +7,7 @@ import { Image } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { Button, Dropdown } from "semantic-ui-react";
 import styled from "styled-components";
+import { css, jsx } from "@emotion/core";
 
 import PenyetLogo from "../res/penyet_small.png";
 import history from "../utils/History";
@@ -14,11 +17,22 @@ class NavigationBar extends React.Component {
     return (
       <NavContainer>
         <Link to="/">
-          <Image src={PenyetLogo} size="tiny" style={{ marginLeft: "4px" }} />
+          <Image
+            src={PenyetLogo}
+            size="tiny"
+            css={css`
+              margin-left: 4px;
+            `}
+          />
         </Link>
 
         <ButtonsContainer>
-          <Dropdown text="Profile" style={{ marginRight: "4px" }}>
+          <Dropdown
+            text="Profile"
+            css={css`
+              margin-right: 4px;
+            `}
+          >
             <Dropdown.Menu>
               <Dropdown.Item
                 text="My Profile"
@@ -82,10 +96,4 @@ const IconButton = props => (
   <Button size="tiny" styled={{ marginRight: "4px" }} {...props}></Button>
 );
 
-const MainLogo = styled.button`
-  margin-left: 4px;
-  margin-right: 4px;
-`;
-
 export default NavigationBar;
-export { IconButton, MainLogo };
