@@ -16,6 +16,7 @@ import history from "../../utils/History";
 import { Card, LargeCard } from "../articles/ProfileCard";
 import { PageContainer, EditButton, ArticleBox } from "../common/CommonStyles";
 import ArticleModel from "../../model/Article";
+import UserModel from "../../model/User";
 
 class Article extends React.Component {
   constructor(props) {
@@ -54,7 +55,7 @@ class Article extends React.Component {
     return new Promise((resolve, reject) => {
       this.gun.get(user).once(ack => {
         if (ack.err) reject(ack.err);
-        else resolve(ack);
+        else resolve(new UserModel(ack).data);
       });
     });
   }
