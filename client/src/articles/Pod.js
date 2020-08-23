@@ -1,44 +1,45 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import moment from "moment";
 import styled from "styled-components";
 
 import { kFormatter } from "./Vote";
 
-class Pod extends React.Component {
-  render() {
-    return (
-      <Container>
-        <CoverPhoto src={this.props.coverPhoto} />
-        <DescriptionContainer>
+const Pod = props => {
+  return (
+    <Container>
+      <CoverPhoto src={props.coverPhoto} />
+      <DescriptionContainer>
+        <div>
+          <Title>{props.title}</Title>
+          <Body>{props.body}</Body>
+        </div>
+        <ExtraDetails>
           <div>
-            <Title>{this.props.title}</Title>
-            <Body>{this.props.body}</Body>
+            <Author>{props.author}</Author>
+            <TimeDate>
+              {props.time
+                ? moment.utc(props.dateCreated).local().format("DD MMM, YYYY")
+                : undefined}
+            </TimeDate>
           </div>
-          <ExtraDetails>
-            <div>
-              <Author>{this.props.author}</Author>
-              <TimeDate>{this.props.time}</TimeDate>
-            </div>
-            <VotesContainer>
-              <VoteCount>Up: {kFormatter(this.props.upVoteCount)}</VoteCount>
-              <VoteCount>
-                Down: {kFormatter(this.props.downVoteCount)}
-              </VoteCount>
-            </VotesContainer>
-          </ExtraDetails>
-        </DescriptionContainer>
-      </Container>
-    );
-  }
-}
+          <VotesContainer>
+            <VoteCount>Up: {kFormatter(props.upVoteCount)}</VoteCount>
+            <VoteCount>Down: {kFormatter(props.downVoteCount)}</VoteCount>
+          </VotesContainer>
+        </ExtraDetails>
+      </DescriptionContainer>
+    </Container>
+  );
+};
 
 Pod.propTypes = {
   coverPhoto: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   body: PropTypes.string.isRequired,
   author: PropTypes.string.isRequired,
-  time: PropTypes.string.isRequired,
+  time: PropTypes.instanceOf(Date).isRequired,
   upVoteCount: PropTypes.number.isRequired,
   downVoteCount: PropTypes.number.isRequired,
 };
