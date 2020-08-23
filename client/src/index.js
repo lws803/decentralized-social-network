@@ -6,6 +6,7 @@ import axios from "axios";
 import "gun/sea";
 import "semantic-ui-css/semantic.min.css";
 import "./common/css/content-styles.css";
+import "@pathofdev/react-tag-input/build/index.css";
 require("dotenv").config();
 
 function getRandom(arr, n) {
