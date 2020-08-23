@@ -13,6 +13,7 @@ import history from "../../utils/History";
 import { PageContainer, EditButton } from "../common/CommonStyles";
 import Placeholder from "../../res/profile_placeholder.png";
 import { Errors } from "../common/Messages";
+import UserModel from "../../model/User";
 
 class ProfileEdit extends React.Component {
   constructor(props) {
@@ -22,9 +23,9 @@ class ProfileEdit extends React.Component {
     );
     this.user = this.gun.user().recall({ sessionStorage: true });
     this.state = {
-      user: undefined,
-      bioContent: "",
-      profilePhoto: undefined,
+      alias: undefined,
+      bio: "",
+      photo: undefined,
     };
   }
 
@@ -32,16 +33,14 @@ class ProfileEdit extends React.Component {
     if (this.user.is)
       this.user.once(user =>
         this.setState({
-          profilePhoto: user.photo,
-          bioContent: user.bio,
-          user: user.alias,
+          ...new UserModel(user).data,
         })
       );
   }
 
   async updateProfile() {
-    await this.user.get("photo").put(this.state.profilePhoto);
-    await this.user.get("bio").put(this.state.bioContent);
+    await this.user.get("photo").put(this.state.photo);
+    await this.user.get("bio").put(this.state.bio);
   }
 
   async uploadPhoto(imageFile) {
@@ -78,7 +77,7 @@ class ProfileEdit extends React.Component {
       <PageContainer>
         <ProfileImageContainer>
           <LazyLoadImage
-            src={this.state.profilePhoto}
+            src={this.state.photo}
             placeholderSrc={Placeholder}
             width={100}
             height={100}
@@ -99,7 +98,7 @@ class ProfileEdit extends React.Component {
             text-align: center;
           `}
         >
-          {this.state.user}
+          {this.state.alias}
         </div>
         <BioEditor>
           <textarea
@@ -111,14 +110,14 @@ class ProfileEdit extends React.Component {
             cols="30"
             onChange={e => {
               if (e.target.value.length < 200)
-                this.setState({ bioContent: e.target.value });
+                this.setState({ bio: e.target.value });
             }}
-            value={this.state.bioContent}
+            value={this.state.bio}
           />
         </BioEditor>
         <CharacterCount>
           Characters left:{" "}
-          {this.state.bioContent ? 200 - this.state.bioContent.length : 200}
+          {this.state.bio ? 200 - this.state.bio.length : 200}
         </CharacterCount>
         <ButtonToolsContainer>
           <EditButton

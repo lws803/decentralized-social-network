@@ -11,6 +11,7 @@ import { css, jsx } from "@emotion/core";
 import history from "../../utils/History";
 import { PageContainer, EditButton } from "../common/CommonStyles";
 import ProfileImage from "../profile/ProfileImage";
+import UserModel from "../../model/User";
 
 class Profile extends React.Component {
   constructor(props) {
@@ -20,9 +21,9 @@ class Profile extends React.Component {
     );
     this.user = this.gun.user().recall({ sessionStorage: true });
     this.state = {
-      user: undefined,
-      bioContent: undefined,
-      profilePhoto: undefined,
+      alias: undefined,
+      bio: "",
+      photo: undefined,
     };
   }
 
@@ -30,9 +31,7 @@ class Profile extends React.Component {
     if (this.user.is)
       this.user.once(user => {
         this.setState({
-          profilePhoto: user.photo,
-          bioContent: user.bio,
-          user: user.alias,
+          ...new UserModel(user).data,
         });
       });
   }
@@ -42,7 +41,7 @@ class Profile extends React.Component {
       <PageContainer>
         <ImageContainer>
           <ProfileImage
-            profilePhoto={this.state.profilePhoto}
+            profilePhoto={this.state.photo}
             width={100}
             height={100}
           />
@@ -50,7 +49,7 @@ class Profile extends React.Component {
         <UserName
           onClick={() => history.push(`/profile/author/~${this.user.is.pub}`)}
         >
-          {this.state.user}
+          {this.state.alias}
         </UserName>
         <BioContainer>
           <Segment
@@ -58,7 +57,7 @@ class Profile extends React.Component {
               height: 100%;
             `}
           >
-            {this.state.bioContent}
+            {this.state.bio}
           </Segment>
         </BioContainer>
         <ToolsContainer>
