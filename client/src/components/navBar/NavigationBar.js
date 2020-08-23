@@ -9,8 +9,8 @@ import { Button, Dropdown } from "semantic-ui-react";
 import styled from "styled-components";
 import { css, jsx } from "@emotion/core";
 
-import PenyetLogo from "../res/penyet_small.png";
-import history from "../utils/History";
+import PenyetLogo from "../../res/penyet_small.png";
+import history from "../../utils/History";
 
 class NavigationBar extends React.Component {
   render() {

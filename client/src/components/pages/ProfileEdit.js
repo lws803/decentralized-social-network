@@ -9,9 +9,9 @@ import axios from "axios";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { css, jsx } from "@emotion/core";
 
-import history from "../utils/History";
+import history from "../../utils/History";
 import { PageContainer, EditButton } from "../common/CommonStyles";
-import Placeholder from "../res/profile_placeholder.png";
+import Placeholder from "../../res/profile_placeholder.png";
 import { Errors } from "../common/Messages";
 
 class ProfileEdit extends React.Component {

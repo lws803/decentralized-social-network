@@ -6,7 +6,7 @@ import { Image } from "semantic-ui-react";
 import { css, jsx } from "@emotion/core";
 
 import { PageContainer } from "../common/CommonStyles";
-import NotFoundImage from "../res/not_found.png";
+import NotFoundImage from "../../res/not_found.png";
 
 const NotFound = () => {
   return (

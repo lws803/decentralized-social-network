@@ -5,7 +5,7 @@ import { jsx, css } from "@emotion/core";
 
 import LazyImage from "../common/LazyImage";
 
-import Placeholder from "../res/profile_placeholder.png";
+import Placeholder from "../../res/profile_placeholder.png";
 
 const ProfileImage = props => {
   if (props.profilePhoto) {

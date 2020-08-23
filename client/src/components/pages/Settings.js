@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Accordion, Icon, Button } from "semantic-ui-react";
-import history from "../utils/History";
+import history from "../../utils/History";
 import Gun from "gun/gun";
 
 import { PageContainer } from "../common/CommonStyles";

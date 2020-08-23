@@ -6,7 +6,7 @@ import { Image } from "semantic-ui-react";
 import { css, jsx } from "@emotion/core";
 
 import { PageContainer } from "../common/CommonStyles";
-import PenyetImage from "../res/penyet.png";
+import PenyetImage from "../../res/penyet.png";
 
 const Main = () => {
   return (

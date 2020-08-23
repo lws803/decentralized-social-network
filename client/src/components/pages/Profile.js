@@ -8,7 +8,7 @@ import styled from "styled-components";
 import { Segment } from "semantic-ui-react";
 import { css, jsx } from "@emotion/core";
 
-import history from "../utils/History";
+import history from "../../utils/History";
 import { PageContainer, EditButton } from "../common/CommonStyles";
 import ProfileImage from "../profile/ProfileImage";
 

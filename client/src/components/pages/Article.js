@@ -12,10 +12,10 @@ import Interweave from "interweave";
 import { css, jsx } from "@emotion/core";
 
 import { transform } from "../articles/Embeddings";
-import history from "../utils/History";
+import history from "../../utils/History";
 import { Card, LargeCard } from "../articles/ProfileCard";
 import { PageContainer, EditButton, ArticleBox } from "../common/CommonStyles";
-import ArticleModel from "../model/Article";
+import ArticleModel from "../../model/Article";
 
 class Article extends React.Component {
   constructor(props) {

@@ -14,7 +14,7 @@ import Validator from "jsonschema";
 import ReactFitText from "react-fittext";
 import { css, jsx } from "@emotion/core";
 
-import history from "../utils/History";
+import history from "../../utils/History";
 import CustomCKEditor from "../common/CustomCKEditor";
 import { NewArticleSchema, TagsSchema } from "../common/Schemas";
 import { Errors } from "../common/Messages";
@@ -23,7 +23,7 @@ import {
   EditButton,
   DeleteButton,
 } from "../common/CommonStyles";
-import ArticleModel from "../model/Article";
+import ArticleModel from "../../model/Article";
 
 class PostArticle extends React.Component {
   constructor(props) {

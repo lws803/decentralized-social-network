@@ -4,18 +4,18 @@ import { Router, Switch, Route } from "react-router-dom";
 import Gun from "gun/gun";
 
 import history from "./utils/History";
-import NavigationBar from "./navBar/NavigationBar";
-import PostArticle from "./pages/PostArticle";
-import Article from "./pages/Article";
-import Main from "./pages/Main";
-import ProfileEdit from "./pages/ProfileEdit";
-import Profile from "./pages/Profile";
-import NotFound from "./pages/NotFound";
-import { PageContainer } from "./common/CommonStyles";
-import AuthenticationModal from "./authModal/AuthenticationModal";
-import Author from "./pages/Author";
-import Settings from "./pages/Settings";
-import { Errors } from "./common/Messages";
+import NavigationBar from "./components/navBar/NavigationBar";
+import PostArticle from "./components/pages/PostArticle";
+import Article from "./components/pages/Article";
+import Main from "./components/pages/Main";
+import ProfileEdit from "./components/pages/ProfileEdit";
+import Profile from "./components/pages/Profile";
+import NotFound from "./components/pages/NotFound";
+import { PageContainer } from "./components/common/CommonStyles";
+import AuthenticationModal from "./components/authModal/AuthenticationModal";
+import Author from "./components/pages/Author";
+import Settings from "./components/pages/Settings";
+import { Errors } from "./components/common/Messages";
 
 export default function App() {
   var peers = JSON.parse(sessionStorage.getItem("currentPeers")).items;

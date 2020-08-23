@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 import Gun from "gun/gun";
 
-import history from "../utils/History";
+import history from "../../utils/History";
 import SmallPodsCollection from "../articles/SmallPodsCollection";
 import { PageContainer } from "../common/CommonStyles";
 import { LargeCard } from "../articles/ProfileCard";

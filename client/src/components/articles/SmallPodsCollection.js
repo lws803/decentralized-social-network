@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { DateTree } from "gun-util";
 import Masonry from "react-masonry-component";
 
-import history from "../utils/History";
+import history from "../../utils/History";
 import SmallPod from "./SmallPod";
 import Gun from "gun/gun";
 
