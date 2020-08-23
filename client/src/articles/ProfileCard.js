@@ -1,40 +1,39 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import moment from "moment";
 import styled from "styled-components";
 
 import Bio from "../profile/Bio";
 import ProfileImage from "../profile/ProfileImage";
 
-class Card extends React.Component {
-  render() {
-    return (
-      <ProfileCardContainer>
-        <ProfileImage
-          profilePhoto={this.props.authorPhoto}
-          width={54}
-          height={54}
-        />
-        <ArticleDetails>
-          <AuthorName onClick={this.props.onProfileClick}>
-            {this.props.authorName}
-          </AuthorName>
-          <TimeDate>{this.props.dateCreated}</TimeDate>
-        </ArticleDetails>
-        <ButtonContainer>
-          <button onClick={this.props.onFollowClick} disabled>
-            Follow
-          </button>
-        </ButtonContainer>
-      </ProfileCardContainer>
-    );
-  }
-}
+const Card = props => {
+  return (
+    <ProfileCardContainer>
+      <ProfileImage profilePhoto={props.authorPhoto} width={54} height={54} />
+      <ArticleDetails>
+        <AuthorName onClick={props.onProfileClick}>
+          {props.authorName}
+        </AuthorName>
+        <TimeDate>
+          {props.dateCreated
+            ? moment.utc(props.dateCreated).local().format("DD MMM, YYYY")
+            : undefined}
+        </TimeDate>
+      </ArticleDetails>
+      <ButtonContainer>
+        <button onClick={props.onFollowClick} disabled>
+          Follow
+        </button>
+      </ButtonContainer>
+    </ProfileCardContainer>
+  );
+};
 
 Card.propTypes = {
   authorPhoto: PropTypes.string,
   authorName: PropTypes.string,
-  dateCreated: PropTypes.string,
+  dateCreated: PropTypes.instanceOf(Date),
   onFollowClick: PropTypes.func,
   onProfileClick: PropTypes.func,
 };
@@ -70,32 +69,25 @@ const AuthorName = styled.div`
   }
 `;
 
-class LargeCard extends React.Component {
-  render() {
-    return (
-      <LargeCardContainer>
-        <ProfileImage
-          profilePhoto={this.props.authorPhoto}
-          width={127}
-          height={127}
-        />
-        <ProfileDetails>
-          <LargeAuthorName onClick={this.props.onProfileClick}>
-            {this.props.authorName}
-          </LargeAuthorName>
-          <BioContainer>
-            <Bio content={this.props.bio} />
-          </BioContainer>
-        </ProfileDetails>
-      </LargeCardContainer>
-    );
-  }
-}
+const LargeCard = props => {
+  return (
+    <LargeCardContainer>
+      <ProfileImage profilePhoto={props.authorPhoto} width={127} height={127} />
+      <ProfileDetails>
+        <LargeAuthorName onClick={props.onProfileClick}>
+          {props.authorName}
+        </LargeAuthorName>
+        <BioContainer>
+          <Bio content={props.bio} />
+        </BioContainer>
+      </ProfileDetails>
+    </LargeCardContainer>
+  );
+};
 
 LargeCard.propTypes = {
   authorPhoto: PropTypes.string,
   authorName: PropTypes.string,
-  dateCreated: PropTypes.string,
   bio: PropTypes.string,
   onProfileClick: PropTypes.func,
 };

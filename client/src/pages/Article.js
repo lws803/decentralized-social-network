@@ -6,7 +6,6 @@ import Gun from "gun/gun";
 import { withRouter } from "react-router-dom";
 import ReactTagInput from "@pathofdev/react-tag-input";
 import styled from "styled-components";
-import moment from "moment";
 import { Divider, Placeholder } from "semantic-ui-react";
 import ReactFitText from "react-fittext";
 import Interweave from "interweave";
@@ -94,14 +93,7 @@ class Article extends React.Component {
           <Card
             authorPhoto={this.state.authorPhoto}
             onFollowClick={() => {}}
-            dateCreated={
-              this.state.createdAt
-                ? moment
-                    .utc(this.state.createdAt)
-                    .local()
-                    .format("DD MMM, YYYY")
-                : undefined
-            }
+            dateCreated={this.state.createdAt}
             authorName={this.state.author}
             onProfileClick={() => this.goToProfile()}
           />
