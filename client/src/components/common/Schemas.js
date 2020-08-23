@@ -25,7 +25,7 @@ export const NewArticleSchema = {
     title: { type: "string", required: true, maxLength: 100, minLength: 1 },
     author: { type: "string", required: true },
     createdAt: { type: "string", required: true },
-    updatedAt: { type: "string" },
+    updatedAt: { type: ["string", "null"] },
   },
 };
 
