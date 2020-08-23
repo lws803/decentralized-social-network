@@ -10,7 +10,7 @@ const UserSchema = {
   },
 };
 
-class UserModel extends Object{
+class UserModel extends Object {
   constructor(user) {
     super();
     const result = validator.validate(user, UserSchema);
