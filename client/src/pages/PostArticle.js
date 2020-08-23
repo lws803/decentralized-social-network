@@ -23,6 +23,7 @@ import {
   EditButton,
   DeleteButton,
 } from "../common/CommonStyles";
+import ArticleModel from "../model/Article";
 
 class PostArticle extends React.Component {
   constructor(props) {
@@ -60,10 +61,7 @@ class PostArticle extends React.Component {
     const article = await this.gun.get(user).get(path).get(articleID).once();
     if (article !== null)
       this.setState({
-        ...article,
-        tags: article.tags ? JSON.parse(article.tags)["items"] : [],
-        content: article.content,
-        title: article.title,
+        ...new ArticleModel(article).data,
       });
   }
 
@@ -109,18 +107,17 @@ class PostArticle extends React.Component {
   async publish() {
     const v = new Validator.Validator();
     var date = new Date();
-    var article = {
+    var article = new ArticleModel({
       author: await this.user.get("alias").once(),
       uuid: this.state.uuid ? this.state.uuid : uuidv4(),
       createdAt: this.state.createdAt
         ? this.state.createdAt
         : date.toISOString(),
       updatedAt: this.state.uuid ? date.toISOString() : "",
-      tags: JSON.stringify({ items: this.state.tags }),
+      tags: this.state.tags,
       title: this.state.title,
       ...this.extractContentMetadata(),
-    };
-
+    }).toGunData();
     const result = v.validate(article, NewArticleSchema, {
       propertyName: "article",
     });

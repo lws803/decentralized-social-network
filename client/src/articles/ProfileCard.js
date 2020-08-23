@@ -17,7 +17,7 @@ const Card = props => {
         </AuthorName>
         <TimeDate>
           {props.dateCreated
-            ? moment.utc(props.dateCreated).local().format("DD MMM, YYYY")
+            ? props.dateCreated.local().format("DD MMM, YYYY")
             : undefined}
         </TimeDate>
       </ArticleDetails>
@@ -33,7 +33,7 @@ const Card = props => {
 Card.propTypes = {
   authorPhoto: PropTypes.string,
   authorName: PropTypes.string,
-  dateCreated: PropTypes.string,
+  dateCreated: PropTypes.instanceOf(moment),
   onFollowClick: PropTypes.func,
   onProfileClick: PropTypes.func,
 };

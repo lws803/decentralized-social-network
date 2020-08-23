@@ -15,6 +15,7 @@ import { transform } from "../articles/Embeddings";
 import history from "../utils/History";
 import { Card, LargeCard } from "../articles/ProfileCard";
 import { PageContainer, EditButton, ArticleBox } from "../common/CommonStyles";
+import ArticleModel from "../model/Article";
 
 class Article extends React.Component {
   constructor(props) {
@@ -63,8 +64,7 @@ class Article extends React.Component {
     if (article !== null) {
       let author = await this.getAuthorInfo(user);
       this.setState({
-        ...article,
-        tags: article.tags ? JSON.parse(article.tags)["items"] : [],
+        ...new ArticleModel(article).data,
         authorBio: author.bio,
         authorPhoto: author.photo,
       });
