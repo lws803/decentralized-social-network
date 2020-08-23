@@ -9,32 +9,30 @@ function kFormatter(num) {
     : Math.sign(num) * Math.abs(num);
 }
 
-class Vote extends React.Component {
-  render() {
-    return (
-      <Container>
-        <ButtonVoteNum>
-          <button
-            onClick={this.props.onClickUpVote}
-            disabled={this.props.upDisabled}
-          >
-            U
-          </button>
-          <VoteCount>{kFormatter(this.props.upVoteCount)}</VoteCount>
-        </ButtonVoteNum>
-        <ButtonVoteNum>
-          <button
-            onClick={this.props.onClickDownVote}
-            disabled={this.props.downDisabled}
-          >
-            D
-          </button>
-          <VoteCount>{kFormatter(this.props.downVoteCount)}</VoteCount>
-        </ButtonVoteNum>
-      </Container>
-    );
-  }
-}
+const Vote = props => {
+  return (
+    <Container>
+      <ButtonVoteNum>
+        <button
+          onClick={props.onClickUpVote}
+          disabled={props.upDisabled}
+        >
+          U
+        </button>
+        <VoteCount>{kFormatter(props.upVoteCount)}</VoteCount>
+      </ButtonVoteNum>
+      <ButtonVoteNum>
+        <button
+          onClick={props.onClickDownVote}
+          disabled={props.downDisabled}
+        >
+          D
+        </button>
+        <VoteCount>{kFormatter(props.downVoteCount)}</VoteCount>
+      </ButtonVoteNum>
+    </Container>
+  );
+};
 
 Vote.propTypes = {
   onClickUpVote: PropTypes.func.isRequired,

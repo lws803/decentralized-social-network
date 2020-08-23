@@ -1,10 +1,12 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import { DateTree } from "gun-util";
 import Masonry from "react-masonry-component";
 
 import history from "../utils/History";
 import SmallPod from "./SmallPod";
+import Gun from "gun/gun";
 
 class SmallPodsCollection extends React.Component {
   maxItems = 20;
@@ -70,5 +72,9 @@ class SmallPodsCollection extends React.Component {
     );
   }
 }
+
+SmallPodsCollection.propTypes = {
+  gunSession: PropTypes.instanceOf(Gun),
+};
 
 export default SmallPodsCollection;

@@ -33,7 +33,7 @@ const Card = props => {
 Card.propTypes = {
   authorPhoto: PropTypes.string,
   authorName: PropTypes.string,
-  dateCreated: PropTypes.instanceOf(Date),
+  dateCreated: PropTypes.string,
   onFollowClick: PropTypes.func,
   onProfileClick: PropTypes.func,
 };

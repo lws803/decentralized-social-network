@@ -5,7 +5,6 @@ import Validator from "jsonschema";
 import { Button, Header, Modal } from "semantic-ui-react";
 
 import history from "../utils/History";
-import ModalView from "../common/Modal";
 import { AuthSchema } from "../common/Schemas";
 
 class AuthenticationModal extends React.Component {
@@ -92,8 +91,8 @@ class AuthenticationModal extends React.Component {
 }
 
 AuthenticationModal.propTypes = {
-  user: PropTypes.any.isRequired,
-  ...ModalView.propTypes,
+  user: PropTypes.object.isRequired,
+  reload: PropTypes.func,
 };
 
 export default AuthenticationModal;
