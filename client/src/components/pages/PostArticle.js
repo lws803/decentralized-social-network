@@ -62,7 +62,7 @@ class PostArticle extends React.Component {
     const article = await this.gun.get(user).get(path).get(articleID).once();
     if (article !== null)
       this.setState({
-        ...new ArticleModel(article).data,
+        ...new ArticleModel(article),
       });
   }
 

@@ -65,7 +65,7 @@ class Article extends React.Component {
     if (article !== null) {
       let author = await this.getAuthorInfo(user);
       this.setState({
-        ...new ArticleModel(article).data,
+        ...new ArticleModel(article),
         authorBio: author.bio,
         authorPhoto: author.photo,
       });
