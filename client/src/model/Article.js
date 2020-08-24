@@ -20,7 +20,7 @@ class ArticleModel extends Object {
     this.tags = result.instance.tags;
   }
 
-  tagsModel = {
+  tagsSchema = {
     type: "array",
     items: {
       type: "string",
@@ -39,7 +39,7 @@ class ArticleModel extends Object {
       title: { type: "string", required: true },
       createdAt: { type: "moment", required: true }, // Add coerce hook to convert to date here
       updatedAt: { type: "moment" },
-      tags: this.tagsModel,
+      tags: this.tagsSchema,
     },
   };
 
