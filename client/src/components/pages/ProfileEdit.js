@@ -33,7 +33,7 @@ class ProfileEdit extends React.Component {
     if (this.user.is)
       this.user.once(user =>
         this.setState({
-          ...new UserModel(user).data,
+          ...new UserModel(user),
         })
       );
   }

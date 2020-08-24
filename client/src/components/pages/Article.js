@@ -55,7 +55,7 @@ class Article extends React.Component {
     return new Promise((resolve, reject) => {
       this.gun.get(user).once(ack => {
         if (ack.err) reject(ack.err);
-        else resolve(new UserModel(ack).data);
+        else resolve(new UserModel(ack));
       });
     });
   }

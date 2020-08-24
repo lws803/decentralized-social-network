@@ -1,22 +1,24 @@
 import validator from "./Validator";
 import { ModelError } from "../common/Exceptions";
 
-const UserSchema = {
-  type: "object",
-  properties: {
-    alias: { type: "string" },
-    bio: { type: "string" },
-    photo: { type: "string" },
-  },
-};
-
 class UserModel extends Object {
   constructor(user) {
     super();
-    const result = validator.validate(user, UserSchema);
+    const result = validator.validate(user, this.userSchema);
     if (result.errors.length) throw new ModelError(result.errors.join("\n"));
-    this.data = result.instance;
+    this.alias = result.instance.alias;
+    this.bio = result.instance.bio;
+    this.photo = result.instance.photo;
   }
+
+  userSchema = {
+    type: "object",
+    properties: {
+      alias: { type: "string" },
+      bio: { type: "string" },
+      photo: { type: "string" },
+    },
+  };
 }
 
 export default UserModel;
