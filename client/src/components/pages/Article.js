@@ -99,7 +99,7 @@ class Article extends React.Component {
             onProfileClick={() => this.goToProfile()}
           />
         </CardContainer>
-        {!this.state.content ? (
+        {!this.state.title ? (
           <PlaceholderArticle
             css={css`
               width: 100%;

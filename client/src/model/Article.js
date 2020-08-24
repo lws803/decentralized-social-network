@@ -62,6 +62,7 @@ class ArticleModel extends Object {
   toGunData() {
     return {
       ...this,
+      content: this.content ? this.content : "",
       createdAt: this.createdAt.toISOString(),
       updatedAt: this.updatedAt
         ? this.updatedAt.toISOString()
