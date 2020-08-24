@@ -1,7 +1,7 @@
 import moment from "moment";
 
 import validator from "./Validator";
-import ModelError from "./Error";
+import { ModelError } from "../common/Exceptions";
 
 const TagsModel = {
   type: "array",

@@ -24,7 +24,7 @@ import {
   DeleteButton,
 } from "../common/CommonStyles";
 import ArticleModel from "../../model/Article";
-import ModelError from "../../model/Error";
+import { ValidationError } from "../../common/Exceptions";
 
 class PostArticle extends React.Component {
   constructor(props) {
@@ -126,7 +126,8 @@ class PostArticle extends React.Component {
       propertyName: "tags",
     });
     var validationErrors = result.errors.concat(tagsResult.errors);
-    if (validationErrors.length) throw new ModelError(validationErrors.join("\n"));
+    if (validationErrors.length)
+      throw new ValidationError(validationErrors.join("\n"));
 
     if (result.valid && tagsResult.valid) {
       const ref = await this.postArticle(article);

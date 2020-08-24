@@ -1,5 +1,5 @@
 import validator from "./Validator";
-import ModelError from "./Error";
+import { ModelError } from "../common/Exceptions";
 
 const UserSchema = {
   type: "object",

@@ -9,6 +9,7 @@ import styled from "styled-components";
 
 import { PasswordSchema } from "../common/Schemas";
 import { Errors, Info } from "../common/Messages";
+import { ValidationError } from "../../common/Exceptions";
 
 async function resetPassword(newPass, retypeNewPass, user, gunSession) {
   try {
@@ -17,13 +18,13 @@ async function resetPassword(newPass, retypeNewPass, user, gunSession) {
       propertyName: "New password",
     });
     if (newPassResult.errors.length) {
-      throw new Error(newPassResult.errors.join("\n"));
+      throw new ValidationError(newPassResult.errors.join("\n"));
     }
     if (!user.is) {
-      throw new Error(Errors.user_not_logged_in);
+      throw new ValidationError(Errors.user_not_logged_in);
     }
     if (retypeNewPass !== newPass) {
-      throw new Error(Errors.password_not_match);
+      throw new ValidationError(Errors.password_not_match);
     }
     const { pub, priv, epriv } = user._.sea;
     const id = `~${pub}`;
