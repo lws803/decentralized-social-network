@@ -19,6 +19,15 @@ class UserModel extends Object {
       photo: { type: "string" },
     },
   };
+
+  toGunData() {
+    var payload = {};
+    if (this.alias) payload.alias = this.alias;
+    if (this.bio) payload.bio = this.bio;
+    if (this.photo) payload.photo = this.photo;
+
+    return payload;
+  }
 }
 
 export default UserModel;

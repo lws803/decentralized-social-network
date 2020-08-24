@@ -39,8 +39,11 @@ class ProfileEdit extends React.Component {
   }
 
   async updateProfile() {
-    await this.user.get("photo").put(this.state.photo);
-    await this.user.get("bio").put(this.state.bio);
+    const userModel = new UserModel({
+      photo: this.state.photo,
+      bio: this.state.bio,
+    });
+    await this.user.put(userModel.toGunData());
   }
 
   async uploadPhoto(imageFile) {
@@ -65,7 +68,7 @@ class ProfileEdit extends React.Component {
     var file = event.target.files[0];
     this.uploadPhoto(file)
       .then(url => {
-        this.setState({ profilePhoto: url });
+        this.setState({ photo: url });
       })
       .catch(() => {
         alert(Errors.incorrect_image_file_upload);
@@ -116,8 +119,7 @@ class ProfileEdit extends React.Component {
           />
         </BioEditor>
         <CharacterCount>
-          Characters left:{" "}
-          {this.state.bio ? 200 - this.state.bio.length : 200}
+          Characters left: {this.state.bio ? 200 - this.state.bio.length : 200}
         </CharacterCount>
         <ButtonToolsContainer>
           <EditButton
