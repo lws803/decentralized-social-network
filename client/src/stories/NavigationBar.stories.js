@@ -3,9 +3,9 @@ import React from "react";
 import { Router } from "react-router-dom";
 import { action } from "@storybook/addon-actions";
 
-import NavigationBar from "../navBar/NavigationBar";
+import NavigationBar from "../components/navBar/NavigationBar";
 import history from "../utils/History";
-import { PageContainer } from "../common/CommonStyles";
+import { PageContainer } from "../components/common/CommonStyles";
 
 export default {
   title: "Navigation Bar",

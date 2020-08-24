@@ -1,7 +1,7 @@
 import React from "react";
 import profileImage from "../res/7874219.jpeg";
 
-import ProfileImage from "../profile/ProfileImage";
+import ProfileImage from "../components/profile/ProfileImage";
 
 export default {
   title: "Profile Image",

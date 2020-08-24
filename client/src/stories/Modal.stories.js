@@ -2,7 +2,7 @@ import React from "react";
 
 import { Button, Header, Modal } from "semantic-ui-react";
 
-import AuthenticationModal from "../authModal/AuthenticationModal";
+import AuthenticationModal from "../components/authModal/AuthenticationModal";
 
 export default {
   title: "Authentication Modal",
