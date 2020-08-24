@@ -10,7 +10,7 @@ class ArticleModel extends Object {
       preValidateProperty: this._coerce,
     });
     if (result.errors.length) throw new ModelError(result.errors.join("\n"));
-    this.content = result.instance.content;
+    this.content = result.instance.content ? result.instance.content : "";
     this.coverPhoto = result.instance.coverPhoto;
     this.uuid = result.instance.uuid;
     this.author = result.instance.author;
@@ -62,7 +62,6 @@ class ArticleModel extends Object {
   toGunData() {
     return {
       ...this,
-      content: this.content ? this.content : "",
       createdAt: this.createdAt.toISOString(),
       updatedAt: this.updatedAt
         ? this.updatedAt.toISOString()
