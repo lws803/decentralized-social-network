@@ -33,7 +33,7 @@ services:
     restart: on-failure
     environment:
       REDIS_URI: redis://cache
-      INIT_PEER: "127.0.0.1"
+      INIT_PEER: "54.255.4.159"
       MY_ADDRESS: "127.0.0.1"
     depends_on:
       - redis

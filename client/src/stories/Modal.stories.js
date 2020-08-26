@@ -1,50 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 
-import { action } from "@storybook/addon-actions";
 import { Button, Header, Modal } from "semantic-ui-react";
 
-import ModalView from "../common/Modal";
-import AuthenticationModal from "../authModal/AuthenticationModal";
+import AuthenticationModal from "../components/authModal/AuthenticationModal";
 
 export default {
-  title: "Modal View",
-  component: ModalView,
-};
-
-export const Default = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  return (
-    <div>
-      <button
-        onClick={() => {
-          setIsOpen(true);
-        }}
-      >
-        Open Modal
-      </button>
-      <ModalView
-        isOpen={isOpen}
-        contentLabel="Example Modal"
-        onRequestClose={() => {
-          setIsOpen(false);
-        }}
-      >
-        Hello world
-      </ModalView>
-    </div>
-  );
+  title: "Authentication Modal",
+  component: AuthenticationModal,
 };
 
 export const AuthModal = () => {
-  var mockUser = {
-    is: false,
-    auth: action("login"),
-    create: action("signup"),
-  };
-  return <AuthenticationModal user={mockUser} reload={action("reload")} />;
-};
-
-export const NewModal = () => {
   const [open, setOpen] = React.useState(true);
   return (
     <div>

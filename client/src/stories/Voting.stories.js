@@ -1,7 +1,7 @@
 import React from "react";
 
 import { action } from "@storybook/addon-actions";
-import Vote from "../articles/Vote";
+import Vote from "../components/articles/Vote";
 
 export default {
   title: "Voting",

@@ -1,6 +1,6 @@
 import React from "react";
 
-import CustomCKEditor from "../common/CustomCKEditor";
+import CustomCKEditor from "../components/common/CustomCKEditor";
 
 export default {
   title: "RichText Editor",

@@ -1,7 +1,8 @@
 import React from "react";
 
 import { action } from "@storybook/addon-actions";
-import { Card, LargeCard } from "../articles/ProfileCard";
+import { Card, LargeCard } from "../components/articles/ProfileCard";
+import moment from "moment";
 
 import profileImage from "../res/7874219.jpeg";
 
@@ -14,7 +15,7 @@ export const Default = () => (
   <Card
     authorPhoto={profileImage}
     onFollowClick={action("follow")}
-    dateCreated="3 Aug, 2020"
+    dateCreated={moment()}
     authorName="lws803"
   />
 );
@@ -22,7 +23,6 @@ export const Default = () => (
 export const Large = () => (
   <LargeCard
     authorPhoto={profileImage}
-    dateCreated="3 Aug, 2020"
     authorName="lws803"
     bio="Nunc porta lectus vitae elit hendrerit porta. 
     Nulla facilisi. Nulla laoreet sapien at eros maximus elementum"
