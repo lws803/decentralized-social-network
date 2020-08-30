@@ -7,7 +7,7 @@ import moment from "moment";
 import {Card, LargeCard} from "../ProfileCard";
 import ProfilePhoto from "../../../res/7874219.jpeg";
 
-describe("Small Pod component", () => {
+describe("Card component", () => {
   Enzyme.configure({ adapter: new Adapter() });
   expect.addSnapshotSerializer(createSerializer({mode: 'deep'}));
 
@@ -17,4 +17,8 @@ describe("Small Pod component", () => {
     );
     expect(wrapper).toMatchSnapshot();
   })
+})
+
+describe("Large Card component", () => {
+
 })
