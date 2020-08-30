@@ -34,7 +34,7 @@ describe("Card component", () => {
     );
     wrapper.find("#author_name").children().at(0).simulate("click");
     expect(mockCallBack.mock.calls.length).toEqual(1);
-  })
+  });
 });
 
 describe("Large Card component", () => {
@@ -53,13 +53,13 @@ describe("Large Card component", () => {
     const mockCallBack = jest.fn();
     const wrapper = mount(
       <LargeCard
-      authorName="lws803"
-      authorPhoto={ProfilePhoto}
-      bio="The quick brown fox"
-      onProfileClick={mockCallBack}
-    />
-    )
+        authorName="lws803"
+        authorPhoto={ProfilePhoto}
+        bio="The quick brown fox"
+        onProfileClick={mockCallBack}
+      />
+    );
     wrapper.find("#author_name").at(0).simulate("click");
     expect(mockCallBack.mock.calls.length).toEqual(1);
-  })
+  });
 });
