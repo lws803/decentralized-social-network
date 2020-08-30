@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Small Pod component renders correctly 1`] = `
+<styled.div>
+  <ProfileImage
+    height={54}
+    profilePhoto="7874219.jpeg"
+    width={54}
+  />
+  <styled.div>
+    <styled.div>
+      lws803
+    </styled.div>
+    <styled.div>
+      30 Aug, 2020
+    </styled.div>
+  </styled.div>
+  <styled.div>
+    <button
+      disabled={true}
+    >
+      Follow
+    </button>
+  </styled.div>
+</styled.div>
+`;

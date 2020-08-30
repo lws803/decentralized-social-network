@@ -1,7 +1,7 @@
 import React from "react";
 import Enzyme, { shallow } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
-import toJson, {createSerializer} from 'enzyme-to-json';
+import {createSerializer} from 'enzyme-to-json';
 
 import SmallPod from "../SmallPod";
 import SanFran from "../../../res/sanfrancisco.jpg";
