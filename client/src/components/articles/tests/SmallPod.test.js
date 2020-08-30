@@ -10,9 +10,17 @@ describe("Small Pod component", () => {
   it("renders correctly", () => {
     const wrapper = shallow(
       <SmallPod size={{ width: 200 }} title="Some random title" />
-    );
+    );  
     expect(wrapper).toMatchSnapshot();
   });
 
-  it("handles clicks correctly", () => {});
+  it("handles clicks correctly", () => {
+    const mockCallBack = jest.fn();
+    const wrapper = shallow(
+      <SmallPod size={{ width: 200 }} title="Some random title" onClick={mockCallBack}/>
+    );  
+    wrapper.simulate("click");
+
+    expect(mockCallBack.mock.calls.length).toEqual(1);
+  });
 });
