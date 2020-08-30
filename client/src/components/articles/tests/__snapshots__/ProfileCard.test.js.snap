@@ -24,3 +24,23 @@ exports[`Card component renders correctly 1`] = `
   </styled.div>
 </styled.div>
 `;
+
+exports[`Large Card component renders correctly 1`] = `
+<styled.div>
+  <ProfileImage
+    height={127}
+    profilePhoto="7874219.jpeg"
+    width={127}
+  />
+  <styled.div>
+    <styled.div>
+      lws803
+    </styled.div>
+    <styled.div>
+      <Bio
+        content="The quick brown fox"
+      />
+    </styled.div>
+  </styled.div>
+</styled.div>
+`;
