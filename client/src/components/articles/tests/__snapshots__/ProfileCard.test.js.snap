@@ -8,11 +8,13 @@ exports[`Card component renders correctly 1`] = `
     width={54}
   />
   <styled.div>
-    <styled.div>
+    <styled.div
+      id="author_name"
+    >
       lws803
     </styled.div>
     <styled.div>
-      30 Aug, 2020
+      25 Dec, 1995
     </styled.div>
   </styled.div>
   <styled.div>
@@ -33,7 +35,9 @@ exports[`Large Card component renders correctly 1`] = `
     width={127}
   />
   <styled.div>
-    <styled.div>
+    <styled.div
+      id="author_name"
+    >
       lws803
     </styled.div>
     <styled.div>
