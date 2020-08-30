@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Authentication Modal component renders correctly 1`] = `
+<Modal
+  centered={true}
+  closeOnDimmerClick={true}
+  closeOnDocumentClick={false}
+  dimmer={true}
+  eventPool="Modal"
+  onClose={[Function]}
+  open={true}
+>
+  <ModalHeader>
+    Login
+  </ModalHeader>
+  <ModalContent>
+    <ModalDescription>
+      <Header>
+        Username
+      </Header>
+      <input
+        id="username_field"
+        onChange={[Function]}
+        onKeyDown={[Function]}
+        type="text"
+        value=""
+      />
+      <Header>
+        Password
+      </Header>
+      <input
+        id="password_field"
+        onChange={[Function]}
+        onKeyDown={[Function]}
+        type="password"
+        value=""
+      />
+    </ModalDescription>
+  </ModalContent>
+  <ModalActions>
+    <Button
+      as="button"
+      color="black"
+      id="authenticate_user_btn"
+      onClick={[Function]}
+    >
+      Login
+    </Button>
+    <Button
+      as="button"
+      color="black"
+      id="create_new_user_btn"
+      onClick={[Function]}
+    >
+      Sign up
+    </Button>
+  </ModalActions>
+</Modal>
+`;
