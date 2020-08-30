@@ -79,7 +79,6 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.1",
     "react-syntax-highlighter": "^13.4.0",
-    "react-test-renderer": "^16.13.1",
     "resolve": "1.15.0",
     "resolve-url-loader": "3.1.1",
     "sass": "^1.26.10",
@@ -127,7 +126,9 @@
     "@storybook/addon-links": "^5.3.19",
     "@storybook/addons": "^5.3.19",
     "@storybook/preset-create-react-app": "^3.1.4",
-    "@storybook/react": "^5.3.19"
+    "@storybook/react": "^5.3.19",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.3"
   },
   "jest": {
     "roots": [

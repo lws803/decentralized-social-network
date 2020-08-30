@@ -1,11 +1,18 @@
 import React from "react";
-import renderer from "react-test-renderer";
+import Enzyme, { shallow } from "enzyme";
+import Adapter from "enzyme-adapter-react-16";
 
 import SmallPod from "../SmallPod";
 
-it("renders correctly", () => {
-  const smallPodContainer = renderer
-    .create(<SmallPod size={{ width: 200 }} title="Some random title" />)
-    .toJSON();
-  expect(smallPodContainer).toMatchSnapshot();
+Enzyme.configure({ adapter: new Adapter() });
+
+describe("Small Pod component", () => {
+  it("renders correctly", () => {
+    const wrapper = shallow(
+      <SmallPod size={{ width: 200 }} title="Some random title" />
+    );
+    expect(wrapper).toMatchSnapshot();
+  });
+
+  it("handles clicks correctly", () => {});
 });
