@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<div
+  className="sc-AxirZ btopKa css-qix29n-SmallPod"
+>
+  <div
+    className="sc-AxjAm htHRIb"
+  >
+    Some random title
+  </div>
+</div>
+`;
