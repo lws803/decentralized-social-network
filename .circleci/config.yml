@@ -1,10 +1,5 @@
 version: 2
 jobs:
-#   build:
-#     docker:
-#       - image: circleci/node:12
-#     steps:
-#       - checkout
   test_client:
     docker:
       - image: circleci/node:12
