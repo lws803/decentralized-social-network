@@ -3,10 +3,11 @@ jobs:
   build:
     docker:
       - image: circleci/node:12
+    steps:
+     - checkout
   test_client:
     working_directory: ~/client
     steps:
-      - checkout
       - restore_cache:
           key: npm-cache-v1-{{ checksum "package-lock.json" }}
       - run:
