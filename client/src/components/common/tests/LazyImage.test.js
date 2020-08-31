@@ -11,7 +11,7 @@ expect.addSnapshotSerializer(createSerializer({ mode: "deep" }));
 
 describe("Lazy Image component", () => {
   it("renders correctly", () => {
-    const wrapper = shallow(<LazyImage src={ProfilePhoto}/>);
+    const wrapper = shallow(<LazyImage src={ProfilePhoto} />);
     expect(wrapper).toMatchSnapshot();
-  })
-})
+  });
+});
