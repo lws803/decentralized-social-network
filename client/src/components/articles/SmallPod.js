@@ -2,6 +2,7 @@
 
 import styled from "styled-components";
 import { css, jsx } from "@emotion/core";
+import PropTypes from "prop-types";
 
 import LazyImage from "../common/LazyImage";
 
@@ -26,6 +27,12 @@ const SmallPod = props => {
       <Title>{props.title}</Title>
     </PodContainer>
   );
+};
+
+SmallPod.propTypes = {
+  onClick: PropTypes.func,
+  size: PropTypes.object,
+  coverPhoto: PropTypes.string,
 };
 
 const Title = styled.div`

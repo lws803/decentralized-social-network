@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Small Pod component renders correctly 1`] = `
+<EmotionCssPropInternal
+  __EMOTION_LABEL_PLEASE_DO_NOT_USE__="SmallPod"
+  __EMOTION_TYPE_PLEASE_DO_NOT_USE__={
+    Object {
+      "$$typeof": Symbol(react.forward_ref),
+      "attrs": Array [],
+      "componentStyle": ComponentStyle {
+        "baseHash": 640081696,
+        "componentId": "sc-AxirZ",
+        "isStatic": false,
+        "rules": Array [
+          "
+  @keyframes slowlyAppear {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  margin: 10px;
+  border: solid;
+  height: auto;
+  display: inline-block;
+  cursor: pointer;
+  animation: 0.25s ease-in-out 0s 1 slowlyAppear;
+",
+        ],
+        "staticRulesId": "",
+      },
+      "displayName": "styled.div",
+      "foldedComponentIds": Array [],
+      "render": [Function],
+      "shouldForwardProp": undefined,
+      "styledComponentId": "sc-AxirZ",
+      "target": "div",
+      "toString": [Function],
+      "warnTooManyClasses": [Function],
+      "withComponent": [Function],
+    }
+  }
+  css={
+    Object {
+      "map": undefined,
+      "name": "vzcsqb",
+      "next": undefined,
+      "styles": "
+        width: 200px;
+      ",
+      "toString": [Function],
+    }
+  }
+  isLoaded={true}
+>
+  <styled.div>
+    Some random title
+  </styled.div>
+</EmotionCssPropInternal>
+`;

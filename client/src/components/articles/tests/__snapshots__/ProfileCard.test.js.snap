@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Card component renders correctly 1`] = `
+<styled.div>
+  <ProfileImage
+    height={54}
+    profilePhoto="7874219.jpeg"
+    width={54}
+  />
+  <styled.div>
+    <styled.div
+      id="author_name"
+    >
+      lws803
+    </styled.div>
+    <styled.div>
+      25 Dec, 1995
+    </styled.div>
+  </styled.div>
+  <styled.div>
+    <button
+      disabled={true}
+    >
+      Follow
+    </button>
+  </styled.div>
+</styled.div>
+`;
+
+exports[`Large Card component renders correctly 1`] = `
+<styled.div>
+  <ProfileImage
+    height={127}
+    profilePhoto="7874219.jpeg"
+    width={127}
+  />
+  <styled.div>
+    <styled.div
+      id="author_name"
+    >
+      lws803
+    </styled.div>
+    <styled.div>
+      <Bio
+        content="The quick brown fox"
+      />
+    </styled.div>
+  </styled.div>
+</styled.div>
+`;

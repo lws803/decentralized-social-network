@@ -75,6 +75,7 @@ class SmallPodsCollection extends React.Component {
 
 SmallPodsCollection.propTypes = {
   gunSession: PropTypes.instanceOf(Gun),
+  pubKey: PropTypes.string,
 };
 
 export default SmallPodsCollection;

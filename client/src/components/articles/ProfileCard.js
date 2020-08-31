@@ -12,7 +12,7 @@ const Card = props => {
     <ProfileCardContainer>
       <ProfileImage profilePhoto={props.authorPhoto} width={54} height={54} />
       <ArticleDetails>
-        <AuthorName onClick={props.onProfileClick}>
+        <AuthorName id="author_name" onClick={props.onProfileClick}>
           {props.authorName}
         </AuthorName>
         <TimeDate>
@@ -74,7 +74,7 @@ const LargeCard = props => {
     <LargeCardContainer>
       <ProfileImage profilePhoto={props.authorPhoto} width={127} height={127} />
       <ProfileDetails>
-        <LargeAuthorName onClick={props.onProfileClick}>
+        <LargeAuthorName id="author_name" onClick={props.onProfileClick}>
           {props.authorName}
         </LargeAuthorName>
         <BioContainer>

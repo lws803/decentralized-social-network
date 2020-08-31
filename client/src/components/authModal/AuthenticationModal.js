@@ -62,6 +62,7 @@ class AuthenticationModal extends React.Component {
             <Header>Username</Header>
             <input
               type="text"
+              id="username_field"
               value={this.state.name}
               onChange={event => this.setState({ name: event.target.value })}
               onKeyDown={e => this._handleKeyDown(e)}
@@ -69,6 +70,7 @@ class AuthenticationModal extends React.Component {
             <Header>Password</Header>
             <input
               type="password"
+              id="password_field"
               value={this.state.password}
               onChange={event =>
                 this.setState({ password: event.target.value })
@@ -78,10 +80,10 @@ class AuthenticationModal extends React.Component {
           </Modal.Description>
         </Modal.Content>
         <Modal.Actions>
-          <Button color="black" onClick={() => this.authUser()}>
+          <Button color="black" id="authenticate_user_btn" onClick={() => this.authUser()}>
             Login
           </Button>
-          <Button color="black" onClick={() => this.createUser()}>
+          <Button color="black" id="create_new_user_btn" onClick={() => this.createUser()}>
             Sign up
           </Button>
         </Modal.Actions>
