@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Custom CK Editor component renders correctly 1`] = `
+<styled.div>
+  <a
+    config={
+      Object {
+        "extraPlugins": Array [
+          [Function],
+        ],
+        "image": Object {
+          "toolbar": Array [
+            "imageTextAlternative",
+            "imageStyle:full",
+            "imageStyle:side",
+          ],
+        },
+        "language": "en",
+        "removePlugins": Array [
+          "Title",
+        ],
+        "simpleUpload": Object {
+          "uploadUrl": "null/image_upload",
+          "withCredentials": false,
+        },
+        "toolbar": Object {
+          "items": Array [
+            "heading",
+            "|",
+            "fontSize",
+            "bold",
+            "italic",
+            "link",
+            "bulletedList",
+            "numberedList",
+            "underline",
+            "blockQuote",
+            "undo",
+            "redo",
+            "|",
+            "indent",
+            "outdent",
+            "|",
+            "imageUpload",
+            "code",
+            "codeBlock",
+            "mediaEmbed",
+          ],
+        },
+      }
+    }
+    editor={[Function]}
+    onInit={[Function]}
+  />
+</styled.div>
+`;

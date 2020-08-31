@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Lazy Image component renders correctly 1`] = `
+<t
+  afterLoad={[Function]}
+  beforeLoad={[Function]}
+  delayMethod="throttle"
+  delayTime={300}
+  effect="opacity"
+  placeholderSrc={null}
+  src="7874219.jpeg"
+  threshold={100}
+  useIntersectionObserver={true}
+  visibleByDefault={false}
+  wrapperClassName=""
+/>
+`;
