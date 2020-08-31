@@ -11,7 +11,7 @@ jobs:
     working_directory: ~/decentralized-social-network/client
     steps:
       - checkdir:
-        command: pwd && ls -a
+          command: pwd
       - restore_cache:
           key: npm-cache-v1-{{ checksum "package-lock.json" }}
       - run:
