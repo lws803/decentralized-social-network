@@ -10,8 +10,9 @@ jobs:
       - image: circleci/node:12
     working_directory: ~/decentralized-social-network/client
     steps:
-      - checkdir:
-          command: pwd
+      - run:
+          name: Check directory
+          command: pwd && ls -a
       - restore_cache:
           key: npm-cache-v1-{{ checksum "package-lock.json" }}
       - run:
