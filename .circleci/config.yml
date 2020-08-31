@@ -4,8 +4,10 @@ jobs:
     docker:
       - image: circleci/node:12
     steps:
-     - checkout
+      - checkout
   test_client:
+    docker:
+      - image: circleci/node:12
     working_directory: ~/client
     steps:
       - restore_cache:
