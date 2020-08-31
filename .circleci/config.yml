@@ -1,9 +1,10 @@
 version: 2
 jobs:
-  client:
-    working_directory: ~/client
+  build:
     docker:
       - image: circleci/node:12
+  test_client:
+    working_directory: ~/client
     steps:
       - checkout
       - restore_cache:
