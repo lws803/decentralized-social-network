@@ -17,7 +17,7 @@
     "externalip": "^1.0.2",
     "file-type": "^14.7.1",
     "ipfs-http-client": "^45.0.0",
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.21",
     "morgan": "^1.10.0",
     "redis": "^3.0.2"
   }
